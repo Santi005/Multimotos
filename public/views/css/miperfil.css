@@ -1,0 +1,96 @@
+@import url('https://fonts.googleapis.com/css2?family=Noto+Sans:wght@700&family=Poppins:wght@400;500;600&display=swap');
+
+body {
+  background-color: #f2f2f2;
+  font-family: "Poppins", sans-serif;
+}
+
+.container {
+  max-width: 300px;
+  margin: 0 auto;
+  padding: 10px;
+}
+
+.profile {
+  text-align: center;
+  margin-bottom: 10px;
+}
+
+.profile-image img {
+  width: 100px;
+  height: 100px;
+  border-radius: 50%;
+  object-fit: cover;
+  object-position: center;
+}
+
+.profile h2 {
+  margin-top: 5px;
+  font-size: 20px;
+  color: #333;
+}
+
+.profile-info {
+  background-color: #fff;
+  border-radius: 5px;
+  padding: 3px;
+}
+
+.profile-info label {
+  font-weight: bold;
+  margin-bottom: 3px;
+  display: block;
+  color: #666;
+}
+
+.profile-info input {
+  width: 100%;
+  padding: 10px;
+  margin-bottom: 15px;
+  border-radius: 5px;
+  border: 1px solid #ccc;
+  font-size: 14px;
+}
+
+#BtnVolver,
+#BtnGuardarEdicion {
+  width: 35%; /* Ajusta el ancho según tus preferencias */
+  padding: 10px;
+  border-radius: 5px;
+  border: none;
+  font-size: 16px;
+  color: #fff;
+  cursor: pointer;
+  transition: background-color 0.3s;
+}
+
+#BtnVolver {
+  background-color: #e92323;
+}
+
+#BtnGuardarEdicion {
+  background-color: #2691d9;
+}
+
+#BtnVolver:hover{
+    background-color: #9a3d50;
+  }
+#BtnGuardarEdicion:hover {
+  background-color: #2464cb;
+}
+
+.button-container {
+  display: flex;
+  justify-content: space-between;
+  margin-top: 10px; 
+}
+
+.button-container button {
+  flex: 1;
+  margin-right: 5px; 
+}
+
+.error-message {
+    color: red;
+    font-size: 12px;
+  }

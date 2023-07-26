@@ -1,0 +1,90 @@
+body {
+    font-family: Arial, Helvetica, sans-serif;
+    margin: 0;
+   background: url('https://th.bing.com/th/id/R.c6d0d232cdc04c78caf8e8b56f4b6fba?rik=803w2PJlylgW%2bA&riu=http%3a%2f%2fwww.fondoswiki.com%2fUploads%2ffondoswiki.com%2fImagenesGrandes%2fpiloto-de-motos.jpg&ehk=7CM%2f44eVjIWI7Tv2S7b1Y6oHynmQkMzvMqNDuIIq02s%3d&risl=&pid=ImgRaw&r=0');
+    background-size: cover;
+    background-attachment: fixed;
+}
+* {
+    box-sizing: border-box;
+}
+.contenedor{
+    width: 100%;
+    padding: 15px;
+}
+.formulario{
+    background: #fff;
+    margin-top: 150px;
+    padding: 3px;
+}
+h1{
+    text-align: center;
+    color: #1a2537;
+    font-size: 40px;
+}
+input[type="text"],
+input[type="password"]{
+    font-size: 20px;
+    width: 82%;
+    padding: 10px;
+    border: none;
+}
+.input-contenedor{
+    margin-bottom: 15px;
+    border: 1px solid #aaa;
+    text-align: right;
+}
+
+.button{
+    border: none;
+    width: 100%;
+    color: white;
+    font-size: 20px;
+    background:  #1a2537;
+    padding: 15px 210px;
+    border-radius: 5px;
+    cursor: pointer;
+    text-decoration: none;
+    text-align: center;
+}
+.button:hover{
+    background: cadetblue;
+}
+p{
+    text-align: center;
+}
+.link{
+    text-decoration: none;
+      color: #1a2537;
+    font-weight: 600;
+}
+.link:hover{
+     color: cadetblue;
+}
+@media(min-width:768px)
+{
+    .formulario{
+        margin: auto;
+        width: 500px;
+        margin-top: 150px;
+        border-radius: 2%;
+    }
+}
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+

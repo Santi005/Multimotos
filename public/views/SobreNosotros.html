@@ -1,0 +1,425 @@
+<!DOCTYPE html>
+<html lang="zxx">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="description" content="Tienda virtual de multimotos">
+    <meta name="keywords" content="multimotos, MULTIMOTOS, Multimotos">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <link rel="shortcut icon" href="img/logoMultimotos.png" type="image/x-icon">
+    <title>Multimotos - Sobre nosotros</title>
+
+    <!-- Google Font -->
+    <link href="https://fonts.googleapis.com/css2?family=Lato:wght@300;400;700;900&display=swap" rel="stylesheet">
+
+    <!-- Css Styles -->
+    <link rel="stylesheet" href="css/bootstrap.min.css" type="text/css">
+    <link rel="stylesheet" href="css/font-awesome.min.css" type="text/css">
+    <link rel="stylesheet" href="css/elegant-icons.css" type="text/css">
+    <link rel="stylesheet" href="css/nice-select.css" type="text/css">
+    <link rel="stylesheet" href="css/magnific-popup.css" type="text/css">
+    <link rel="stylesheet" href="css/jquery-ui.min.css" type="text/css">
+    <link rel="stylesheet" href="css/owl.carousel.min.css" type="text/css">
+    <link rel="stylesheet" href="css/slicknav.min.css" type="text/css">
+    <link rel="stylesheet" href="css/style.css" type="text/css">
+    <link rel="stylesheet" href="css/estilos.css" type="text/css">
+</head>
+
+<body>
+    <div id="preloder">
+        <div class="loader"></div>
+    </div>
+
+    <div class="offcanvas-menu-overlay"></div>
+    <div class="offcanvas-menu-wrapper">
+        <div class="offcanvas__widget">
+            <a href="#"><i class="fa fa-cart-plus" style="font-size: 1.5em;"></i></a>
+            <a href="#" class="search-switch"><i class="fa fa-search" style="font-size: 1.4em;"></i></a>
+            <a href="#" class="primary-btn" style="margin-top: 20px;"><i class="fas fa-user"></i> &nbsp;  Iniciar Sesión</a>
+        </div>
+        <div class="offcanvas__logo">
+            <a href="./index.html"><img src="img/logoMultimotos.png" alt="" width="40px"> <b class="link__logo"> Multimotos</b></a>
+        </div>
+        <div id="mobile-menu-wrap"></div>
+        <ul class="offcanvas__widget__add">
+            <li><i class="fa fa-clock-o"></i> Todos los días de: 08:00 am a 18:00 pm</li>
+            <li><i class="fa fa-envelope-o"></i> multimotos@gmail.com</li>
+        </ul>
+        <div class="offcanvas__phone__num">
+            <i class="fa fa-phone"></i>
+            <span>(+57) 311 379 4682</span>
+        </div>
+        <div class="offcanvas__social">
+            <a href="#"><i class="fa fa-facebook"></i></a>
+            <a href="#"><i class="fa fa-twitter"></i></a>
+            <a href="#"><i class="fa fa-google"></i></a>
+            <a href="#"><i class="fa fa-instagram"></i></a>
+        </div>
+    </div>
+
+    <header class="header">
+        <div class="header__top">
+            <div class="container">
+                <div class="row">
+                    <div class="col-lg-7">
+                        <ul class="header__top__widget">
+                            <li><i class="fa fa-clock-o"></i> Todos los días de: 08:00 am a 18:00 pm</li>
+                            <li><i class="fa fa-envelope-o"></i> multimotos@gmail.com</li>
+                        </ul>
+                    </div>
+                    <div class="col-lg-5">
+                        <div class="header__top__right">
+                            <div class="header__top__phone">
+                                <i class="fa fa-phone"></i>
+                                <span>(+57) 311 379 4682</span>
+                            </div>
+                            <div class="header__top__social">
+                                <a href="#"><i class="fa fa-facebook"></i></a>
+                                <a href="#"><i class="fa fa-twitter"></i></a>
+                                <a href="#"><i class="fa fa-google"></i></a>
+                                <a href="#"><i class="fa fa-instagram"></i></a>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div class="container">
+            <div class="row">
+                <div class="col-lg-2">
+                    <div class="header__logo">
+                        <a href="./index.html"><img src="img/logoMultimotos.png" alt="" width="40px"> <b class="link__logo" style="margin-left: 10px;"> Multimotos</b></a>
+                    </div>
+                </div>
+                <div class="col-lg-10">
+                    <div class="header__nav">
+                        <nav class="header__menu">
+                            <ul>
+                                <li><a href="./index.html">Inicio</a></li>
+                                <li><a href="./productos.html">Productos</a></li>
+                                <li class="active"><a href="./SobreNosotros.html">Sobre Nosotros</a></li>
+                                <li><a href="./contacto.html">Contacto</a></li>
+                            </ul>
+                        </nav>
+                        <div class="header__nav__widget">
+                            <div class="header__nav__widget__btn">
+                                <a href="#" id="cartButton">
+                                    <span class="count-products" id="contador-productos">0</span>
+                                    <i class="fa fa-cart-plus"></i>
+                                </a>
+                                <a href="#" class="search-switch"><i class="fa fa-search"></i></a>
+                            </div>
+                            <a href="loginvista.html" id="loginButton" class="primary-btn"><i class="fas fa-user"></i> &nbsp;  Inicia Sesión o Registrate</a>
+
+                            
+                            <a href="#" id="logoutButton" class="profile-pic">
+                                <img src="./admin/plugins/images/users/varun.jpg" alt="user-img" width="36" class="img-circle">
+                                <span id="nombreUsuario"></span>
+                                <span id="profileDropdownArrow" class="dropdown-arrow">
+                                    <i class="fas fa-angle-down"></i>
+                                </span>
+                            </a>
+                            <div class="dropdown-menu dropdown-menu-lg dropdown-menu-right dropdown-custom" id="profileDropdown">
+                                <a href="#" class="dropdown-item">
+                                    <!-- Contenido del primer enlace -->
+                                </a>
+                                <div class="dropdown-divider"></div>
+                                <a href="#" class="dropdown-item">
+                                    <!-- Icono de Mi Perfil -->
+                                    <i class="fas fa-user"></i>
+                                    <span class="dropdown-item-title">Mi Perfil</span>
+                                </a>
+                                <div class="dropdown-divider"></div>
+                                <a href="#" class="dropdown-item">
+                                    <!-- Icono de Mis Pedidos -->
+                                    <i class="fas fa-shopping-cart"></i>
+                                    <span class="dropdown-item-title">Mis Pedidos</span>
+                                </a>
+                                <div class="dropdown-divider"></div>
+                                <a href="#" class="dropdown-item dropdown-footer" onclick="cerrarSesion()">Cerrar Sesión</a>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="canvas__open">
+                <span class="fa fa-bars"></span>
+            </div>
+        </div>
+    </header>
+
+    <div id="cartSidebar" class="sidebar">
+        <button id="closeCartButton" class="close-cart-button">&times;</button>
+        <h2 class="titulo-cart">Carrito de compras</h2>
+
+        <div class="row-product hidden">
+            
+            <ul id="cartItems"></ul>
+
+            <div class="cart-total">
+                
+            </div>
+            
+            <a href="carrito.html" id="checkoutButton" class="primary-btn cart-buttons">Visualizar carrito</a>
+            <a href="#" onclick="event.preventDefault();" id="emptyCart" class="primary-btn cart-buttons">Vaciar carrito</a>
+        </div>
+    </div>
+
+    <div class="breadcrumb-option set-bg imagen_inicio" data-setbg="img/cars/moto.jpg" >
+        <div class="container">
+            <div class="row">
+                <div class="col-lg-12 text-center">
+                    <div class="breadcrumb__text">
+                        <h2>Sobre nosotros</h2>
+                        <div class="breadcrumb__links">
+                            <a href="./index.html"><i class="fa fa-home"></i> Inicio</a>
+                            <span>Sobre nosotros</span>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+    <!-- Breadcrumb Begin -->
+
+    <!-- About Us Section Begin -->
+    <section class="about spad">
+        <div class="container">
+            <div class="row">
+                <div class="col-lg-12">
+                    <div class="section-title about-title">
+                        <h2>Bienvenid@ a Servicentro Multimotos <br />Todo lo que necesitas para tu moto</h2>
+                        <p>Taller de mecanica de motos y Centro autorizado de revisiones de akt ubicado en la avenida Guayabal cerca al parque de la chimenea aqui puedes hacer las revisiones y Garantias. Prestamos servicios de taller de motos mutimarcas Honda Tvs Auteco Yamaha entre otras. Para sus mantenimientos, electricidad reparaciones y repuestos. Contamos con tecnicos capacitados. Prestamos servicio de retificada cambio de biela y balineras. PRESTAMOS SERVICIO A DOMICILIO. Trabajos Garantizados.</p>
+                    </div>
+                </div>
+            </div>
+            <div class="about__feature">
+                <div class="row">
+                    <div class="col-lg-4 col-md-6 col-sm-6">
+                        <div class="about__feature__item">
+                            <img src="img/about/af-1.png" alt="">
+                            <h5>Seguridad garantizada</h5>
+                            <p>Le garantizamos el mejor trabajo para su moto.</p>
+                        </div>
+                    </div>
+                    <div class="col-lg-4 col-md-6 col-sm-6">
+                        <div class="about__feature__item">
+                            <img src="img/about/af-2.png" alt="">
+                            <h5>Calidad garantizada</h5>
+                            <p>Nuestros productos a buenos precios y buena calidad.</p>
+                        </div>
+                    </div>
+                    <div class="col-lg-4 col-md-6 col-sm-6">
+                        <div class="about__feature__item">
+                            <img src="img/about/af-3.png" alt="">
+                            <h5>Servicio excelente</h5>
+                            <p>Ofrecemos multiples servicios para tu moto con una atención excelente.</p>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+    <!-- About Us Section End -->
+
+    <!-- Call Section Begin -->
+    <section class="call spad set-bg" data-setbg="img/about/call-bg.jpg" style="background-position: center;">
+        <div class="container">
+            <div class="row">
+                <div class="col-lg-5 col-md-6">
+                    <div class="call__text">
+                        <div class="section-title">
+                            <h2>¿Quieres contactarnos?</h2>
+                            <p>Si necesitas más información puedes contactarnos, da click en el enlace de abajo
+                                para ir a la página de contacto.
+                            </p>
+                        </div>
+                        <a href="./contacto.html">Contáctanos</a>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <section class="testimonial spad">
+        <div class="container">
+            <div class="row">
+                <div class="col-lg-12">
+                    <div class="section-title testimonial-title">
+                        <span>Opiniones</span>
+                        <h2>¿Qué opinan de nosotros?</h2>
+                        <p>Nuestros clientes opinan lo siguiente:</p>
+                    </div>
+                </div>
+            </div>
+            <div class="row">
+                <div class="testimonial__slider owl-carousel">
+                    <div class="col-lg-6">
+                        <div class="testimonial__item">
+                            <div class="testimonial__item__author">
+                                <div class="testimonial__item__author__pic">
+                                    <img src="https://lh3.googleusercontent.com/a-/ACNPEu_J0fc58Qv6rm99R072-VbmSNmSAUJj6U0KO7Tqeg=w75-h75-p-rp-mo-ba5-br100" alt="">
+                                </div>
+                                <div class="testimonial__item__author__text">
+                                    <div class="rating">
+                                        <i class="fa fa-star"></i>
+                                        <i class="fa fa-star"></i>
+                                        <i class="fa fa-star"></i>
+                                        <i class="fa fa-star"></i>
+                                        <i class="fa fa-star"></i>
+                                    </div>
+                                    <h5>Yolvys Amaris/<span> Cliente</span></h5>
+                                </div>
+                            </div>
+                            <p>Me parece excelente el servicio que prestan, ocacionalmente sacan promociones, incluso por la revision te lavan la moto. Son agente autorizado de AKT. Recomendado.g</p>
+                        </div>
+                    </div>
+                    <div class="col-lg-6">
+                        <div class="testimonial__item">
+                            <div class="testimonial__item__author">
+                                <div class="testimonial__item__author__pic">
+                                    <img src="https://lh3.googleusercontent.com/a-/ACNPEu-IhTqNPS7GbTLI0Wm1J2K7BlRr4d88KcNj2Trluw=w75-h75-p-rp-mo-ba4-br100" alt="">
+                                </div>
+                                <div class="testimonial__item__author__text">
+                                    <div class="rating">
+                                        <i class="fa fa-star"></i>
+                                        <i class="fa fa-star"></i>
+                                        <i class="fa fa-star"></i>
+                                        <i class="fa fa-star"></i>
+                                        <i class="fa fa-star"></i>
+                                    </div>
+                                    <h5>Yin - Fire /<span> Cliente</span></h5>
+                                </div>
+                            </div>
+                            <p>Muy profesionales. Tienen buen cuidado de las motos y el personal es muy experimentado trabajando con ellas. El repuesto que no tienen a la mano, lo consiguen rápidamente. Trabajan principalmente con motos de mediano y bajo cilindrada, pero estan formándose en alto cilindrada desde hace tiempo.</p>
+                        </div>
+                    </div>
+                    <div class="col-lg-6">
+                        <div class="testimonial__item">
+                            <div class="testimonial__item__author">
+                                <div class="testimonial__item__author__pic">
+                                    <img src="https://lh3.googleusercontent.com/a/ALm5wu28Gs1vLMQ0ZCpF22Fan7M4cgURTxm03CEVaGNQcQ=w75-h75-p-rp-mo-br100" alt="">
+                                </div>
+                                <div class="testimonial__item__author__text">
+                                    <div class="rating">
+                                        <i class="fa fa-star"></i>
+                                        <i class="fa fa-star"></i>
+                                        <i class="fa fa-star"></i>
+                                        <i class="fa fa-star"></i>
+                                        <i class="fa fa-star"></i>
+                                    </div>
+                                    <h5>Daniel Restrepo /<span> Cliente</span></h5>
+                                </div>
+                            </div>
+                            <p>Manejan buenos precios, la atencion es muy buena, son muy serios y si se presenta algun detalle ellos te responden (En mi caso paso algo y ese mismo dia me respondieron)/p>
+                        </div>
+                    </div>
+                    <div class="col-lg-6">
+                        <div class="testimonial__item">
+                            <div class="testimonial__item__author">
+                                <div class="testimonial__item__author__pic">
+                                    <img src="https://lh3.googleusercontent.com/a/ALm5wu3xSsoeRO0-vOsj_YPNAwUrmKBdgMPh0S_OOl76=w75-h75-p-rp-mo-br100" alt="">
+                                </div>
+                                <div class="testimonial__item__author__text">
+                                    <div class="rating">
+                                        <i class="fa fa-star"></i>
+                                        <i class="fa fa-star"></i>
+                                        <i class="fa fa-star"></i>
+                                        <i class="fa fa-star"></i>
+                                        <i class="fa fa-star"></i>
+                                    </div>
+                                    <h5>Julian Escobar Yepes /<span> Cliente</span></h5>
+                                </div>
+                            </div>
+                            <p>Super puntuales en el compromiso y excelente labor a mi requerimiento, muy muy agradecido y recomiendo, bendiciones.</p>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <footer class="footer set-bg" style="background: #000;">
+        <div class="container">
+            <div class="footer__contact">
+                <div class="row">
+                    <div class="col-lg-6 col-md-6">
+                        <div class="footer__contact__title">
+                            <h2>¡Contáctanos ahora!</h2>
+                        </div>
+                    </div>
+                    <div class="col-lg-6 col-md-6">
+                        <div class="footer__contact__option">
+                            <div class="option__item"><i class="fa fa-phone"></i> (+57) 311 379 4682</div>
+                            <div class="option__item email"><i class="fa fa-envelope-o"></i> multimotos@gmail.com</div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="row">
+                <div class="col-lg-4 col-md-4">
+                    <div class="footer__about">
+                        <div class="footer__logo">
+                            <a href="#"><img src="img/logoMultimotos.png" alt="" width="50px"></a>
+                        </div>
+                        <p>Contáctanos en caso de dudas, puedes enviar un correo o llamar a nuestro número de teléfono</p>
+                        <div class="footer__social">
+                            <a href="#" class="facebook"><i class="fa fa-facebook"></i></a>
+                            <a href="#" class="twitter"><i class="fa fa-twitter"></i></a>
+                            <a href="#" class="google"><i class="fa fa-google"></i></a>
+                            <a href="#" class="skype"><i class="fa fa-skype"></i></a>
+                        </div>
+                    </div>
+                </div>
+                <div class="col-lg-2 offset-lg-1 col-md-3">
+                    <div class="footer__widget">
+                        <h5>&nbsp;</h5>
+                    </div>
+                </div>
+                <div class="col-lg-2 offset-lg-1 col-md-3">
+                    <div class="footer__widget">
+                        <h5>Información</h5>
+                        <ul>
+                            <li><a href="#"><i class="fa fa-angle-right"></i> Productos</a></li>
+                            <li><a href="#"><i class="fa fa-angle-right"></i> Sobre nosotros</a></li>
+                            <li><a href="#"><i class="fa fa-angle-right"></i> Contáctanos</a></li>
+                        </ul>
+                    </div>
+                </div>
+            </div>
+            <div class="footer__copyright__text">
+                <p>Copyright &copy;<script>document.write(new Date().getFullYear());</script> Todos los derechos reservados | Servicentro Multimotos</p>
+            </div>
+        </div>
+    </footer>
+
+    <div class="search-model">
+        <div class="h-100 d-flex align-items-center justify-content-center">
+            <div class="search-close-switch">+</div>
+            <form class="search-model-form">
+                <input type="text" id="search-input" placeholder="Search here.....">
+            </form>
+        </div>
+    </div>
+
+    <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
+    <script src="js/pages/carrito/carrito.js"></script>
+    <script src="https://kit.fontawesome.com/02fc697ff9.js" crossorigin="anonymous"></script>
+    <script src="js/jquery-3.3.1.min.js"></script>
+    <script src="js/bootstrap.min.js"></script>
+    <script src="js/jquery.nice-select.min.js"></script>
+    <script src="js/jquery-ui.min.js"></script>
+    <script src="js/jquery.magnific-popup.min.js"></script>
+    <script src="js/mixitup.min.js"></script>
+    <script src="js/jquery.slicknav.js"></script>
+    <script src="js/owl.carousel.min.js"></script>
+    <script src="js/main.js"></script>
+
+    <script src="js/botonesHeader.js"></script>
+    <script src="js/cerrarsesion.js"></script>
+
+    <script src="js/datosUsuario.js"></script>
+    <script src="js/ventanaEmergent.js"></script>
+</body>
+</html>

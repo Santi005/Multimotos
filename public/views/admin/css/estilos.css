@@ -1,0 +1,33 @@
+.venta-desactivada {
+    color: #9d9d9d;
+    background-color: #dadada8f; 
+}
+
+.venta-desactivada a {
+    pointer-events: none; 
+    opacity: 0.5; 
+}
+
+.venta-desactivada .fa-power-off {
+    pointer-events: none; 
+    opacity: 0.5; 
+}
+
+.btn-desactivar {
+    cursor: pointer;
+}
+
+.categorias {
+    cursor: pointer;
+
+}
+
+.marcas {
+    cursor: pointer;
+
+}
+
+.productos {
+    cursor: pointer;
+
+}

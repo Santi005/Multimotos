@@ -1,0 +1,176 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="UTF-8">
+    <title>Registro</title>
+    <link rel="stylesheet" href="css/estilosloginyregistro.css">
+    <link rel="shortcut icon" href="img/logoMultimotos.png" type="image/x-icon">
+    <link rel="shortcut icon" href="img/logoMultimotos.png" type="image/x-icon">
+    <style>
+        .error-message {
+            color: red;
+            font-size: 14px;
+        }
+    </style>
+</head>
+<body>
+    <button class="home-button" onclick="window.location.href = 'index.html'">
+        <i class="fas fa-home"></i>
+    </button>
+    <div class="container center">
+        <h1>Registro</h1>
+        <form id="registrationForm">
+            <div class="input-field">
+                <input type="text" class="form-control" id="InputDocumento" required>
+                <label for="InputDocumento">Documento</label>
+                <div id="documentoError" class="error-message"></div>
+            </div>
+            <div class="input-field">
+                <input type="text" class="form-control" id="InputNombre" required>
+                <label for="InputNombre">Nombre</label>
+                <div id="nombreError" class="error-message"></div>
+            </div>
+            <div class="input-field">
+                <input type="text" class="form-control" id="InputApellidos" required>
+                <label for="InputApellidos">Apellidos</label>
+                <div id="apellidosError" class="error-message"></div>
+            </div>
+            <div class="input-field">
+                <input type="text" class="form-control" id="InputCelular" required>
+                <label for="InputCelular">Celular</label>
+                <div id="celularError" class="error-message"></div>
+            </div>
+            <div class="input-field">
+                <input type="email" class="form-control" id="InputCorreo" required>
+                <label for="InputCorreo">Correo electrónico</label>
+                <div id="correoError" class="error-message"></div>
+            </div>
+            <div class="input-field">
+                <input type="text" class="form-control" id="InputDireccion" required>
+                <label for="InputDireccion">Dirección</label>
+                <div id="direccionError" class="error-message"></div>
+            </div>
+            <div class="input-field">
+                <input type="password" class="form-control" id="InputContrasena" required>
+                <label for="InputContrasena">Contraseña</label>
+                <div id="contrasenaError" class="error-message"></div>
+            </div>
+            <button type="button" id="BtnRegistrarCliente">Registrarse</button>
+            <div class="login_link">
+                ¿Ya tienes una cuenta? <a href="loginvista.html">Iniciar sesión</a>
+            </div>
+        </form>
+    </div>
+    
+    
+
+    <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.5.0/js/bootstrap.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.3/js/all.min.js"></script>
+    <script src="https://code.jquery.com/jquery-3.5.1.min.js"></script>
+    
+    <script>
+        $(document).ready(() => {
+            $('#BtnRegistrarCliente').on('click', () => {
+                let userData = {
+                    Documento: $('#InputDocumento').val(),
+                    Nombre: $('#InputNombre').val(),
+                    Apellidos: $('#InputApellidos').val(),
+                    Celular: $('#InputCelular').val(),
+                    Correo: $('#InputCorreo').val(),
+                    Direccion: $('#InputDireccion').val(),
+                    //Id del rol 'Cliente'
+                    Rol: '649d952d652816c809c8e99c',
+                    Contrasena: $('#InputContrasena').val(),
+                    Estado: 'Activo',
+                };
+    
+                if (validateFields(userData)) {
+                    fetch('http://localhost:8080/users/', {
+                        method: 'POST',
+                        body: JSON.stringify(userData),
+                        headers: {
+                            'Content-type': 'application/json; charset=UTF-8'
+                        }
+                    })
+                    .then(response => response.json())
+                    .then(json => {
+                        alert('Registrado exitosamente');
+                        location.reload();
+                        // Realizar las acciones necesarias después de registrar el usuario
+                    })
+                    .catch(error => {
+                        alert('El número de documento ya está registrado.');
+                        console.error(error);
+                    });
+                }
+            });
+    
+            function validateFields(userData) {
+                let isValid = true;
+    
+                // Validar Documento
+                if (!userData.Documento.match(/^\d+$/)) {
+                    isValid = false;
+                    $('#documentoError').text('Documento invalido.');
+                } else {
+                    $('#documentoError').text('');
+                }
+    
+                // Validar Nombre
+                if (!userData.Nombre.match(/^[a-zA-Z\s]+$/)) {
+                    isValid = false;
+                    $('#nombreError').text('El nombre solo puede contener letras.');
+                } else {
+                    $('#nombreError').text('');
+                }
+    
+                // Validar Apellidos
+                if (!userData.Apellidos.match(/^[a-zA-Z\s]+$/)) {
+                    isValid = false;
+                    $('#apellidosError').text('Los apellidos solo pueden contener letras.');
+                } else {
+                    $('#apellidosError').text('');
+                }
+    
+                // Validar Celular
+                if (!userData.Celular.match(/^\d{10}$/)) {
+                    isValid = false;
+                    $('#celularError').text('El número de celular debe tener 10 dígitos.');
+                } else {
+                    $('#celularError').text('');
+                }
+    
+                // Validar Correo
+                if (!userData.Correo.match(/^\w+([\.-]?\w+)*@\w+([\.-]?\w+)*(\.\w{2,3})+$/)) {
+                    isValid = false;
+                    $('#correoError').text('Ingrese un correo electrónico válido.');
+                } else {
+                    $('#correoError').text('');
+                }
+    
+                // Validar Dirección
+                if (userData.Direccion.trim().length === 0) {
+                    isValid = false;
+                    $('#direccionError').text('La dirección no puede estar vacía.');
+                } else if (userData.Direccion.length > 40) {
+                    isValid = false;
+                    $('#direccionError').text('La dirección no puede tener más de 40 caracteres.');
+                } else {
+                    $('#direccionError').text('');
+                }
+    
+                // Validar Contraseña
+                if (userData.Contrasena.trim().length === 0) {
+                    isValid = false;
+                    $('#contrasenaError').text('La contraseña no puede estar vacía.');
+                } else {
+                    $('#contrasenaError').text('');
+                }
+    
+                return isValid;
+            }
+        });
+    </script>
+    
+</body>
+</html>
