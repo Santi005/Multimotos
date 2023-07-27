@@ -1,46 +1,44 @@
 const listRoles = () => {
-  const searchInput = $("#search-input-roles");
-  const tableBody = $("#RolesTable tbody");
-
-  fetch("http://localhost:8080/roles/")
+  fetch('http://localhost:8080/roles/')
     .then((response) => response.json())
     .then((data) => {
-      const searchTerm = searchInput.val().toLowerCase();
+      // Asegúrate de que data.data sea un arreglo válido
+      if (Array.isArray(data.data)) {
+        const tableBody = $("#RolesTable tbody");
+        tableBody.empty(); // Limpiar la tabla antes de agregar los resultados filtrados
 
-      // Filtrar los datos basados en la búsqueda del usuario
-      const filteredData = data.data.filter((role) => {
-        return role.nombre.toLowerCase().includes(searchTerm);
-      });
-
-      // Limpiar la tabla antes de agregar los resultados filtrados
-      tableBody.empty();
-
-      // Mostrar los resultados filtrados en la tabla
-      if (Array.isArray(filteredData)) {
-        filteredData.forEach((role, index) => {
+        data.data.forEach((role, index) => {
           let row = `
-              <tr id='${role._id}'>
-                <td>${index + 1}</td>
-                <td>${role.nombre}</td>
-                <td>${role.estado}</td>
-                <td>
-                  <i onclick="editRole('${role._id}', '${role.nombre}', '${role.estado}', '${role.permisos.dashboard}',
-                  '${role.permisos.roles}', '${role.permisos.usuarios}', '${role.permisos.productos}', 
-                  '${role.permisos.categorias}', '${role.permisos.marcas}', '${role.permisos.ventas}')" 
-                  class="fas fa-edit fa-lg role" style="color:#f62d51;"></i>
-                  <i onclick="deleteRole('${role._id}')"
-                  class="fas fa-minus-circle fa-lg roles" style="color:#f62d51;"></i>
-                </td>
-              </tr>
-            `;
+            <tr id='${role._id}'>
+              <td>${index + 1}</td>
+              <td>${role.nombre}</td>
+              <td>${role.estado}</td>
+              <td>
+              <i onclick="editRole('${role._id}', '${role.nombre}', '${role.estado}', '${role.permisos.dashboard}',
+              '${role.permisos.roles}', '${role.permisos.usuarios}', '${role.permisos.productos}', 
+              '${role.permisos.categorias}', '${role.permisos.marcas}', '${role.permisos.ventas}')" 
+              class="bi bi-pencil-square role" style="color:#f62d51; font-size: 1.3em; cursor: pointer;"></i>
+              &nbsp; &nbsp; 
+              <i onclick="deleteRole('${role._id}')"
+              class="bi bi-trash3 roles"  style="color:#f62d51;font-size: 1.3em; cursor: pointer;"></i>
+              </td>
+            </tr>
+          `;
           tableBody.append(row);
         });
+
+        // Inicializar el DataTable después de agregar los registros a la tabla
+        $("#RolesTable").DataTable({language: {
+          url: "https://cdn.datatables.net/plug-ins/1.10.25/i18n/Spanish.json"
+        }});
+      } else {
+        console.error('Los datos recibidos no contienen un arreglo válido.');
       }
     })
-    .catch((error) => {
+    .catch(error => {
       console.error(error);
-    });
-};
+    })
+}
 
 const showRoleDetails = (roleId) => {
   fetch(`http://localhost:8080/roles/${roleId}`)
@@ -238,5 +236,3 @@ $("#BtnConfirmarDelete").on("click", () => {
       location.reload();
     });
 });
-
-listRoles();

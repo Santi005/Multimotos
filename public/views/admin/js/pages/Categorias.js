@@ -1,141 +1,40 @@
-
-//LISTAR, BUSCAR Y PAGINACIÓN---------------------------------------------
-
-const PAGE_SIZE = 5; // Tamaño de página
-let currentPage = 1; // Página actual
-let totalPages = 0; // Total de páginas
-let categoriesData = []; // Almacena los datos de todas las categorías
-let filteredCategoriesData = []; // Almacena los datos de las categorías filtradas
+let categoriesData = [];
 
 const listCategories = () => {
-
-
-
-
-
-
-    
-    //limpiar la tabla
-
-
     fetch('http://localhost:8080/categories/')
-        .then(response => response.json())
-        .then(data => {
-            if (Array.isArray(data.allCategories)) {
-                categoriesData = data.allCategories;
+    .then(response => response.json())
+    .then(data => {
 
-                // Obtiene la búsqueda del usuario
-                const searchValue = $('#search-input-categories').val().toLowerCase();
+        if (Array.isArray(data.allCategories)) {
+            categoriesData = data.allCategories;
+            const tableBody = $('#CategoriesTable tbody');
+            tableBody.empty();
 
-                if (searchValue !== '') {
-                    // Filtra las categorías
-                    filteredCategoriesData = categoriesData.filter(category => {
-                        return category.NombreCategoria.toLowerCase().includes(searchValue);
-                    });
-                } else {
-                    // Muestra todas las categorías si no hay una búsqueda
-                    filteredCategoriesData = [...categoriesData];
-                }
-
-                // Calcula el total de categorías y total de páginas
-                const totalCategories = filteredCategoriesData.length;
-                totalPages = Math.ceil(totalCategories / PAGE_SIZE);
-
-                // Ajusta el número de página según la búsqueda
-                if (currentPage > totalPages) {
-                    currentPage = totalPages;
-                }
-
-                // Calcula el índice inicial y final de las categorías a mostrar en la página
-                const startIndex = (currentPage - 1) * PAGE_SIZE;
-                const endIndex = Math.min(startIndex + PAGE_SIZE, totalCategories);
-
-                // Limpiar la tabla antes de cargar los nuevos datos
-                const tableBody = document.getElementById('CategoriesTable').getElementsByTagName('tbody')[0];
-                tableBody.innerHTML = '';
-
-                if (filteredCategoriesData.length > 0) {
-                    // Recorre las categorías que se van a mostrar en la página actual y genera la tabla
-                    for (let i = startIndex; i < endIndex; i++) {
-                        const category = filteredCategoriesData[i];
-
-                        // Verifica si la categoría existe antes de acceder a sus propiedades
-                        if (category) {
-                            let row = `
-                                <tr id='${category._id}'>
-                                    <td>${i + 1}</td>
-                                    <td>${category.NombreCategoria}</td>
-                                    <td>
-                                        <i onclick ="EditCategory('${category._id}', '${category.NombreCategoria}')" class="fas fa-edit fa-lg categorias" style="color:#f62d51;"></i>
-                                        &nbsp;&nbsp;&nbsp;
-                                        <i onclick ="DeleteCategory('${category._id}')" class="fas fa-minus-circle fa-lg categorias"  style="color:#f62d51;"></i>
-                                    </td>
-                                </tr>
-                            `;
-                            tableBody.innerHTML += row;
-                        }
-                    }
-                } else {
-                    // Muestra un mensaje cuando no se encuentran categorías
-                    tableBody.innerHTML = `
-                        <tr>
-                            <td colspan="3">No se encontraron categorías.</td>
-                        </tr>
-                    `;
-                }
-
-                // Crea la sección de paginación
-                const paginationContainer = document.getElementsByClassName('pagination')[0];
-                paginationContainer.innerHTML = '';
-
-                // Recorre el número total de páginas y crea el enlace para cambiar de página
-                for (let i = 1; i <= totalPages; i++) {
-                    const li = document.createElement('li');
-                    const link = document.createElement('button');
-                    link.href = '#';
-                    link.style.fontSize = '15px';
-                    link.style.backgroundColor = '#EBEBEA';
-                    link.style.marginLeft = '4px';
-                    link.classList.add('btn');
-
-                    link.innerHTML = i;
-                    li.appendChild(link);
-
-                    // Agrega la clase 'active' a la página actual
-                    if (i === currentPage) {
-                        li.classList.add('active');
-                    }
-
-                    // Se agrega a cada página para cambiar la página actual y listar las categorías correspondientes
-                    li.addEventListener('click', () => {
-                        currentPage = i;
-                        listCategories();
-                    });
-
-                    paginationContainer.appendChild(li);
-                }
-            }
-        })
-        .catch(error => {
-            console.error(error);
-        });
-};
-
-// Método buscar
-// Se ejecuta cuando se usa el input de búsqueda
-$('#search-input-categories').on('input', function () {
-    currentPage = 1; // Reinicia la página al hacer una nueva búsqueda
-    listCategories(); // Lista las categorías buscadas
-});
-
-// Llama a la función listCategories cuando la página se haya cargado completamente
-document.addEventListener('DOMContentLoaded', () => {
-    listCategories();
-});
-
-//-----------------------------------------------------
-
-
+            data.allCategories.forEach((category, index) => {
+                let row = `
+                    <tr id='${category._id}'>
+                        <td>${index + 1}</td>
+                        <td>${category.NombreCategoria}</td>
+                        <td>
+                            <i onclick ="EditCategory('${category._id}', '${category.NombreCategoria}')" class="bi bi-pencil-square categorias" style="color:#f62d51; cursor: pointer;"></i>
+                                &nbsp;&nbsp;
+                            <i onclick ="DeleteCategory('${category._id}')" class="bi bi-trash3 categorias"  style="color:#f62d51; cursor: pointer;"></i>
+                        </td>
+                    </tr>
+                 `;
+                 tableBody.append(row);
+            });
+            $("#RolesTable").DataTable({language: {
+                url: "https://cdn.datatables.net/plug-ins/1.10.25/i18n/Spanish.json"
+              }});
+        } else {
+            console.error('Los datos recibidos no contienen un arreglo válido.');
+        }
+    })
+    .catch(error => {
+        console.error(error);
+    })
+}
 
 //AGREGAR-----------------------------------------------
 $(document).ready(function() {
@@ -305,12 +204,3 @@ $('#BtnConfirmarDelete').on('click', () => {
 });
 
 //---------------------------------------------------------------
-
-
-listCategories()
-
-
-
-
-
-

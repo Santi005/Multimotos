@@ -1,10 +1,5 @@
 
 //Método listar -------------------------------------------
-const PAGE_SIZE = 5; // Tamaño de página
-let currentPage = 1; // Página actual
-let totalPages = 0; // Total de páginas
-let marksData = []; // Almacena los datos de todas las marcas
-let filteredMarksData = []; // Almacena los datos de las marcas filtradas
 
 const listMarks = () => {
     fetch('http://localhost:8080/marks/')
@@ -12,122 +7,49 @@ const listMarks = () => {
         .then(data => {
 
             if(Array.isArray(data.allMarks)) {
-                marksData = data.allMarks;
+                const tableBody = $("#MarksTable tbody");
+                tableBody.empty();
 
-                // Obtiene la búsqueda del usuario
-                const searchValue = $('#search-input-mark').val().toLowerCase();
+                data.allMarks.forEach((mark, index) => {
 
-                if (searchValue !== '') {
-                    // Filtra las marcas
-                    filteredMarksData = marksData.filter(mark => {
-                        return mark.NombreMarca.toLowerCase().includes(searchValue);
-                    });
-                } else {
-                    // Muestra todas las marcas si no hay una búsqueda
-                    filteredMarksData = [...marksData];
-                }
+                    let imageTags = mark.Imagenes.map(image => `<img src="${window.location.origin}/public/uploads/${image}" alt="${image}" width="100">`).join('');
+                    let row = `
+                        <tr id='${mark._id}'>
+                            <td>${index + 1}</td>
+                            <td>${mark.NombreMarca}</td>
+                            <td>${imageTags}</td>
+                            <td>
+                                <i onclick ="EditMark('${mark._id}', '${mark.NombreMarca}', '${mark.Imagenes}')" 
+                                class="bi bi-pencil-square marcas" style="color:#f62d51; font-size: 1.3em; cursor: pointer;" ></i>
 
-                // Calcula el total de marcas y total de páginas
-                const totalMarks = filteredMarksData.length;
-                totalPages = Math.ceil(totalMarks / PAGE_SIZE);
+                                &nbsp;&nbsp;&nbsp;
 
-                // Ajusta el número de página según la búsqueda
-                if (currentPage > totalPages) {
-                    currentPage = totalPages;
-                }
-
-                // Calcula el índice inicial y final de las marcas a mostrar en la página
-                const startIndex = (currentPage - 1) * PAGE_SIZE;
-                const endIndex = Math.min(startIndex + PAGE_SIZE, totalMarks);
-
-                // Limpiar la tabla antes de cargar los nuevos datos
-                const tableBody = document.getElementById('MarksTable').getElementsByTagName('tbody')[0];
-                tableBody.innerHTML = '';
-
-                if (filteredMarksData.length > 0) {
-                    // Recorre las marcas que se van a mostrar en la página actual y genera la tabla
-                    for (let i = startIndex; i < endIndex; i++) {
-                        const mark = filteredMarksData[i];
-
-                        // Verifica si la marca existe antes de acceder a sus propiedades
-                        if (mark) {
-                            let imageTags = mark.Imagenes.map(image => `<img src="${window.location.origin}/public/uploads/${image}" alt="${image}" width="100">`).join('');
-                            let row = `
-                                <tr id='${mark._id}'>
-                                    <td>${i + 1}</td>
-                                    <td>${mark.NombreMarca}</td>
-                                    <td>${imageTags}</td>
-                                    <td>
-                                        <i onclick ="EditMark('${mark._id}', '${mark.NombreMarca}', '${mark.Imagenes}')" 
-                                        class="fas fa-edit fa-lg marcas" style="color:#f62d51;" ></i>
-
-                                        &nbsp;&nbsp;&nbsp;
-
-                                        <i onclick ="DeleteMark('${mark._id}')" 
-                                        class="fas fa-minus-circle fa-lg marcas"  style="color:#f62d51;" ></i>
-                                    </td>
-                                </tr>
-                            `;
-                            tableBody.innerHTML += row;
-                        }
-                    }
-                } else {
-                    // Muestra un mensaje cuando no se encuentran marcas
-                    tableBody.innerHTML = `
-                        <tr>
-                            <td colspan="4">No se encontraron marcas.</td>
+                                <i onclick ="DeleteMark('${mark._id}')" 
+                                class="bi bi-trash3  marcas"  style="color:#f62d51; font-size: 1.3em; cursor: pointer;" ></i>
+                            </td>
                         </tr>
                     `;
-                }
-
-                // Crea la sección de paginación
-                const paginationContainer = document.getElementsByClassName('pagination')[0];
-                paginationContainer.innerHTML = '';
-
-                // Recorre el número total de páginas y crea el enlace para cambiar de página
-                for (let i = 1; i <= totalPages; i++) {
-                    const li = document.createElement('li');
-                    const link = document.createElement('button');
-                    link.href = '#';
-                    link.style.fontSize = '15px';
-                    link.style.backgroundColor = '#EBEBEA';
-                    link.style.marginLeft = '4px';
-                    link.classList.add('btn');
-
-                    link.innerHTML = i;
-                    li.appendChild(link);
-
-                    // Agrega la clase 'active' a la página actual
-                    if (i === currentPage) {
-                        li.classList.add('active');
+                    tableBody.append(row);
+                })
+                $("#MarksTable").DataTable({language: {
+                    url: "https://cdn.datatables.net/plug-ins/1.10.25/i18n/Spanish.json"
+                  }});
+                    }
+                    else {
+                        console.error('Los datos recibidos no contienen un arreglo válido.');
                     }
 
-                    // Se agrega a cada página para cambiar la página actual y listar las marcas correspondientes
-                    li.addEventListener('click', () => {
-                        currentPage = i;
-                        listMarks();
-                    });
-
-                    paginationContainer.appendChild(li);
-                }
-            }
-        })
+                })
+                
+    
+                // Crea la sección de paginación
+                
+            
+        
         .catch(error => {
             console.log(error);
         });
 };
-
-// Método buscar
-// Se ejecuta cuando se usa el input de búsqueda
-$('#search-input-mark').on('input', function () {
-    currentPage = 1; // Reinicia la página al hacer una nueva búsqueda
-    listMarks(); // Lista las marcas buscadas
-});
-
-// Llama a la función listMarks cuando la página se haya cargado completamente
-document.addEventListener('DOMContentLoaded', () => {
-    listMarks();
-});
 
 //-----------------------------------------------------------
 
@@ -297,13 +219,3 @@ $('#BtnConfirmarDelete').on('click', () => {
         });
 });
 //-----------------------------------------------------------
-
-listMarks() 
-
-
-
-
-
-
-
-

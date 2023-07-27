@@ -1,511 +1,525 @@
 <!DOCTYPE html>
-<html dir="ltr" lang="en">
+<html lang="en">
   <head>
-    <meta charset="utf-8" />
-    <meta http-equiv="X-UA-Compatible" content="IE=edge" />
-    <!-- Tell the browser to be responsive to screen width -->
-    <meta name="viewport" content="width=device-width, initial-scale=1" />
-    <meta
-      name="keywords"
-      content="wrappixel, admin dashboard, html css dashboard, web dashboard, bootstrap 5 admin, bootstrap 5, css3 dashboard, bootstrap 5 dashboard, Ample lite admin bootstrap 5 dashboard, frontend, responsive bootstrap 5 admin template, Ample admin lite dashboard bootstrap 5 dashboard template"
-    />
-    <meta
-      name="description"
-      content="Ample Admin Lite is powerful and clean admin dashboard template, inpired from Bootstrap Framework"
-    />
-    <meta name="robots" content="noindex,nofollow" />
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <title>Multimotos</title>
+
+    <link rel="shortcut icon" href="./assets/static/images/logo/logoMultimotos.png" type="image/x-icon" />
+
     <link
-      rel="canonical"
-      href="https://www.wrappixel.com/templates/ample-admin-lite/"
+      rel="stylesheet"
+      href="assets/extensions/datatables.net-bs5/css/dataTables.bootstrap5.min.css"
     />
-    <!-- Favicon icon -->
+
     <link
-      rel="icon"
-      type="image/png"
-      sizes="16x16"
-      href="plugins/images/logoMultimotos.png"
+      rel="stylesheet"
+      href="./assets/compiled/css/table-datatable-jquery.css"
     />
-    <!-- Custom CSS -->
-    <link href="css/style.min.css" rel="stylesheet" />
+
+    <link rel="stylesheet" href="./assets/compiled/css/app.css" />
+    <link rel="stylesheet" href="./assets/compiled/css/app-dark.css" />
+    <link rel="stylesheet" href="./assets/compiled/css/iconly.css" />
   </head>
 
   <body>
-    <div class="preloader">
-      <div class="lds-ripple">
-        <div class="lds-pos"></div>
-        <div class="lds-pos"></div>
-      </div>
-    </div>
-    <div
-      id="main-wrapper"
-      data-layout="vertical"
-      data-navbarbg="skin5"
-      data-sidebartype="full"
-      data-sidebar-position="absolute"
-      data-header-position="absolute"
-      data-boxed-layout="full"
-    >
-      <header class="topbar" data-navbarbg="skin5">
-        <nav class="navbar top-navbar navbar-expand-md navbar-dark">
-          <div class="navbar-header" data-logobg="skin6">
-            <b class="logo-icon" style="display: flex; width: 300px">
-              <img
-                src="plugins/images/logoMultimotos.png"
-                alt="homepage"
-                style="width: 63px; margin-left: 8px; margin-top: 2px"
-              />
-              <h4 style="margin-top: 26px; margin-left: 10px; font-weight: 900">
-                Multimotos
-              </h4>
-            </b>
-            <a
-              class="nav-toggler waves-effect waves-light text-dark d-block d-md-none"
-              href="javascript:void(0)"
-              ><i class="ti-menu ti-close"></i
-            ></a>
-          </div>
-          <div
-            class="navbar-collapse collapse"
-            id="navbarSupportedContent"
-            data-navbarbg="skin5"
-          >
-            <ul class="navbar-nav d-none d-md-block d-lg-none">
-              <li class="nav-item">
-                <a
-                  class="nav-toggler nav-link waves-effect waves-light text-white"
-                  href="javascript:void(0)"
+
+    <script src="assets/static/js/initTheme.js"></script>
+
+    <!-- 
+      Logo y modo oscuro
+    -->
+    <div id="app">
+      <div id="sidebar">
+        <div class="sidebar-wrapper active">
+          <div class="sidebar-header position-relative">
+            <div class="d-flex justify-content-between align-items-center">
+              <div class="logo">
+                <a href="index.html" style="font-size: 25px;"> Multimotos</a>
+              </div>
+              <div class="theme-toggle d-flex gap-2 align-items-center mt-2">
+                <svg
+                  xmlns="http://www.w3.org/2000/svg"
+                  xmlns:xlink="http://www.w3.org/1999/xlink"
+                  aria-hidden="true"
+                  role="img"
+                  class="iconify iconify--system-uicons"
+                  width="20"
+                  height="20"
+                  preserveAspectRatio="xMidYMid meet"
+                  viewBox="0 0 21 21"
                 >
-                  <i class="ti-menu ti-close"></i>
+                  <g
+                    fill="none"
+                    fill-rule="evenodd"
+                    stroke="currentColor"
+                    stroke-linecap="round"
+                    stroke-linejoin="round"
+                  >
+                    <path
+                      d="M10.5 14.5c2.219 0 4-1.763 4-3.982a4.003 4.003 0 0 0-4-4.018c-2.219 0-4 1.781-4 4c0 2.219 1.781 4 4 4zM4.136 4.136L5.55 5.55m9.9 9.9l1.414 1.414M1.5 10.5h2m14 0h2M4.135 16.863L5.55 15.45m9.899-9.9l1.414-1.415M10.5 19.5v-2m0-14v-2"
+                      opacity=".3"
+                    ></path>
+                    <g transform="translate(-210 -1)">
+                      <path d="M220.5 2.5v2m6.5.5l-1.5 1.5"></path>
+                      <circle cx="220.5" cy="11.5" r="4"></circle>
+                      <path
+                        d="m214 5l1.5 1.5m5 14v-2m6.5-.5l-1.5-1.5M214 18l1.5-1.5m-4-5h2m14 0h2"
+                      ></path>
+                    </g>
+                  </g>
+                </svg>
+                <div class="form-check form-switch fs-6">
+                  <input
+                    class="form-check-input me-0"
+                    type="checkbox"
+                    id="toggle-dark"
+                    style="cursor: pointer"
+                  />
+                  <label class="form-check-label"></label>
+                </div>
+                <svg
+                  xmlns="http://www.w3.org/2000/svg"
+                  xmlns:xlink="http://www.w3.org/1999/xlink"
+                  aria-hidden="true"
+                  role="img"
+                  class="iconify iconify--mdi"
+                  width="20"
+                  height="20"
+                  preserveAspectRatio="xMidYMid meet"
+                  viewBox="0 0 24 24"
+                >
+                  <path
+                    fill="currentColor"
+                    d="m17.75 4.09l-2.53 1.94l.91 3.06l-2.63-1.81l-2.63 1.81l.91-3.06l-2.53-1.94L12.44 4l1.06-3l1.06 3l3.19.09m3.5 6.91l-1.64 1.25l.59 1.98l-1.7-1.17l-1.7 1.17l.59-1.98L15.75 11l2.06-.05L18.5 9l.69 1.95l2.06.05m-2.28 4.95c.83-.08 1.72 1.1 1.19 1.85c-.32.45-.66.87-1.08 1.27C15.17 23 8.84 23 4.94 19.07c-3.91-3.9-3.91-10.24 0-14.14c.4-.4.82-.76 1.27-1.08c.75-.53 1.93.36 1.85 1.19c-.27 2.86.69 5.83 2.89 8.02a9.96 9.96 0 0 0 8.02 2.89m-1.64 2.02a12.08 12.08 0 0 1-7.8-3.47c-2.17-2.19-3.33-5-3.49-7.82c-2.81 3.14-2.7 7.96.31 10.98c3.02 3.01 7.84 3.12 10.98.31Z"
+                  ></path>
+                </svg>
+              </div>
+              <div class="sidebar-toggler x">
+                <a href="#" class="sidebar-hide d-xl-none d-block"
+                  ><i class="bi bi-x bi-middle"></i
+                ></a>
+              </div>
+            </div>
+          </div>
+
+          <!--
+            Menu
+          -->
+          <div class="sidebar-menu">
+            <ul class="menu">
+              <li class="sidebar-title">Menu</li>
+
+              <li class="sidebar-item">
+                <a href="index.html" class="sidebar-link">
+                  <i class="bi bi-grid-fill"></i>
+                  <span>Dashboard</span>
                 </a>
               </li>
-            </ul>
-            <ul class="navbar-nav ms-auto d-flex align-items-center">
-              <li class="profile-pic">
-                <img src="plugins/images/users/varun.jpg" alt="user-img" width="36" class="img-circle">
-                <span id="nombreUsuario"></span>
-                <!-- <p id="rolUsuario"></p> -->
+
+              <li class="sidebar-item active">
+                <a href="Roles.html" class="sidebar-link">
+                  <i class="bi bi-people-fill"></i>
+                  <span>Roles</span>
+                </a>
               </li>
-          </ul>
-          </div>
-        </nav>
-      </header>
-      <aside class="left-sidebar" data-sidebarbg="skin6" style="margin-top: 20px;">
-        <!-- Sidebar scroll-->
-        <div class="scroll-sidebar">
-            <!-- Sidebar navigation-->
-            <nav class="sidebar-nav">
-                <ul id="sidebarnav">
-                    <!-- User Profile-->
-                    <li id="dashboardItem" class="sidebar-item pt-2">
-                        <a class="sidebar-link waves-effect waves-dark sidebar-link" href="dashboard.html" aria-expanded="false">
-                            <i class="fas fa-chart-line" aria-hidden="true"></i>
-                            <span class="hide-menu">Dashboard</span>
-                        </a>
-                    </li>
-                
-                    <li id="rolesItem" class="sidebar-item">
-                        <a class="sidebar-link waves-effect waves-dark sidebar-link" href="Roles.html" aria-expanded="false">
-                            <i class="fas fa-users" aria-hidden="true"></i>
-                            <span class="hide-menu">Roles</span>
-                        </a>
-                    </li>
-                    <li id="usuariosItem" class="sidebar-item">
-                        <a class="sidebar-link waves-effect waves-dark sidebar-link" href="usuarios.html" aria-expanded="false">
-                            <i class="fas fa-user-plus" aria-hidden="true"></i>
-                            <span class="hide-menu">Usuarios</span>
-                        </a>
-                    </li>
-                    <li id="productosItem" class="sidebar-item">
-                        <a class="sidebar-link waves-effect waves-dark sidebar-link" href="productos.html" aria-expanded="false">
-                            <i class="fas fa-motorcycle" aria-hidden="true"></i>
-                            <span class="hide-menu">Productos</span>
-                        </a>
-                    </li>
-                    <li id="categoriasItem" class="sidebar-item">
-                        <a class="sidebar-link waves-effect waves-dark sidebar-link" href="Categorias.html" aria-expanded="false">
-                            <i class="fas fa-bars" aria-hidden="true"></i>
-                            <span class="hide-menu">Categorías</span>
-                        </a>
-                    </li>
-                    <li id="marcasItem" class="sidebar-item">
-                        <a class="sidebar-link waves-effect waves-dark sidebar-link" href="Marcas.html" aria-expanded="false">
-                            <i class="fas fa-bars" aria-hidden="true"></i>                                                                                             
-                            <span class="hide-menu">Marcas</span>
-                        </a>
-                    </li>
-                    <li id="ventasItem" class="sidebar-item">
-                        <a class="sidebar-link waves-effect waves-dark sidebar-link" href="Ventas.html" aria-expanded="false">
-                            <i class="fas fa-shopping-bag" aria-hidden="true"></i>
-                            <span class="hide-menu">Ventas</span>
-                        </a>
-                    </li>
-                    <li class="text-center p-20 upgrade-btn">
-                        <a href="#" onclick="cerrarSesion()" class="btn d-grid btn-danger text-white" target="_blank">Cerrar sesión</a>
-                    </li>
-                </ul>
-            </nav>
-        </div>
-    </aside>
-      <div class="page-wrapper">
-        <div class="page-breadcrumb bg-white">
-          <div class="row align-items-center">
-            <div class="col-lg-3 col-md-4 col-sm-4 col-xs-12">
-              <br />
-              <h4 class="page-title">Administrar Roles</h4>
-            </div>
-            <div class="col-lg-9 col-sm-8 col-md-8 col-xs-12"></div>
-          </div>
-        </div>
-        <div class="container-fluid">
-          <div class="row">
-            <div class="col-sm-12">
-              <div class="white-box">
-                <h3 class="box-title">Roles</h3>
-                <div>
-                  <form
-                    role="search"
-                    class="app-search d-none d-md-block me-3"
-                    style="width: 150px"
-                  >
-                    <input
-                      type="text"
-                      placeholder="Buscar"
-                      class="form-control mt-0"
-                      id="search-input-roles"
-                    />
-                  </form>
-                </div>
-                <button
-                  type="button"
-                  class="btn btn-danger d-none d-md-block pull-right ms-3waves-effect waves-light text-white"
-                  style="width: 100px; margin-left: 85%"
-                  data-bs-toggle="modal"
-                  data-bs-target="#AgregarRol"
-                >
-                  Agregar
-                </button>
 
-<!-- Modal para agregar rol -->
-<div class="modal fade" id="AgregarRol" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
-  <div class="modal-dialog modal-lg">
-    <div class="modal-content">
-      <div class="modal-header">
-        <h1 class="modal-title fs-5" id="exampleModalLabel">Agregar Rol</h1>
-        <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
-      </div>
+              <li class="sidebar-item">
+                <a href="usuarios.html" class="sidebar-link">
+                  <i class="bi bi-person-fill"></i>
+                  <span>Usuarios</span>
+                </a>
+              </li>
 
-      <div class="modal-body">
-        <div class="row">
-          <div class="col-md-5">
-            <label for="InputAgregarNombreRol">Nombre del rol</label>
-            <input type="text" id="InputAgregarNombreRol" class="form-control" style="border-radius: 5px" required />
-            <div class="invalid-feedback" id="errorAdd"></div>
-            
-            <label for="SelectAgregarEstadoRol">Estado</label>
-            <select id="SelectAgregarEstadoRol" class="form-select" style="border-radius: 5px">
-              <option value="Activo" selected>Activo</option>
-              <option value="Inactivo">Inactivo</option>
-            </select>
-          </div>
+              <li class="sidebar-item">
+                <a href="productos.html" class="sidebar-link">
+                  <i class="bi bi-scooter"></i>
+                  <span>Productos</span>
+                </a>
+              </li>
 
-          <div class="col-md-7">
-            <h3><strong>Permisos</strong></h3>
-            <div class="form-check">
-              <input class="form-check-input" type="checkbox" id="CheckDashboard" />
-              <label class="form-check-label" for="CheckDashboard">Dashboard</label>
-            </div>
-            <div class="form-check">
-              <input class="form-check-input" type="checkbox" id="CheckRoles" />
-              <label class="form-check-label" for="CheckRoles">Roles</label>
-            </div>
-            <div class="form-check">
-              <input class="form-check-input" type="checkbox" id="CheckUsuarios" />
-              <label class="form-check-label" for="CheckUsuarios">Usuarios</label>
-            </div>
-            <div class="form-check">
-              <input class="form-check-input" type="checkbox" id="CheckProductos" />
-              <label class="form-check-label" for="CheckProductos">Productos</label>
-            </div>
-            <div class="form-check">
-              <input class="form-check-input" type="checkbox" id="CheckCategorias" />
-              <label class="form-check-label" for="CheckCategorias">Categorias</label>
-            </div>
-            <div class="form-check">
-              <input class="form-check-input" type="checkbox" id="CheckMarcas" />
-              <label class="form-check-label" for="CheckMarcas">Marcas</label>
-            </div>
-            <div class="form-check">
-              <input class="form-check-input" type="checkbox" id="CheckVentas" />
-              <label class="form-check-label" for="CheckVentas">Ventas</label>
-            </div>
-          </div>
-        </div>
-      </div>
+              <li class="sidebar-item">
+                <a href="categorias.html" class="sidebar-link">
+                  <i class="bi bi-list"></i>
+                  <span>Categorías</span>
+                </a>
+              </li>
 
-      <div class="modal-footer">
-        <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cancelar</button>
-        <button type="button" class="btn btn-danger btn-block" id="BtnConfirmarAgregar">Confirmar</button>
-      </div>
-    </div>
-  </div>
-</div>
+              <li class="sidebar-item">
+                <a href="Marcas.html" class="sidebar-link">
+                  <i class="bi bi-file-earmark-medical-fill"></i>
+                  <span>Marcas</span>
+                </a>
+              </li>
 
+              <li class="sidebar-item">
+                <a href="Ventas.html" class="sidebar-link">
+                  <i class="bi bi-bag-fill"></i>
+                  <span>Ventas</span>
+                </a>
+              </li>
 
+              <li class="text-center p-20 upgrade-btn sidebar-item">
+                <a href="#" onclick="cerrarSesion()" class="btn d-grid btn-danger text-white" target="_blank">Cerrar sesión</a>
+              </li>
 
-                <div class="table-responsive">
-                  <table class="table text-nowrap" id="RolesTable">
-                    <thead>
-                      <tr>
-                        <th class="border-top-0">#</th>
-                        <th class="border-top-0" id="RoleName">Rol</th>
-                        <th class="border-top-0">Estado</th>
-                        <th class="border-top-0">Opciones</th>
-                      </tr>
-                    </thead>
-                    <tbody>
+            </ul>
 
-                    </tbody>
-
-<!-- Modal para editar rol -->
-<div class="modal fade" id="EditarRol" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
-  <div class="modal-dialog modal-lg">
-    <div class="modal-content">
-      <div class="modal-header">
-        <h1 class="modal-title fs-5" id="exampleModalLabel">
-          Editar rol
-        </h1>
-        <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
-      </div>
-      <div class="modal-body">
-        <div class="row">
-          <div class="col-md-5">
-            <label for="InputNombreRol">Nombre del rol</label>
-            <input type="text" id="InputNombreRol" class="form-control" style="border-radius: 5px" required />
-            <div class="invalid-feedback" id="errorEdit">
-            </div>
-            
-            <label for="InputEstadoRol">Estado</label>
-            <select id="InputEstadoRol" class="form-select" style="border-radius: 5px" required>
-              <option value="Activo">Activo</option>
-              <option value="Inactivo">Inactivo</option>
-            </select>
-          </div>
-
-          <div class="col-md-7">
-            <h3><strong>Permisos</strong></h3>
-            <div class="form-check">
-              <input class="form-check-input" type="checkbox" id="CheckDashboardEditar" />
-              <label class="form-check-label" for="CheckDashboardEditar">Dashboard</label>
-            </div>
-            
-            <div class="form-check">
-              <input class="form-check-input" type="checkbox" id="CheckRolesEditar" />
-              <label class="form-check-label" for="CheckRolesEditar">Roles</label>
-            </div>
-            
-            <div class="form-check">
-              <input class="form-check-input" type="checkbox" id="CheckUsuariosEditar" />
-              <label class="form-check-label" for="CheckUsuariosEditar">Usuarios</label>
-            </div>
-            
-            <div class="form-check">
-              <input class="form-check-input" type="checkbox" id="CheckProductosEditar" />
-              <label class="form-check-label" for="CheckProductosEditar">Productos</label>
-            </div>
-            
-            <div class="form-check">
-              <input class="form-check-input" type="checkbox" id="CheckCategoriasEditar" />
-              <label class="form-check-label" for="CheckCategoriasEditar">Categorías</label>
-            </div>
-            
-            <div class="form-check">
-              <input class="form-check-input" type="checkbox" id="CheckMarcasEditar" />
-              <label class="form-check-label" for="CheckMarcasEditar">Marcas</label>
-            </div>
-            
-            <div class="form-check">
-              <input class="form-check-input" type="checkbox" id="CheckVentasEditar" />
-              <label class="form-check-label" for="CheckVentasEditar">Ventas</label>
-            </div>
-          </div>
-        </div>
-      </div>
-      <div class="modal-footer">
-        <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cancelar</button>
-        <button type="button" class="btn btn-danger btn-block" id="BtnConfirmarEdit">Confirmar</button>
-      </div>
-    </div>
-  </div>
-</div>
-
-
-
-
-                    <!-- Modal para eliminar rol -->
-                    <div
-                      class="modal fade"
-                      id="EliminarRol"
-                      tabindex="-1"
-                      aria-labelledby="exampleModalLabel"
-                      aria-hidden="true"
-                    >
-                      <div class="modal-dialog">
-                        <div class="modal-content">
-                          <div class="modal-header">
-                            <h1 class="modal-title fs-5" id="exampleModalLabel">
-                              Eliminar usuario
-                            </h1>
-                            <button
-                              type="button"
-                              class="btn-close"
-                              data-bs-dismiss="modal"
-                              aria-label="Close"
-                            ></button>
-                          </div>
-                          <div class="modal-body">
-                            <input type="hidden" id="IdEliminarRol" />
-
-                            ¿Estás seguro de que deseas eliminar este usuario?
-                          </div>
-                          <div class="modal-footer">
-                            <button
-                              button
-                              type="button"
-                              class="btn btn-secondary"
-                              data-bs-dismiss="modal"
-                              style="color: #ffff"
-                            >
-                              Cancelar
-                            </button>
-                            <button
-                              type="button"
-                              class="btn"
-                              id="BtnConfirmarDelete"
-                              style="background-color: #f62d51; color: #ffff"
-                            >
-                              Confirmar
-                            </button>
-                          </div>
-                        </div>
-                      </div>
+            <div class="col-12 col-lg-3">
+              <div class="card">
+                <div class="card-body py-4 px-4">
+                  <div class="d-flex align-items-center">
+                    <div class="avatar avatar-xl">
+                      <img src="./assets/compiled/jpg/1.jpg" alt="Face 1" />
                     </div>
-                  </table>
-                </div>
-
-                <div
-                  class="modal fade"
-                  id="EditarRol"
-                  tabindex="-1"
-                  aria-labelledby="exampleModalLabel"
-                  aria-hidden="true"
-                >
-                  <div class="modal-dialog">
-                    <div class="modal-content">
-                      <div class="modal-header">
-                        <h1 class="modal-title fs-5" id="exampleModalLabel">
-                          Editar Rol
-                        </h1>
-                        <button
-                          type="button"
-                          class="btn-close"
-                          data-bs-dismiss="modal"
-                          aria-label="Close"
-                        ></button>
-                      </div>
-                      <div class="modal-body">
-                        <input type="hidden" id="IdEditarRol" />
-
-                        <div class="form-group">
-                          <label for="InputEditarNombreRol"
-                            >Nombre del rol</label
-                          >
-                          <input
-                            type="text"
-                            id="InputEditarNombreRol"
-                            class="form-control"
-                            required
-                          />
-                        </div>
-                        <div class="form-group">
-                          <label for="SelectEditarEstadoRol">Estado</label>
-                          <select
-                            id="SelectEditarEstadoRol"
-                            class="form-control"
-                            required
-                          >
-                            <option value="activo">Activo</option>
-                            <option value="inactivo">Inactivo</option>
-                          </select>
-                        </div>
-                        <small
-                          id="errorEdit"
-                          class="form-text text-danger d-none"
-                          >El campo no puede estar vacío.</small
-                        >
-                      </div>
-                      <div class="modal-footer">
-                        <button
-                          type="button"
-                          class="btn btn-secondary"
-                          data-bs-dismiss="modal"
-                        >
-                          Cancelar
-                        </button>
-                        <button
-                          type="button"
-                          class="btn btn-danger btn-block"
-                          id="BtnConfirmarEdit"
-                        >
-                          Confirmar
-                        </button>
-                      </div>
+                    <div class="ms-3 name">
+                      <h5 class="font-bold" id="nombreUsuario"></h5>
                     </div>
                   </div>
                 </div>
               </div>
+          </div>
+        </div>
+      </div>
+
+      <!--
+        Dashboard
+      -->
+
+      
+
+      <!-- Modal para agregar rol -->
+<div class="modal fade" id="AgregarRol" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
+    <div class="modal-dialog modal-lg">
+      <div class="modal-content">
+        <div class="modal-header">
+          <h1 class="modal-title fs-5" id="exampleModalLabel">Agregar Rol</h1>
+          <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+        </div>
+  
+        <div class="modal-body">
+          <div class="row">
+            <div class="col-md-5">
+              <label for="InputAgregarNombreRol">Nombre del rol</label>
+              <input type="text" id="InputAgregarNombreRol" class="form-control" style="border-radius: 5px" required />
+              <div class="invalid-feedback" id="errorAdd"></div>
+              
+              <label for="SelectAgregarEstadoRol">Estado</label>
+              <select id="SelectAgregarEstadoRol" class="form-select" style="border-radius: 5px">
+                <option value="Activo" selected>Activo</option>
+                <option value="Inactivo">Inactivo</option>
+              </select>
+            </div>
+  
+            <div class="col-md-7">
+              <h3><strong>Permisos</strong></h3>
+              <div class="form-check">
+                <input class="form-check-input" type="checkbox" id="CheckDashboard" />
+                <label class="form-check-label" for="CheckDashboard">Dashboard</label>
+              </div>
+              <div class="form-check">
+                <input class="form-check-input" type="checkbox" id="CheckRoles" />
+                <label class="form-check-label" for="CheckRoles">Roles</label>
+              </div>
+              <div class="form-check">
+                <input class="form-check-input" type="checkbox" id="CheckUsuarios" />
+                <label class="form-check-label" for="CheckUsuarios">Usuarios</label>
+              </div>
+              <div class="form-check">
+                <input class="form-check-input" type="checkbox" id="CheckProductos" />
+                <label class="form-check-label" for="CheckProductos">Productos</label>
+              </div>
+              <div class="form-check">
+                <input class="form-check-input" type="checkbox" id="CheckCategorias" />
+                <label class="form-check-label" for="CheckCategorias">Categorias</label>
+              </div>
+              <div class="form-check">
+                <input class="form-check-input" type="checkbox" id="CheckMarcas" />
+                <label class="form-check-label" for="CheckMarcas">Marcas</label>
+              </div>
+              <div class="form-check">
+                <input class="form-check-input" type="checkbox" id="CheckVentas" />
+                <label class="form-check-label" for="CheckVentas">Ventas</label>
+              </div>
             </div>
           </div>
         </div>
-        <!-- footer -->
-        <footer class="footer text-center">2022</footer>
+  
+        <div class="modal-footer">
+          <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cancelar</button>
+          <button type="button" class="btn btn-danger" id="BtnConfirmarAgregar">Confirmar</button>
+        </div>
       </div>
     </div>
-    <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+  </div>
 
-    <!-- All Jquery -->
-    <!-- ============================================================== -->
-    <script src="plugins/bower_components/jquery/dist/jquery.min.js"></script>
-    <!-- Bootstrap tether Core JavaScript -->
-    <script src="bootstrap/dist/js/bootstrap.bundle.min.js"></script>
-    <script src="js/app-style-switcher.js"></script>
-    <script src="plugins/bower_components/jquery-sparkline/jquery.sparkline.min.js"></script>
-    <!--Wave Effects -->
-    <script src="js/waves.js"></script>
-    <!--Menu sidebar -->
-    <script src="js/sidebarmenu.js"></script>
-    <!--Custom JavaScript -->
-    <script src="js/custom.js"></script>
-    <!--This page JavaScript -->
-    <!--chartis chart-->
-    <script src="plugins/bower_components/chartist/dist/chartist.min.js"></script>
-    <script src="plugins/bower_components/chartist-plugin-tooltips/dist/chartist-plugin-tooltip.min.js"></script>
-    <script src="js/pages/dashboards/dashboard1.js"></script>
+  <!-- Modal para editar rol -->
+<div class="modal fade" id="EditarRol" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
+    <div class="modal-dialog modal-lg">
+      <div class="modal-content">
+        <div class="modal-header">
+          <h1 class="modal-title fs-5" id="exampleModalLabel">
+            Editar rol
+          </h1>
+          <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+        </div>
+        <div class="modal-body">
+          <div class="row">
+            <div class="col-md-5">
+              <label for="InputNombreRol">Nombre del rol</label>
+              <input type="text" id="InputNombreRol" class="form-control" style="border-radius: 5px" required />
+              <div class="invalid-feedback" id="errorEdit">
+              </div>
+              
+              <label for="InputEstadoRol">Estado</label>
+              <select id="InputEstadoRol" class="form-select" style="border-radius: 5px" required>
+                <option value="Activo">Activo</option>
+                <option value="Inactivo">Inactivo</option>
+              </select>
+            </div>
+  
+            <div class="col-md-7">
+              <h3><strong>Permisos</strong></h3>
+              <div class="form-check">
+                <input class="form-check-input" type="checkbox" id="CheckDashboardEditar" />
+                <label class="form-check-label" for="CheckDashboardEditar">Dashboard</label>
+              </div>
+              
+              <div class="form-check">
+                <input class="form-check-input" type="checkbox" id="CheckRolesEditar" />
+                <label class="form-check-label" for="CheckRolesEditar">Roles</label>
+              </div>
+              
+              <div class="form-check">
+                <input class="form-check-input" type="checkbox" id="CheckUsuariosEditar" />
+                <label class="form-check-label" for="CheckUsuariosEditar">Usuarios</label>
+              </div>
+              
+              <div class="form-check">
+                <input class="form-check-input" type="checkbox" id="CheckProductosEditar" />
+                <label class="form-check-label" for="CheckProductosEditar">Productos</label>
+              </div>
+              
+              <div class="form-check">
+                <input class="form-check-input" type="checkbox" id="CheckCategoriasEditar" />
+                <label class="form-check-label" for="CheckCategoriasEditar">Categorías</label>
+              </div>
+              
+              <div class="form-check">
+                <input class="form-check-input" type="checkbox" id="CheckMarcasEditar" />
+                <label class="form-check-label" for="CheckMarcasEditar">Marcas</label>
+              </div>
+              
+              <div class="form-check">
+                <input class="form-check-input" type="checkbox" id="CheckVentasEditar" />
+                <label class="form-check-label" for="CheckVentasEditar">Ventas</label>
+              </div>
+            </div>
+          </div>
+        </div>
+        <div class="modal-footer">
+          <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cancelar</button>
+          <button type="button" class="btn btn-danger" id="BtnConfirmarEdit">Confirmar</button>
+        </div>
+      </div>
+    </div>
+  </div>
 
+  <!-- Modal para eliminar rol -->
+  <div
+  class="modal fade"
+  id="EliminarRol"
+  tabindex="-1"
+  aria-labelledby="exampleModalLabel"
+  aria-hidden="true"
+>
+  <div class="modal-dialog">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h1 class="modal-title fs-5" id="exampleModalLabel">
+          Eliminar usuario
+        </h1>
+        <button
+          type="button"
+          class="btn-close"
+          data-bs-dismiss="modal"
+          aria-label="Close"
+        ></button>
+      </div>
+      <div class="modal-body">
+        <input type="hidden" id="IdEliminarRol" />
+
+        ¿Estás seguro de que deseas eliminar este usuario?
+      </div>
+      <div class="modal-footer">
+        <button
+          button
+          type="button"
+          class="btn btn-secondary"
+          data-bs-dismiss="modal"
+          style="color: #ffff"
+        >
+          Cancelar
+        </button>
+        <button
+          type="button"
+          class="btn"
+          id="BtnConfirmarDelete"
+          style="background-color: #f62d51; color: #ffff"
+        >
+          Confirmar
+        </button>
+      </div>
+    </div>
+  </div>
+</div>
+</table>
+</div>
+
+<div
+class="modal fade"
+id="EditarRol"
+tabindex="-1"
+aria-labelledby="exampleModalLabel"
+aria-hidden="true"
+>
+<div class="modal-dialog">
+<div class="modal-content">
+  <div class="modal-header">
+    <h1 class="modal-title fs-5" id="exampleModalLabel">
+      Editar Rol
+    </h1>
+    <button
+      type="button"
+      class="btn-close"
+      data-bs-dismiss="modal"
+      aria-label="Close"
+    ></button>
+  </div>
+  <div class="modal-body">
+    <input type="hidden" id="IdEditarRol" />
+
+    <div class="form-group">
+      <label for="InputEditarNombreRol"
+        >Nombre del rol</label
+      >
+      <input
+        type="text"
+        id="InputEditarNombreRol"
+        class="form-control"
+        required
+      />
+    </div>
+    <div class="form-group">
+      <label for="SelectEditarEstadoRol">Estado</label>
+      <select
+        id="SelectEditarEstadoRol"
+        class="form-control"
+        required
+      >
+        <option value="activo">Activo</option>
+        <option value="inactivo">Inactivo</option>
+      </select>
+    </div>
+    <small
+      id="errorEdit"
+      class="form-text text-danger d-none"
+      >El campo no puede estar vacío.</small
+    >
+  </div>
+  <div class="modal-footer">
+    <button
+      type="button"
+      class="btn btn-secondary"
+      data-bs-dismiss="modal"
+    >
+      Cancelar
+    </button>
+    <button
+      type="button"
+      class="btn btn-danger btn-block"
+      id="BtnConfirmarEdit"
+    >
+      Confirmar
+    </button>
+  </div>
+</div>
+</div>
+</div>
+</div>
+</div>
+</div>
+</div>
+
+      <div id="main">
+
+            <header class="mb-3">
+              <a href="#" class="burger-btn d-block d-xl-none">
+                <i class="bi bi-justify fs-3"></i>
+              </a>
+            </header>
+       
+          <!-- Basic Tables start -->
+        <section class="section">
+            <div class="card">
+              <div class="card-header">
+                Administrar roles
+                <button type="button" class="btn btn-danger d-none d-md-block pull-right ms-3waves-effect waves-light text-white" style="width: 100px; margin-left: 85%" data-bs-toggle="modal" data-bs-target="#AgregarRol">
+                  Agregar
+                </button>
+                </div>
+              <div class="card-body">
+                <div class="table-responsive">
+                    <table class="table" id="RolesTable" data-lang="es">
+                        <thead>
+                          <tr>
+                            <th>#</th>
+                            <th id="RoleName">Rol</th>
+                            <th>Estado</th>
+                            <th>Opciones</th>
+                          </tr>
+                        </thead>
+                        <tbody>
+                         
+                        </tbody>
+                    </table>
+                </div>
+              </div>
+            </div>
+          </section>
+        </div>
+
+        <footer>
+          <div class="footer clearfix mb-0 text-muted">
+            <div class="float-start">
+              <p>2023 &copy; Servicentro Multimotos</p>
+            </div>
+          </div>
+        </footer>
+      </div>
+    </div>
+
+    <script src="assets/static/js/components/dark.js"></script>
+    <script src="assets/extensions/perfect-scrollbar/perfect-scrollbar.min.js"></script>
+
+    <script src="assets/compiled/js/app.js"></script>
+
+    <script src="assets/extensions/jquery/jquery.min.js"></script>
+    <script src="https://cdn.datatables.net/v/bs5/dt-1.12.1/datatables.min.js"></script>
+    <script src="assets/static/js/pages/datatables.js"></script>
+
+    <!-- Dashboard -->
+    <script src="js/cerrarsesion.js"></script>
+    <script src="../../routes/auth.js"></script>
+    <script src="js/datosUsuario.js"></script>
+    <script src="js/botonesAside.js"></script>
     <script src="js/pages/Roles.js"></script>
 
-    <script src="js/cerrarsesion.js"></script>
-
-    <script src="../../routes/auth.js"></script>
-
-
-    <script src="js/datosUsuario.js"></script>
-
-
-    <!-- Mostrar botones del menu -->
-    <script src="js/botonesAside.js"></script>
-
-    <script src="js/cerrarsesion.js"></script>
+    <script>
+      $(document).ready(() => {
+        listRoles();
+      })
+    </script>
 
     <script>
       const token = localStorage.getItem('token');
@@ -517,11 +531,12 @@
         console.log('El token se ha guardado correctamente en el localStorage:', token);
         console.log(permisoDashboard)
         // Realizar una solicitud al servidor para verificar la autenticación y los permisos del usuario
-        if(!permisoRoles) {
+        if(!permisoDashboard) {
               console.log('No tienes permisos para acceder a este módulo');
               window.location.href = '../index.html';
           }
       }
-  </script>
+    </script>
+
   </body>
 </html>

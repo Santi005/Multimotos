@@ -1,79 +1,65 @@
 const listUsers = () => {
-    const searchInput = $('#search-input-users');
-    const tableBody = $('#UsersTable tbody');
-  
-    fetch('http://localhost:8080/users/')
-      .then(response => response.json())
-      .then(data => {
-        const searchTerm = searchInput.val().toLowerCase();
-  
-        // Filtrar los datos basados en la búsqueda del usuario
-        const filteredData = data.allUsers.filter(user => {
-          const documento = user.Documento.toLowerCase();
-          const nombre = user.Nombre.toLowerCase();
-          const apellidos = user.Apellidos.toLowerCase();
-          return (
-            documento.includes(searchTerm) ||
-            nombre.includes(searchTerm) ||
-            apellidos.includes(searchTerm)
-          );
-        });
-  
-        // Limpiar la tabla antes de agregar los resultados filtrados
-        tableBody.empty();
-  
-        // Obtener los roles y crear un objeto de mapeo de ID de rol a nombre de rol
-        const rolesMap = {};
-        fetch('http://localhost:8080/roles/')
-          .then(response => response.json())
-          .then(data => {
-            data.data.forEach(role => {
-              rolesMap[role._id] = role.nombre;
-            });
-  
-            // Mostrar los resultados filtrados en la tabla
-            if (Array.isArray(filteredData)) {
-              filteredData.forEach((user, index) => {
-                const rolNombre = rolesMap[user.Rol]; // Obtener el nombre del rol utilizando el ID del rol
-                let row = `
-                  <tr id="${user._id}">
-                    <td>${index + 1}</td>
-                    <td>${user.Documento}</td>
-                    <td>${user.Nombre}</td>
-                    <td>${user.Apellidos}</td>
-                    <td>${user.Celular}</td>
-                    <td>${user.Correo}</td>
-                    <td>${user.Direccion}</td>
-                    <td>${rolNombre}</td> // Mostrar el nombre del rol en lugar del ID del rol
-                    <td>${user.Estado}</td>
-                    <td>
-                      <i onclick="EditUser('${user._id}', '${user.Documento}', '${user.Nombre}', '${user.Apellidos}', '${user.Celular}', '${user.Correo}', '${user.Direccion}', '${user.Rol}', '${user.Estado}')"
-                        class="fas fa-edit fa-lg usuarios" style="color:#f62d51;"></i>
-  
-                      &nbsp;&nbsp;&nbsp;
-  
-                      <i onclick="DeleteUser('${user._id}')"
-                        class="fas fa-minus-circle fa-lg usuarios" style="color:#f62d51;"></i>
-                    </td>
-                  </tr>
-                `;
-                tableBody.append(row);
-              });
-            }
-          })
-          .catch(error => {
-            console.error(error);
-          });
-      })
-      .catch(error => {
-        console.error(error);
+  // Obtener los datos de roles
+  fetch('http://localhost:8080/roles/')
+    .then(response => response.json())
+    .then(data => {
+      // Crear un mapa de roles con su id como clave y nombre como valor
+      const rolesMap = {};
+      data.data.forEach(role => {
+        rolesMap[role._id] = role.nombre;
       });
-  }
-  
 
-// Asignar la función de búsqueda al evento 'input' del campo de búsqueda
-$('#search-input-users').on('input', listUsers);
+      // Obtener los datos de usuarios
+      fetch('http://localhost:8080/users/')
+        .then(response => response.json())
+        .then(data => {
+          if (Array.isArray(data.allUsers)) {
+            const tableBody = $("#UsersTable tbody");
+            tableBody.empty();
 
+            data.allUsers.forEach((user, index) => {
+              const rolNombre = rolesMap[user.Rol];
+              let row = `
+                <tr id="${user._id}">
+                  <td>${index + 1}</td>
+                  <td>${user.Documento}</td>
+                  <td>${user.Nombre}</td>
+                  <td>${user.Apellidos}</td>
+                  <td>${user.Celular}</td>
+                  <td>${user.Correo}</td>
+                  <td>${user.Direccion}</td>
+                  <td>${rolNombre}</td>
+                  <td>${user.Estado}</td>
+                  <td>
+                    <i onclick="EditUser('${user._id}', '${user.Documento}', '${user.Nombre}', '${user.Apellidos}', '${user.Celular}', '${user.Correo}', '${user.Direccion}', '${user.Rol}', '${user.Estado}')"
+                      class="bi bi-pencil-square usuarios" style="color:#f62d51; cursor:pointer;"></i>
+                  
+                        &nbsp;&nbsp;
+                  
+                    <i onclick="DeleteUser('${user._id}')"
+                        class="bi bi-trash3 usuarios" style="color:#f62d51; cursor:pointer;"></i>
+                  </td>
+                </tr>
+              `;
+              tableBody.append(row);
+            });
+
+            // Inicializar el DataTable después de agregar los registros a la tabla
+            $("#UsersTable").DataTable({language: {
+              url: "https://cdn.datatables.net/plug-ins/1.10.25/i18n/Spanish.json"
+            }});  
+          } else {
+            console.error('Los datos recibidos no contienen un arreglo válido.');
+          }
+        })
+        .catch(error => {
+          console.error(error);
+        });
+    })
+    .catch(error => {
+      console.error(error);
+    });
+};
 
 $(document).ready(function() {
   $("#BtnConfirmarAdd").on("click", function(event) {
@@ -367,5 +353,3 @@ function resetForm(modalType) {
   error.addClass('d-none');
   InputDocumento.removeClass('is-invalid');
 }
-
-listUsers();

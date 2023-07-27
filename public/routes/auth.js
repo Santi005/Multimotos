@@ -37,7 +37,7 @@ router.post('/login', async (req, res) => {
     const modulosAcceso = [];
 
     if (permisos.dashboard) {
-      modulosAcceso.push('admin/dashboard.html');
+      modulosAcceso.push('admin/index.html');
     }
 
     if (permisos.roles) {

@@ -1,167 +1,86 @@
 //Método listar-------------------------------------------------
-
-const PAGE_SIZE = 5; // Tamaño de página
-let currentPage = 1; // Página actual
-let totalPages = 0; // Total de páginas
-let productsData = []; // Almacena los datos de todos los productos
-let data; // Almacena los datos de respuesta
-let filteredProductsData = []; // Almacena los datos de los productos filtrados
-
 const listProducts = () => {
-    $('#ProductsTable tbody').empty(); //Limpia la tabla
-
     fetch('http://localhost:8080/products/')
         .then(response => response.json())
-        .then(responseData => {
-            data = responseData;
-            productsData = data.products;
+        .then(data => {
+            if (Array.isArray(data.products)) {
+                
+                const tableBody = $("#ProductsTable tbody");
+                tableBody.empty();
+                
 
-            //Obtiene la búsqueda del usuario
-            const searchValue = $('#search-input-product').val().toLowerCase();
+                data.products.forEach((product, index) => {
 
-            if (searchValue !== '') {
-                //Filtra los productos
-                filteredProductsData = productsData.filter(product => {
-                    return Object.entries(product).some(([key, value]) => {
-                        // Excluye el campo de la imagen
-                        if (key !== 'Imagenes') {
-                            if (typeof value === 'string') {
-                                return value.toLowerCase().includes(searchValue);
-                            }
-                            if (typeof value === 'number') {
-                                return value.toString().toLowerCase().includes(searchValue);
-                            }
-                            if (key === 'Estado') {
-                                const estadoString = value ? 'Disponible' : 'Agotado';
-                                return estadoString.toLowerCase().includes(searchValue);
-                            }
-                            if (typeof value === 'object' && value !== null) {
-                                return Object.values(value).some(subValue => {
-                                    return subValue.toString().toLowerCase().includes(searchValue);
-                                });
-                            }
-                        }
-                        return false;
-                    });
-                });
-            } else {
-                //Muestra todos los productos si no hay una búsqueda
-                filteredProductsData = [...productsData];
-            }
+                    // Etiquetas de imagen
+                    let imageTags = product.Imagenes.map(image => `<img src="${window.location.origin}/public/uploads/${image}" alt="${image}" width="100" height="80">`).join('');
+                    let amount = $('#InputAumentarStock').val();
 
-            //Calcula el total de productos y total de páginas
-            const totalProducts = filteredProductsData.length;
-            totalPages = Math.ceil(totalProducts / PAGE_SIZE);
+                    //Determina si el estado es disponible o agotado
+                    let estado;
+                    let id = product._id;
 
-            //Ajusta el número de página según la búsqueda
-            if (currentPage > totalPages) {
-                currentPage = totalPages;
-            }
-
-            //Calcula el índice inicial y final de los productos a mostrar en la página
-            const startIndex = (currentPage - 1) * PAGE_SIZE;
-            const endIndex = Math.min(startIndex + PAGE_SIZE, totalProducts);
-
-            // Limpiar la tabla antes de cargar los nuevos datos
-            const tableBody = document.getElementById('ProductsTable').getElementsByTagName('tbody')[0];
-            tableBody.innerHTML = '';
-
-            if (filteredProductsData.length > 0) {
-                // Recorre los productos que se van a mostrar en la página actual y genera la tabla
-                for (let i = startIndex; i < endIndex; i++) {
-                    const product = filteredProductsData[i];
-
-                    // Verifica si el producto existe antes de acceder a sus propiedades
-                    if (product) {
-                        let imageTags = product.Imagenes.map(image => `<img src="${window.location.origin}/public/uploads/${image}" alt="${image}" width="100" height="80">`).join('');
-                        let amount = $('#InputAumentarStock').val();
-
-                        //Determina si el estado es disponible o agotado
-                        let estado;
-                        let id = product._id
-
-                        if (product.Estado == true) {
-                            estado = 'Disponible';
-                        } else {
-                            estado = 'Agotado';
-                        }
-
-                        let row = `
-                            <tr id="${product._id}">
-                                <td>${i + 1}</td>
-                                <td>${product.NombreProducto}</td>
-                                <td>${product.Descripcion}</td>
-                                <td>${product.Stock}</td>
-                                <td>${product.Categoria.NombreCategoria}</td>
-                                <td>${product.Marca.NombreMarca}</td>
-                                <td>${product.Precio.toLocaleString('es-CO', { style: 'currency', currency: 'COP' })}</td>
-                                <td>${estado}</td>
-                                <td>${imageTags}</td>
-                                <td>
-                                <i onclick="EditProduct('${product._id}', '${product.NombreProducto}', '${product.Descripcion}', '${product.Categoria}', '${product.Marca}', '${product.Precio}', '${product.Imagenes}')" class="fas fa-edit fa-lg productos" style="color:#f62d51;"></i>
-                                &nbsp;&nbsp;&nbsp;
-                                <i onclick="DeleteProduct('${product._id}')" class="fas fa-minus-circle fa-lg productos" style="color:#f62d51;"></i>
-                                &nbsp;&nbsp;&nbsp;
-                                <i onclick="incrementarStock('${product._id}', '${amount}')" class="fas fa-boxes fa-lg productos" style="color:#f62d51;"></i>
-                                </td>
-                            </tr>
-                        `;
-                        tableBody.innerHTML += row;
-
-                        if (product.Stock <= 0) {
-                            // Llama a la función de desactivación
-                            deactivateProduct(id);
-                        } else {
-                            // Llama a la función de activación
-                            activateProduct(id);
-                        }
+                    if (product.Estado == true) {
+                        estado = 'Disponible';
+                    } else {
+                        estado = 'Agotado';
                     }
-                }
-            } else {
-                // Muestra un mensaje cuando no se encuentran productos
-                tableBody.innerHTML = `
-                    <tr>
-                        <td colspan="10">No se encontraron productos.</td>
-                    </tr>
-                `;
-            }
 
-            // Crea la sección de paginación
-            const paginationContainer = document.getElementsByClassName('pagination')[0];
-            paginationContainer.innerHTML = '';
+                    // Generar la fila y agregarla a la tabla
+                    let row = `
+                        <tr id="${product._id}">
+                            <td>${index + 1}</td>
+                            <td>${product.NombreProducto}</td>
+                            <td>${product.Descripcion}</td>
+                            <td>${product.Stock}</td>
+                            <td>${product.Categoria.NombreCategoria}</td>
+                            <td>${product.Marca.NombreMarca}</td>
+                            <td>${product.Precio.toLocaleString('es-CO', { style: 'currency', currency: 'COP' })}</td>
+                            <td>${estado}</td>
+                            <td>${imageTags}</td>
+                            <td>
+                            &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+                                <i onclick="EditProduct('${product._id}', '${product.NombreProducto}', '${product.Descripcion}', '${product.Categoria}', '${product.Marca}', '${product.Precio}', '${product.Imagenes}')" class="bi bi-pencil-square productos" style="color:#f62d51; font-size: 1.3em; cursor: pointer;"></i>
+                                &nbsp;&nbsp;&nbsp;
+                                <i onclick="DeleteProduct('${product._id}')" class="bi bi-trash3 productos" style="color:#f62d51; font-size: 1.3em; cursor: pointer;"></i>
+                                &nbsp;&nbsp;&nbsp;
+                                <i onclick="incrementarStock('${product._id}', '${amount}')" class="bi bi-box-seam productos" style="color:#f62d51; font-size: 1.3em; cursor: pointer;"></i>
+                            </td>
+                        </tr>
+                    `;
+                    
+                    
+                    tableBody.append(row);
 
-            // Recorre el número total de páginas y crea el enlace para cambiar de página
-            for (let i = 1; i <= totalPages; i++) {
-                const li = document.createElement('li');
-                const link = document.createElement('button');
-                link.href = '#';
-                link.style.fontSize = "15px";
-                link.style.backgroundColor = "#EBEBEA"
-                link.style.marginLeft = "4px"
-                link.classList.add("btn");
-
-                link.innerHTML = i;
-                li.appendChild(link);
-
-                // Agrega la clase 'active' a la página actual
-                if (i === currentPage) {
-                    li.classList.add('active');
-                }
-
-                // Se agrega a cada página para cambiar la página actual y listar los productos correspondientes
-                li.addEventListener('click', () => {
-                    currentPage = i;
-                    listProducts()
+                    if (product.Stock <= 0) {
+                        // Llama a la función de desactivación
+                        deactivateProduct(id);
+                    } else {
+                        // Llama a la función de activación
+                        activateProduct(id);
+                    }
                 });
 
-                // Agrega el número al contenedor de paginación
-                paginationContainer.appendChild(li);
+                $("#ProductsTable").DataTable({
+                    language: {
+                        url: "https://cdn.datatables.net/plug-ins/1.10.25/i18n/Spanish.json"
+                    }
+                });
+            } else {
+                console.error('Los datos recibidos no contienen un arreglo válido.');
             }
         })
         .catch(error => {
             console.log(error);
         });
-};
+}
+
+                        
+
+                            
+        
+        
+       
+
 
 const activateProduct = (id) => {
     fetch(`http://localhost:8080/products/activar/${id}`, {
@@ -192,15 +111,6 @@ const deactivateProduct = (id) => {
         });
 };
 
-// Método buscar
-// Se ejecuta cuando se usa el input de búsqueda
-$('#search-input-product').on('input', function () {
-    currentPage = 1; 
-    if(data.ok == 200){
-        listProducts()
-    }
-    //Lista los productos buscados
-});
 
 
 //Agregar----------------------------------------------------
@@ -433,7 +343,6 @@ $('#BtnConfirmarDelete').on('click', () => {
             console.log(res);
             if(data.ok == 200){
                 listProducts()
-
             }
         });
 });
