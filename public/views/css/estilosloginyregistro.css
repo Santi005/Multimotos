@@ -141,7 +141,7 @@ input[type="submit"]:hover {
 }
 
 body {
-  background-image: url("../img/moto.jpg");
+  background-image: url("../img/hero-bg.jpg");
   background-size: cover;
   background-position: center;
   background-repeat: no-repeat;
@@ -155,7 +155,7 @@ body {
 }
 
 .container.center {
-  opacity: 0.9; /* Ajusta el valor para obtener el nivel de transparencia deseado (0.0 - 1.0) */
+  opacity: 0.9; 
 }
 
 #BtnRegistrarCliente {
@@ -243,27 +243,22 @@ body {
   margin-top: 5px;
 }
 
-/* Crea un diseño de dos columnas usando Flexbox */
 #registrationForm {
   display: flex;
   flex-wrap: wrap;
   gap: 20px; /* Agrega espacio entre las columnas */
 }
 
-/* Establece el ancho de las columnas */
 .input-field {
-  flex-basis: calc(50% - 10px); /* El 10px es para agregar espacio entre las columnas */
+  flex-basis: calc(50% - 10px); 
 }
 
-/* Ajusta los márgenes entre los campos para obtener un diseño más espaciado */
 .input-field:not(:last-child) {
   margin-bottom: 20px;
 }
 
 
-/* ... (otros estilos) ... */
 
-/* Ajustar estilos para los iconos de ojo en el campo Contraseña y Confirmar Contraseña */
 .input-field {
   position: relative;
   margin-bottom: 20px;
@@ -302,9 +297,7 @@ body {
   color: #adadad;
 }
 
-/* Ajustamos el tamaño del ícono para que no se superponga con el input */
 .input-field .toggle-password.fa-eye-slash {
   font-size: 18px;
 }
 
-/* ... (otros estilos) ... */
