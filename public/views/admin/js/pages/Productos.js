@@ -1,32 +1,32 @@
-//Método listar-------------------------------------------------
-const listProducts = () => {
+//LISTAR
+function listProducts(){
     fetch('http://localhost:8080/products/')
-        .then(response => response.json())
-        .then(data => {
-            if (Array.isArray(data.products)) {
-                
-                const tableBody = $("#ProductsTable tbody");
-                tableBody.empty();
-                
+    .then(response => response.json())
+    .then(data => {
+        
+        const tableBody = $("#ProductsTable tbody");
+        tableBody.empty();
 
-                data.products.forEach((product, index) => {
+        data.products.forEach((product, index) => {
+            //Toma la imagen
+            let imageTags = product.Imagenes.map(image => `<img src="${window.location.origin}/public/uploads/${image}" alt="${image}" width="100" height="80">`).join('');
+            
+            let amount = $('#InputAumentarStock').val();
 
-                    // Etiquetas de imagen
-                    let imageTags = product.Imagenes.map(image => `<img src="${window.location.origin}/public/uploads/${image}" alt="${image}" width="100" height="80">`).join('');
-                    let amount = $('#InputAumentarStock').val();
+            //Validación de estado
+            let estado;
+            if (product.Estado == true) {
+                estado = 'Disponible';
+            } else {
+                estado = 'Agotado';
+            }
+            if (product.Stock <= 0) {
+                deactivateProduct(product._id); 
+            } else {
+                activateProduct(product._id);
+            }
 
-                    //Determina si el estado es disponible o agotado
-                    let estado;
-                    let id = product._id;
-
-                    if (product.Estado == true) {
-                        estado = 'Disponible';
-                    } else {
-                        estado = 'Agotado';
-                    }
-
-                    // Generar la fila y agregarla a la tabla
-                    let row = `
+            let row = `
                         <tr id="${product._id}">
                             <td>${index + 1}</td>
                             <td>${product.NombreProducto}</td>
@@ -51,35 +51,22 @@ const listProducts = () => {
                     
                     tableBody.append(row);
 
-                    if (product.Stock <= 0) {
-                        // Llama a la función de desactivación
-                        deactivateProduct(id);
-                    } else {
-                        // Llama a la función de activación
-                        activateProduct(id);
-                    }
-                });
-
-                $("#ProductsTable").DataTable({
-                    language: {
-                        url: "https://cdn.datatables.net/plug-ins/1.10.25/i18n/Spanish.json"
-                    }
-                });
-            } else {
-                console.error('Los datos recibidos no contienen un arreglo válido.');
-            }
+                    
         })
-        .catch(error => {
-            console.log(error);
+        if ($.fn.DataTable.isDataTable("#ProductsTable")) {
+            $("#ProductsTable").DataTable().destroy();
+        }
+        
+        $("#ProductsTable").DataTable({
+            language: {
+                url: "https://cdn.datatables.net/plug-ins/1.10.25/i18n/Spanish.json"
+            }
         });
+    })
+    .catch(error=>{
+        console.error(error);
+    })
 }
-
-                        
-
-                            
-        
-        
-       
 
 
 const activateProduct = (id) => {
@@ -113,148 +100,46 @@ const deactivateProduct = (id) => {
 
 
 
-//Agregar----------------------------------------------------
-// $(document).ready(function() {
-    // Función de validación de producto
-    function validarProducto() {
-        let nombreProducto = $('#AddNombreProducto').val().trim();
-        let descripcion = $('#AddDescripcionProducto').val().trim();
-        let stock = $('#AddCantidadProducto').val().trim();
-        let categoria = $('#AddCategoriaProducto').val();
-        let marca = $('#AddMarcaProducto').val();
-        let precio = $('#AddPrecioProducto').val().trim();
-        let archivoImagen = $('#formFileAdd')[0].files[0];
+//AGREGAR
+$('#BtnConfirmarAdd').on('click', () => {
+    const nombreProducto = $('#AddNombreProducto').val();
+    const descripcion = $('#AddDescripcionProducto').val();
+    const stock = $('#AddCantidadProducto').val();
+    const categoria = $('#AddCategoriaProducto').val();
+    const marca = $('#AddMarcaProducto').val();
+    const precio = $('#AddPrecioProducto').val();
+    const archivoImagen = $('#formFileAdd')[0].files[0];
 
-        let inputNombreProducto = $('#AddNombreProducto');
-        let inputDescripcion = $('#AddDescripcionProducto');
-        let inputStock = $('#AddCantidadProducto');
-        let inputCategoria = $('#AddCategoriaProducto');
-        let inputMarca = $('#AddMarcaProducto');
-        let inputPrecio = $('#AddPrecioProducto');
-        let inputFile = $('#formFileAdd');
+    const formData = new FormData();
+    formData.append('NombreProducto', nombreProducto);
+    formData.append('Descripcion', descripcion);
+    formData.append('Stock', stock);
+    formData.append('Categoria', categoria);
+    formData.append('Marca', marca);
+    formData.append('Precio', precio);
+    formData.append('Imagenes', archivoImagen);
+    
 
-        // Validación del nombre del producto
-        if (nombreProducto === '') {
-            inputNombreProducto.addClass('is-invalid').removeClass('is-valid');
-            $('#errorAddName').text('El campo de nombre de producto no puede estar vacío').removeClass('d-none');
-        } else {
-            inputNombreProducto.removeClass('is-invalid').addClass('is-valid');
-            $('#errorAddName').addClass('d-none');
-        }
-
-        // Validación de la descripción del producto
-        if (descripcion === '') {
-            inputDescripcion.addClass('is-invalid').removeClass('is-valid');
-            $('#errorAddDescription').text('El campo de descripción no puede estar vacío').removeClass('d-none');
-        } else {
-            inputDescripcion.removeClass('is-invalid').addClass('is-valid');
-            $('#errorAddDescription').addClass('d-none');
-        }
-
-        // Validación del stock
-        if (stock === '') {
-            inputStock.addClass('is-invalid').removeClass('is-valid');
-            $('#errorAddCantidad').text('El campo de cantidad no puede estar vacío').removeClass('d-none');
-        } else {
-            inputStock.removeClass('is-invalid').addClass('is-valid');
-            $('#errorAddCantidad').addClass('d-none');
-        }
-
-        // Validación de la categoría
-        if (categoria === '') {
-            inputCategoria.addClass('is-invalid').removeClass('is-valid');
-            $('#errorAddCategory').text('Debes seleccionar una categoría').removeClass('d-none');
-        } else {
-            inputCategoria.removeClass('is-invalid').addClass('is-valid');
-            $('#errorAddCategory').addClass('d-none');
-        }
-
-        // Validación de la marca
-        if (marca === '') {
-            inputMarca.addClass('is-invalid').removeClass('is-valid');
-            $('#errorAddMark').text('Debes seleccionar una marca').removeClass('d-none');
-        } else {
-            inputMarca.removeClass('is-invalid').addClass('is-valid');
-            $('#errorAddMark').addClass('d-none');
-        }
-
-        // Validación del precio
-        if (precio === '') {
-            inputPrecio.addClass('is-invalid').removeClass('is-valid');
-            $('#errorAddPrice').text('El campo de precio no puede estar vacío').removeClass('d-none');
-        } else {
-            inputPrecio.removeClass('is-invalid').addClass('is-valid');
-            $('#errorAddPrice').addClass('d-none');
-        }
-
-        // Validación del archivo de imagen
-        if (!archivoImagen) {
-            inputFile.addClass('is-invalid').removeClass('is-valid');
-            $('#errorAddFile').text('Debes seleccionar una imagen').removeClass('d-none');
-        } else {
-            inputFile.removeClass('is-invalid').addClass('is-valid');
-            $('#errorAddFile').addClass('d-none');
-        }
-
-        // Devuelve true si todos los campos son válidos
-        return (
-            nombreProducto !== '' &&
-            descripcion !== '' &&
-            stock !== '' &&
-            categoria !== '' &&
-            marca !== '' &&
-            precio !== '' &&
-            archivoImagen
-        );
-    }
-
-    // Evento de clic en el botón de confirmar de producto
-    $('#BtnConfirmarAdd').on('click', () => {
-        // Llamada a la función de validación de producto
-        if (validarProducto()) {
-            // Obtener los valores de los campos del formulario
-            const nombreProducto = $('#AddNombreProducto').val();
-            const descripcion = $('#AddDescripcionProducto').val();
-            const stock = $('#AddCantidadProducto').val();
-            const categoria = $('#AddCategoriaProducto').val();
-            const marca = $('#AddMarcaProducto').val();
-            const precio = $('#AddPrecioProducto').val();
-            const archivoImagen = $('#formFileAdd')[0].files[0];
-
-            const formData = new FormData();
-            formData.append('NombreProducto', nombreProducto);
-            formData.append('Descripcion', descripcion);
-            formData.append('Stock', stock);
-            formData.append('Categoria', categoria);
-            formData.append('Marca', marca);
-            formData.append('Precio', precio);
-            formData.append('Imagenes', archivoImagen);
-
-            fetch('http://localhost:8080/products/', {
-                method: 'POST',
-                body: formData
-            })
-                .then(response => response.json())
-                .then(data => {
-                    console.log(json); // Muestra la respuesta en la consola
-                    console.log(data)
-                    // if(json.ok == 200){
-                    //     listProducts()
-                    // }
-                })
-                .catch(error => {
-                    console.error(error);
-                });
-        }
-    });
-// });
-
-//-------------------------------------------------------------
+    fetch('http://localhost:8080/products/', {
+        method: 'POST',
+        body: formData
+    })
+        .then(response => response.json())
+        .then(data => {
+            console.log(data); 
+            if(data.ok == 200){
+                listProducts()
+                
+            }
+        })
+        .catch(error => {
+            console.error(error);
+        });
+})
 
 
 
-//Editar-------------------------------------------------------
-
+//EDITAR
 function EditProduct(id, name, description, category, mark, price, images) {
     $('#EditarProducto').modal('show');
     $('#IdEditarProducto').val(id);
@@ -325,33 +210,31 @@ $('#BtnConfirmarEdit').on('click', (event) => {
         });
 });
 
-//Eliminar-------------------------------------------------------
-
+//ELIMINAR
 function DeleteProduct(id) {
     $('#EliminarProducto').modal('show');
     $('#IdEliminarProducto').val(id);
 }
- 
+
 $('#BtnConfirmarDelete').on('click', () => {
     const id = $('#IdEliminarProducto').val();
 
     fetch(`http://localhost:8080/products/${id}`, {
         method: 'DELETE',
     })
-        .then(res => res.json())
-        .then(res => {
-            $('#EliminarProducto').modal("hide");
-            console.log(res);
-            if(data.ok == 200){
-                listProducts()
-            }
-        });
+    .then(res => res.json())
+    .then(data => {
+        $('#EliminarProducto').modal("hide");
+        console.log(data);
+        if (data.ok == 200) {
+            listProducts(); // Actualizar la lista de productos después de eliminar
+        }
+    });
+    
 });
 
-//---------------------------------------------------------------
 
-
-//Aumentar stock--------------------------------------------------
+//AUMENTAR STOCK
 function incrementarStock(id, amount) {
     $('#IdAumentarStock').val(id);
     $('#InputAumentarStock').val(amount);
@@ -377,7 +260,6 @@ $('#BtnConfirmaEditStock').on('click', () => {
             if(data.ok == 200){
                 listProducts()
             }
-           
             // Realiza cualquier acción adicional necesaria después de incrementar el stock
         })
         .catch(error => {
@@ -386,5 +268,4 @@ $('#BtnConfirmaEditStock').on('click', () => {
         });
 });
 
-//----------------------------------------------------------------
 
