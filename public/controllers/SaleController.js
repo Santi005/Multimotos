@@ -4,6 +4,7 @@ const getSale = async (req, res) => {
 
     try {
         const allSales = await Sale.find().sort({ createdAt: -1 });
+
         res.json(allSales);
     }
     catch (error) {

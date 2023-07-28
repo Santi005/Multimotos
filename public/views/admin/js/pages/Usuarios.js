@@ -32,12 +32,12 @@ const listUsers = () => {
                   <td>${user.Estado}</td>
                   <td>
                     <i onclick="EditUser('${user._id}', '${user.Documento}', '${user.Nombre}', '${user.Apellidos}', '${user.Celular}', '${user.Correo}', '${user.Direccion}', '${user.Rol}', '${user.Estado}')"
-                      class="bi bi-pencil-square usuarios" style="color:#f62d51; cursor:pointer;"></i>
+                      class="bi bi-pencil-square usuarios" style="color:#f62d51; font-size: 1.3em; cursor:pointer;"></i>
                   
                         &nbsp;&nbsp;
                   
                     <i onclick="DeleteUser('${user._id}')"
-                        class="bi bi-trash3 usuarios" style="color:#f62d51; cursor:pointer;"></i>
+                        class="bi bi-trash3 usuarios" style="color:#f62d51; font-size: 1.3em; cursor:pointer;"></i>
                   </td>
                 </tr>
               `;

@@ -20,12 +20,15 @@ const listSales = () => {
                   <td>
                       &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
 
-                      <a href="VerDetalle.html?id=${sale._id}"><i class="bi bi-eye" style="color: red"></i></a>
+                      <a href="VerDetalle.html?id=${sale._id}"><i class="bi bi-eye" style="color: #f62d51; font-size: 1.3em;"></i></a>
                   </td>
               </tr>
           `
-          $('#salesTable tbody').prepend(row);
+          $('#salesTable tbody').append(row);
       });
+      $("#salesTable").DataTable({language: {
+        url: "https://cdn.datatables.net/plug-ins/1.10.25/i18n/Spanish.json"
+      }});
   })
   .catch(error => {
       console.error(error);

@@ -71,6 +71,7 @@ router.post('/login', async (req, res) => {
         token: jwt.sign({ userId: _id }, process.env.SECRETKEY, { expiresIn: '1h' }),
         user: {
           _id,
+          Documento,
           Nombre,
           Apellidos,
           Correo: correoUsuario,

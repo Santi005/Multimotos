@@ -14,11 +14,15 @@ function viewDetail(id) {
     fetch(`http://localhost:8080/sales/${id}`)
     .then(response => response.json())
     .then(data => {
+
+        console.log(data.data[0])
         
         // Asignación de detalle venta que devuelve el Json.
         const detalleVenta = data.data[0];
 
+
         // Asignación de valores hacia los input que ya existen.
+        $('#documentInputVenta').val(detalleVenta.Cliente[5]);
         $('#nombreInput').val(detalleVenta.Cliente[0]);
         $('#apellidosInput').val(detalleVenta.Cliente[1])
         $('#telefonoInput').val(detalleVenta.Cliente[4])

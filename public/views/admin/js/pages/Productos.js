@@ -114,7 +114,7 @@ const deactivateProduct = (id) => {
 
 
 //Agregar----------------------------------------------------
-$(document).ready(function() {
+// $(document).ready(function() {
     // Función de validación de producto
     function validarProducto() {
         let nombreProducto = $('#AddNombreProducto').val().trim();
@@ -235,18 +235,19 @@ $(document).ready(function() {
                 body: formData
             })
                 .then(response => response.json())
-                .then(json => {
+                .then(data => {
                     console.log(json); // Muestra la respuesta en la consola
-                    if(data.ok == 200){
-                        listProducts()
-                    }
+                    console.log(data)
+                    // if(json.ok == 200){
+                    //     listProducts()
+                    // }
                 })
                 .catch(error => {
                     console.error(error);
                 });
         }
     });
-});
+// });
 
 //-------------------------------------------------------------
 

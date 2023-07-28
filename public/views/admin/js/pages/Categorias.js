@@ -16,15 +16,15 @@ const listCategories = () => {
                         <td>${index + 1}</td>
                         <td>${category.NombreCategoria}</td>
                         <td>
-                            <i onclick ="EditCategory('${category._id}', '${category.NombreCategoria}')" class="bi bi-pencil-square categorias" style="color:#f62d51; cursor: pointer;"></i>
+                            <i onclick ="EditCategory('${category._id}', '${category.NombreCategoria}')" class="bi bi-pencil-square categorias" style="color:#f62d51; font-size: 1.3em; cursor: pointer;"></i>
                                 &nbsp;&nbsp;
-                            <i onclick ="DeleteCategory('${category._id}')" class="bi bi-trash3 categorias"  style="color:#f62d51; cursor: pointer;"></i>
+                            <i onclick ="DeleteCategory('${category._id}')" class="bi bi-trash3 categorias"  style="color:#f62d51; font-size: 1.3em; cursor: pointer;"></i>
                         </td>
                     </tr>
                  `;
                  tableBody.append(row);
             });
-            $("#RolesTable").DataTable({language: {
+            $("#CategoriesTable").DataTable({language: {
                 url: "https://cdn.datatables.net/plug-ins/1.10.25/i18n/Spanish.json"
               }});
         } else {
