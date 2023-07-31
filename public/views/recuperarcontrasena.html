@@ -1,0 +1,55 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Recuperación de Contraseña</title>
+</head>
+<body>
+  <div class="container">
+    <h2>Recuperar Contraseña</h2>
+    <p>Ingresa tu correo electrónico para recibir un enlace de recuperación de contraseña:</p>
+<!-- Resto del código HTML ... -->
+
+<form id="recoveryForm">
+    <label for="inputEmail">Correo Electrónico:</label>
+    <input type="email" id="inputEmail" required>
+    <button type="submit">Enviar Correo</button>
+  </form>
+  <p id="responseMessage"></p>
+  
+  <script>
+    const recoveryForm = document.getElementById('recoveryForm');
+    const responseMessage = document.getElementById('responseMessage');
+  
+    recoveryForm.addEventListener('submit', async (event) => {
+      event.preventDefault();
+  
+      const email = document.getElementById('inputEmail').value;
+        
+      try {
+        const response = await fetch('http://localhost:8080/forgot-password', {
+          method: 'POST',
+          headers: {
+            'Content-Type': 'application/json'
+          },
+          body: JSON.stringify({ email })
+        });
+  
+        const data = await response.json();
+        if (response.ok) {
+          responseMessage.textContent = data.message;
+          responseMessage.style.color = 'green';
+        } else {
+          responseMessage.textContent = data.error;
+          responseMessage.style.color = 'red';
+        }
+      } catch (error) {
+        responseMessage.textContent = 'Ocurrió un error al enviar la solicitud. Inténtalo de nuevo más tarde.';
+        responseMessage.style.color = 'red';
+      }
+    });
+  </script>
+  
+</body>
+</html>

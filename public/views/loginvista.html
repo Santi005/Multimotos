@@ -5,88 +5,157 @@
     <title>Iniciar sesión</title>
     <link rel="stylesheet" href="css/estilosloginyregistro.css">
     <link rel="shortcut icon" href="img/logoMultimotos.png" type="image/x-icon">
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css">
 </head>
 <body>
-  <button class="home-button" onclick="window.location.href = 'index.html'">
-    <i class="fas fa-home"></i>
-</button>
-  <div class="container center">
-    <h1>Iniciar Sesión</h1>
-    <img src="img/logoMultimotos2.png" alt="Logo de Multimotos">
-    <form id="loginForm">
-      <div class="txt_field">
-        <input type="text" class="form-control" id="emailInput" required>
-        <span></span>
-        <label for="emailInput">Correo</label>
-      </div>
-      <div class="txt_field">
-        <input type="password" class="form-control" id="passwordInput" required>
-        <span></span>
-        <label for="contrasenaInput">Contrasena</label>
-      </div>
-      <input type="submit" value="Iniciar Sesión">
-      <div id="errorMessage" class="error-message"></div>
-      <div class="signup_link">
-        No tienes una cuenta? <a href="registrarvista.html">Registrate</a>
-      </div>
-    </form>
-  </div>
-    
-  <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.5.0/js/bootstrap.min.js"></script>
-  <script src="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.3/js/all.min.js"></script>
-  <script src="https://code.jquery.com/jquery-3.5.1.min.js"></script>
+    <button class="home-button" onclick="window.location.href = 'index.html'">
+        <i class="fas fa-home"></i>
+    </button>
+    <div class="container center">
+        <h1>Iniciar Sesión</h1>
+        <img src="img/logoMultimotos2.png" alt="Logo de Multimotos">
+        <form id="loginForm">
+            <div class="txt_field">
+                <input type="text" class="form-control" id="emailInput" required>
+                <span></span>
+                <label for="emailInput">Correo</label>
+            </div>
+            <div class="txt_field">
+                <input type="password" class="form-control" id="passwordInput" required>
+                <span></span>
+                <label for="contrasenaInput">Contraseña</label>
+            </div>
+            <input type="submit" value="Iniciar Sesión">
+            <div class="forgot-password-link">
+                <a href="#" data-toggle="modal" data-target="#recoveryModal">Olvidé mi contraseña</a>
+            </div>
+            <div id="errorMessage" class="error-message"></div>
+            <div class="signup_link">
+                No tienes una cuenta? <a href="registrarvista.html">Registrate</a>
+            </div>
+        </form>
+    </div>
 
+    <!-- Modal de recuperación de contraseña -->
+    <div class="modal fade" id="recoveryModal" tabindex="-1" role="dialog">
+        <div class="modal-dialog" role="document">
+        <div class="modal-content">
+            <div class="modal-header">
+            <h4 class="modal-title">Recuperar Contraseña</h4>
+            <button type="button" class="close" data-dismiss="modal">&times;</button>
+            </div>
+            <div class="modal-body">
+            <p>Ingresa tu correo electrónico para recibir un enlace de recuperación de contraseña:</p>
+            <form id="recoveryForm">
+                <div class="form-group">
+                <label for="inputEmail">Correo Electrónico:</label>
+                <input type="email" class="form-control" id="inputEmail" required>
+                </div>
+                <input type="submit" value="Enviar Correo">
+            </form>
+            <p id="responseMessage"></p>
+            </div>
+        </div>
+        </div>
+    </div>
+
+    <script src="https://code.jquery.com/jquery-3.5.1.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.16.0/umd/popper.min.js"></script>
+    <script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.3/js/all.min.js"></script>
+    <script src="js/verificartoken.js"></script>
 
     <script>
+        // Función para enviar el formulario de inicio de sesión
         document.addEventListener('DOMContentLoaded', () => {
-          document.getElementById('loginForm').addEventListener('submit', async (event) => {
-            event.preventDefault(); // Evitar el envío del formulario
-      
-            const email = document.getElementById('emailInput').value; // Obtener el valor del campo de entrada de correo electrónico
-            const password = document.getElementById('passwordInput').value;
-      
-            console.log('Email:', email);
-            console.log('Password:', password);
-      
-            try {
-              const response = await fetch('http://localhost:8080/auth/login', {
-                method: 'POST',
-                headers: {
-                  'Content-Type': 'application/json'
-                },
-                body: JSON.stringify({ correo: email, Contrasena: password }) // Asignar el valor de 'email' a 'Correo'
-              });
-      
-              if (response.ok) {
-                const data = await response.json();
-                const redirectUrl = data.redirectUrl;
-                window.location.href = redirectUrl; // Redireccionar al usuario a la URL correspondiente
-      
-                const token = data.token;
-                // Guardar el token en el localStorage
-                localStorage.setItem('token', token);
-                const user = data.user;
-                const  {_id, Documento, Nombre, Apellidos, Rol}  = user;
-
-                // Guardar los datos del usuario en el localStorage
-                localStorage.setItem('userData', JSON.stringify(user));
-
-                      
-              } else {
-                const errorData = await response.json();
-                const errorMessage = errorData.message || 'Error de inicio de sesión desconocido';
-                console.error('Error de inicio de sesión:', errorMessage);
-
-                // Mostrar el mensaje de error
-                const errorMessageElement = document.getElementById('errorMessage');
-                errorMessageElement.textContent = errorMessage;
-              }
-            } catch (error) {
-              console.error('Error de red:', error.message);
-
-            }
-          });
+            document.getElementById('loginForm').addEventListener('submit', async (event) => {
+                event.preventDefault(); // Evitar el envío del formulario
+    
+                // Obtener los valores de los campos de entrada de correo electrónico y contraseña
+                const email = document.getElementById('emailInput').value;
+                const password = document.getElementById('passwordInput').value;
+    
+                console.log('Email:', email);
+                console.log('Password:', password);
+    
+                try {
+                    // Enviar la solicitud de inicio de sesión al servidor
+                    const response = await fetch('http://localhost:8080/auth/login', {
+                        method: 'POST',
+                        headers: {
+                            'Content-Type': 'application/json'
+                        },
+                        body: JSON.stringify({ correo: email, Contrasena: password })
+                    });
+    
+                    if (response.ok) {
+                        // Si la solicitud es exitosa, redireccionar al usuario a la URL correspondiente
+                        const data = await response.json();
+                        const redirectUrl = data.redirectUrl;
+                        window.location.href = redirectUrl;
+    
+                        // Guardar el token en el localStorage
+                        const token = data.token;
+                        localStorage.setItem('token', token);
+    
+                        // Guardar los datos del usuario en el localStorage
+                        const user = data.user;
+                        const { _id, Documento, Nombre, Apellidos, Rol } = user;
+                        localStorage.setItem('userData', JSON.stringify(user));
+                    } else {
+                        // Si la solicitud falla, mostrar el mensaje de error en el formulario
+                        const errorData = await response.json();
+                        const errorMessage = errorData.message || 'Error de inicio de sesión desconocido';
+                        console.error('Error de inicio de sesión:', errorMessage);
+    
+                        const errorMessageElement = document.getElementById('errorMessage');
+                        errorMessageElement.textContent = errorMessage;
+                    }
+                } catch (error) {
+                    console.error('Error de red:', error.message);
+                }
+            });
+    
+            // JavaScript para enviar el formulario de recuperación de contraseña desde el modal
+            const recoveryForm = document.getElementById('recoveryForm');
+            const responseMessage = document.getElementById('responseMessage');
+    
+            recoveryForm.addEventListener('submit', async (event) => {
+                event.preventDefault();
+    
+                const email = document.getElementById('inputEmail').value;
+    
+                try {
+                    const response = await fetch('http://localhost:8080/forgot-password', {
+                        method: 'POST',
+                        headers: {
+                            'Content-Type': 'application/json'
+                        },
+                        body: JSON.stringify({ email })
+                    });
+    
+                    const data = await response.json();
+                    if (response.ok) {
+                        responseMessage.textContent = data.message;
+                        responseMessage.style.color = 'green';
+                    } else {
+                        responseMessage.textContent = data.error;
+                        responseMessage.style.color = 'red';
+                    }
+                } catch (error) {
+                    responseMessage.textContent = 'Ocurrió un error al enviar la solicitud. Inténtalo de nuevo más tarde.';
+                    responseMessage.style.color = 'red';
+                }
+            });
+    
+            
+            $('#recoveryModal').on('hide.bs.modal', function (e) {
+                // Restablecer el formulario y limpiar el mensaje de respuesta
+                recoveryForm.reset();
+                responseMessage.textContent = '';
+            });
         });
     </script>
+    
 </body>
 </html>

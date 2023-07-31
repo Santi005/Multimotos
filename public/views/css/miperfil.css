@@ -1,8 +1,16 @@
 @import url('https://fonts.googleapis.com/css2?family=Noto+Sans:wght@700&family=Poppins:wght@400;500;600&display=swap');
 
 body {
-  background-color: #f2f2f2;
+  background-image: url("../img/hero-bg.jpg");
+  background-size: cover;
+  background-position: center;
   font-family: "Poppins", sans-serif;
+}
+
+body, html {
+  margin: 0;
+  padding: 0;
+  height: 100%;
 }
 
 .container {
@@ -94,3 +102,16 @@ body {
     color: red;
     font-size: 12px;
   }
+
+  .profile-info {
+    border: 1px solid #ccc; 
+    border-radius: 5px;
+    padding: 10px; 
+  }
+  
+
+.container {
+  max-width: 400px;
+  margin: 0 auto;
+  padding: 10px;
+}

@@ -30,7 +30,6 @@ const UserModel = new Schema({
   Rol: {
     type: Schema.Types.ObjectId,
     ref: 'Role',
-    default: 'Cliente',
     required: ["El rol es obligatorio."],
   },
   Estado: {

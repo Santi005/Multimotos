@@ -8,39 +8,40 @@
 <body>
   <div class="container">
     <div class="profile">
-      <div class="profile-image">
-        <img src="./admin/plugins/images/users/varun.jpg" alt="user-img" class="rounded-img">
-      </div>
-      <h2>Editar Perfil</h2>
+
+      <h2 style="color: white;">Editar Perfil</h2>
     </div>
     <div class="profile-info">
-      <label for="InputEditarDocumento">Documento:</label>
-      <input type="text" id="InputEditarDocumento">
-      <span class="error-message" id="ErrorDocumento"></span>
-
-      <label for="InputEditarNombre">Nombre:</label>
-      <input type="text" id="InputEditarNombre">
-      <span class="error-message" id="ErrorNombre"></span>
-
-      <label for="InputEditarApellidos">Apellidos:</label>
-      <input type="text" id="InputEditarApellidos">
-      <span class="error-message" id="ErrorApellidos"></span>
-
-      <label for="InputEditarCelular">Celular:</label>
-      <input type="text" id="InputEditarCelular">
-      <span class="error-message" id="ErrorCelular"></span>
-
-      <label for="InputEditarCorreo">Correo Electrónico:</label>
-      <input type="text" id="InputEditarCorreo">
-      <span class="error-message" id="ErrorCorreo"></span>
-
-      <label for="InputEditarDireccion">Dirección:</label>
-      <input type="text" id="InputEditarDireccion">
-      <span class="error-message" id="ErrorDireccion"></span>
-
-      <label for="InputEditarContrasena">Contraseña:</label>
-      <input type="password" id="InputEditarContrasena">
-      <span class="error-message" id="ErrorContrasena"></span>
+      <table>
+        <tr>
+          <td><label for="InputEditarDocumento">Documento:</label></td>
+          <td><input type="text" id="InputEditarDocumento"></td>
+        </tr>
+        <tr>
+          <td><label for="InputEditarNombre">Nombre:</label></td>
+          <td><input type="text" id="InputEditarNombre"></td>
+        </tr>
+        <tr>
+          <td><label for="InputEditarApellidos">Apellidos:</label></td>
+          <td><input type="text" id="InputEditarApellidos"></td>
+        </tr>
+        <tr>
+          <td><label for="InputEditarCelular">Celular:</label></td>
+          <td><input type="text" id="InputEditarCelular"></td>
+        </tr>
+        <tr>
+          <td><label for="InputEditarCorreo">Correo Electrónico:</label></td>
+          <td><input type="text" id="InputEditarCorreo"></td>
+        </tr>
+        <tr>
+          <td><label for="InputEditarDireccion">Dirección:</label></td>
+          <td><input type="text" id="InputEditarDireccion"></td>
+        </tr>
+        <tr>
+          <td><label for="InputEditarContrasena">Contraseña:</label></td>
+          <td><input type="password" id="InputEditarContrasena"></td>
+        </tr>
+      </table>
 
       <div class="button-container">
         <button id="BtnVolver">Volver</button>
@@ -50,7 +51,6 @@
     </div>
   </div>
   <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
-
 
   <script>
 $(document).ready(function() {
@@ -118,7 +118,7 @@ $(document).ready(function() {
       isValid = false;
     }
 
-    if (documento.length < 8 || documento.length > 10) {
+    if (documento.length < 8 || documento.length > 11) {
       $('#ErrorDocumento').text('Documento invalido');
       isValid = false;
     }
@@ -151,8 +151,8 @@ $(document).ready(function() {
       isValid = false;
     }
 
+
     if (isValid) {
-      // Construir el objeto con los datos actualizados
       var userDataUpdated = {
         Documento: documento,
         Nombre: nombre,
@@ -162,6 +162,10 @@ $(document).ready(function() {
         Direccion: direccion,
         Contrasena: contrasena
       };
+
+      if (contrasena.trim() === '') {
+      delete userDataUpdated.Contrasena;
+      }
 
       // Enviar los datos actualizados al servidor
       $.ajax({
