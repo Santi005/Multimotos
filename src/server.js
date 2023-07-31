@@ -2,6 +2,7 @@ const express = require('express')
 const cors = require('cors')
 const { DbConection } = require('../public/db/config')
 const authRoutes = require("../public/routes/auth");
+const recoveryController = require('../public/controllers/recoveryController');
 const morgan = require("morgan");
 
 class Server {
@@ -51,6 +52,10 @@ class Server {
       this.app.use( '/users/' , require('../public/routes/Users.routes.js') );
       this.app.use( '/roles/' , require('../public/routes/Roles.routes.js') );
       this.app.use( '/payment/', require('../public/routes/Payment.routes.js') );
+      // Ruta para recuperación de contraseña y envío de correo electrónico
+      this.app.post('/forgot-password', recoveryController.requestPasswordReset);
+
+
 
     }
 
