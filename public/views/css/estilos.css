@@ -1,0 +1,169 @@
+.sidebar {
+  position: fixed;
+  top: 0;
+  right: -400px;
+  width: 350px;
+  height: 100vh;
+  background-color: #fff;
+  padding: 20px;
+  transition: right 0.3s ease;
+  box-shadow: -5px 0 5px rgba(0, 0, 0, 0.2);
+  z-index: 999;
+}
+  
+.sidebar.show {
+  right: 0;
+}
+
+.titulo-cart {
+  font-weight: bold;
+  font-size: 30px;
+  margin-top: 20px;
+  margin-bottom: 20px;
+}
+  
+.close-cart-button {
+  position: absolute;
+  top: 10px;
+  right: 10px;
+  font-size: 24px;
+  background: transparent;
+  border: none;
+  cursor: pointer;
+}
+
+.close-cart-button:hover {
+  color: red;
+}
+
+.count-products {
+  font-size: 15px;
+}
+
+.cart-product {
+  display: flex;
+  align-items: center;
+  justify-content: space-around;
+  padding: 10px;
+
+  border-bottom: 1px solid rgba(0, 0, 0, 0.20);
+}
+
+.info-cart-product {
+  display: flex;
+  justify-content: space-between;
+  flex: 0.8;
+}
+
+.titulo-producto-carrito {
+  font-size: 15px;
+  margin: auto;
+}
+
+.precio-producto-carrito {
+  font-size: 15px;
+  margin: auto;
+  color: #4f4f4f;
+}
+
+.cantidad-producto-carrito {
+  font-size: 15px;
+  margin: auto;
+  margin-left: 15px;
+  color: #4f4f4f;
+}
+
+.icon-trash {
+  width: 25px;
+  height: 25px;
+}
+
+.icon-trash:hover {
+  color: red;
+  cursor: pointer;
+}
+
+.cart-total {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  padding: 20px 0;
+  gap: 20px;
+}
+
+.cart-total h3 {
+  font-size: 20px;
+  font-weight: 700;
+}
+
+.total-pagar {
+  font-size: 20px;
+  font-weight: 900;
+}
+
+.cart-empty {
+  padding: 20px;
+  text-align: center;
+}
+
+.cart-buttons {
+  height: 50px;
+  border: none;
+  color: #fff;
+}
+
+.cart-buttons:hover {
+  background-color: #e35d5d;
+  transition: all 0.3s ease;
+}
+
+.cart-quantity-input {
+  width: 60px;
+  padding: 0.375rem 0.75rem;
+  font-size: 1rem;
+  line-height: 1.5;
+  color: #495057;
+  background-color: #fff;
+  background-clip: padding-box;
+  border: 1px solid #ced4da;
+  border-radius: 0.25rem;
+  transition: border-color 0.15s ease-in-out, box-shadow 0.15s ease-in-out;
+}
+
+.cart-increase-decrease {
+  background-color: #db2d2e;
+  border: none;
+  color: #fff;
+}
+
+.cart-increase-decrease:hover {
+  background-color: #e35d5d;
+  transition: all 0.3s ease;
+}
+
+.cart-empty-page {
+  font-size: 17px;
+  font-weight: bold;
+}
+
+.productos-titulo {
+  font-size: 18px;
+  align-items: center;
+  margin-top: 15px;
+  margin-bottom: 15px;
+}
+
+.precioDebajo {
+  font-size: 15px;
+  font-weight: bold;
+}
+
+.not-active { 
+  pointer-events: none; 
+  cursor: default; 
+} 
+
+a.profile-pic {
+
+  color: inherit;
+}
