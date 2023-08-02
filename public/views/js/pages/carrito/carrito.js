@@ -40,11 +40,31 @@ const addToCart = (productId, isButtonClicked) => {
 
   if (existingCartItem) {
     const currentQuantity = parseInt(existingCartItem.textContent);
+    const maxQuantity = cartItemsData[productId].details.quantityProduct;
+
+    if (currentQuantity >= maxQuantity) {
+      const Toast = Swal.mixin({
+        toast: true,
+        position: 'top-end',
+        showConfirmButton: false,
+        timer: 1500,
+        didOpen: (toast) => {
+          toast.addEventListener('mouseleave', Swal.resumeTimer);
+        }
+      });
+
+      Toast.fire({
+        icon: 'warning',
+        title: 'Cantidad máxima alcanzada'
+      });
+
+      return;
+    }
+
     existingCartItem.textContent = currentQuantity + 1;
     cartItemsData[productId].quantity = currentQuantity + 1;
     cartTotal += productPrice;
-
-    updateTotal();
+    recalculateTotal();
     updateCart();
 
     const Toast = Swal.mixin({
@@ -53,10 +73,10 @@ const addToCart = (productId, isButtonClicked) => {
       showConfirmButton: false,
       timer: 1500,
       didOpen: (toast) => {
-        toast.addEventListener('mouseleave', Swal.resumeTimer)
+        toast.addEventListener('mouseleave', Swal.resumeTimer);
       }
-    })
-    
+    });
+
     if (isButtonClicked) {
       Toast.fire({
         icon: 'success',

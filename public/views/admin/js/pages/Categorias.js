@@ -143,12 +143,14 @@ function validarEdicionCategoria() {
 }
 
 
-function EditCategory(id, name) { // Agregué un nuevo parámetro y dividí la función del evento del click del modal.
-    $('#EditarCategoria').modal('show');
-    $('#IdEditarCategoria').val(id); // Se asigna el id.
-    $('#InputEditarNombreCategoria').val(name); // Se asigna el nombre.
-}
 
+function EditCategory(id, name) {
+    $('#IdEditarCategoria').val(id); // Se asigna el id al campo del formulario.
+    $('#InputEditarNombreCategoria').val(name); // Se asigna el nombre al campo del formulario.
+
+    // Mostrar el modal después de asignar los valores al formulario.
+    $('#EditarCategoria').modal('show');
+}
 
 $('#BtnConfirmarEdit').on('click', () => {
     if (validarEdicionCategoria()) {
@@ -162,7 +164,12 @@ $('#BtnConfirmarEdit').on('click', () => {
             },
             body: JSON.stringify({ NombreCategoria: nameCategory })
         })
-        .then(response => response.json())
+        .then(response => {
+            if (!response.ok) {
+                throw new Error('El nombre de la categoría ya está en uso');
+            }
+            return response.json();
+        })
         .then(data => {
             console.log('Categoría editada:', data);
 
@@ -171,6 +178,8 @@ $('#BtnConfirmarEdit').on('click', () => {
         })
         .catch(error => {
             console.error(error);
+            $('#InputEditarNombreCategoria').addClass('is-invalid').removeClass('is-valid');
+            $('#errorEdit').text(error.message).removeClass('d-none');
         });
     }
 });
@@ -183,24 +192,29 @@ $('#EditarCategoria').on('hidden.bs.modal', function () {
 //------------------------------------------------------------
 
 //ELIMINAR---------------------------------------------------
-function DeleteCategory(id){
-    $('#EliminarCategoria').modal('show')
-    $('#IdEliminarCategoria').val(id); //
-}
-
-$('#BtnConfirmarDelete').on('click', () => {
-    const id = $('#IdEliminarCategoria').val(); // Lo cambié a JQuery - Almaceno el id de la función.
-
+function DeleteCategory(id) {
+    $('#EliminarCategoria').modal('show');
+    $('#IdEliminarCategoria').val(id);
+    $('#errorDelete').addClass('d-none'); // Ocultar el mensaje de error al abrir el modal
+  }
+  
+  $('#BtnConfirmarDelete').on('click', () => {
+    const id = $('#IdEliminarCategoria').val();
+  
     fetch(`http://localhost:8080/categories/${id}`, {
-        method: 'DELETE',
+      method: 'DELETE',
     })
-    
-    .then(res => res.json())
-    .then(res=> {
-        $('#EliminarCategoria').modal('hide');
-        console.log(res);
-        location.reload()
-    });
-});
-
+      .then((res) => res.json())
+      .then((res) => {
+        if (!res.ok) {
+          $('#errorDelete').text('La categoría no se puede eliminar ya que está asociada a un producto').removeClass('d-none');
+        } else {
+          // Si no hay error, ocultar el modal y recargar la página
+          $('#EliminarCategoria').modal('hide');
+          location.reload();
+        }
+      });
+  });
+  
+  
 //---------------------------------------------------------------

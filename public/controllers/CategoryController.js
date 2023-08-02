@@ -1,4 +1,5 @@
 const Category = require("../models/CategoryModel");
+const Product = require("../models/ProductsModel");
 
 
 const getCategory = async (req, res) => {
@@ -35,27 +36,56 @@ const postCategory = async (req, res) => {
 
 
 const putCategory = async (req, res) => {
+  const categoryId = req.params.id;
+  const { NombreCategoria } = req.body;
 
-  const paramts = req.params.id;
-  const {NombreCategoria} = req.body;
-  const categoryUpdate = await Category.findByIdAndUpdate(paramts,{NombreCategoria});
+  try {
+    // Verifica si el nuevo nombre de categoría ya está en uso por otra categoría
+    const existingCategory = await Category.findOne({ NombreCategoria });
+    if (existingCategory && existingCategory._id.toString() !== categoryId) {
+      return res.status(409).json({ message: 'El nombre de categoría ya está en uso' });
+    }
 
-  res.json({
-    "ok" : 200,
-    "mensaje" : "Categoría actualizada correctamente.",
-  })
-}
+    // Realiza la actualización de la categoría en la base de datos
+    const categoryUpdate = await Category.findByIdAndUpdate(categoryId, { NombreCategoria });
+
+    res.json({
+      "ok" : 200,
+      "mensaje" : "Categoría actualizada correctamente.",
+    });
+  } catch (error) {
+    console.error(error);
+    res.status(500).json({ message: 'Error al actualizar la categoría' });
+  }
+};
+
 
 
 const deleteCategory = async (req, res) => {
-  const id_category = req.params.id;
-  const deleteCategory =await Category.findByIdAndDelete(id_category);
+  const categoryId = req.params.id;
 
-  res.json({
-    "ok" : 200,
-    "mensaje" : "Categoría eliminada correctamente",
-  })
-}
+  try {
+    // Verificar si la categoría está asociada a algún producto
+    const productsWithCategory = await Product.findOne({ Categoria: categoryId });
+    if (productsWithCategory) {
+      return res.status(409).json({ message: 'No se puede eliminar la categoría porque está asociada a productos' });
+    }
+
+    // Si no hay productos asociados, proceder con la eliminación de la categoría
+    const deletedCategory = await Category.findByIdAndDelete(categoryId);
+
+    res.json({
+      ok: 200,
+      mensaje: 'Categoría eliminada correctamente',
+    });
+  } catch (error) {
+    console.error(error);
+    res.status(500).json({
+      error: 500,
+      mensaje: 'Ocurrió un error al eliminar la categoría',
+    });
+  }
+};
 
 
 const searchCategory = async (req, res) => {

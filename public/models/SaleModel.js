@@ -19,7 +19,7 @@ const productoSchema = new Schema({
 const SaleModel = new Schema({
 
     Factura: {
-        type: String,
+        type: Number,
         required: ["El número de factura es obligatorio."],
         unique: true
     },

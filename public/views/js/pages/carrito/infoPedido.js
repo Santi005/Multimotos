@@ -84,11 +84,10 @@ citySelect.addEventListener('change', (event) => {
 });
 
 const pagar = () => {
-
     const cartItemsData = getCartItemsData();
-
     const productos = [];
     const cliente = [];
+    let subtotal = 0;
 
     for (const productId in cartItemsData) {
         const productData = cartItemsData[productId];
@@ -100,7 +99,6 @@ const pagar = () => {
             Cantidad: quantity,
             Precio: price
         });
-
     }
 
     const adress = document.getElementById('address').value;
@@ -130,16 +128,39 @@ const pagar = () => {
     })
     .then(response => response.json())
     .then(data => {
+        console.log(data);
+        const saleId = data.sale._id;
 
-        console.log(data)
+        // Redirigir a la página de finalización después de completar la venta
+        window.location.href = `finalizar.html?id=${saleId}`;
 
-          const saleId = data.sale._id;
+        // Luego de completar la venta, decrementar la cantidad de productos en la base de datos
+        for (const productId in cartItemsData) {
+            const productData = cartItemsData[productId];
+            const { quantity } = productData;
 
-          window.location.href = `finalizar.html?id=${saleId}`;
+            // Realizar la solicitud PUT para decrementar el stock de productos
+            fetch(`http://localhost:8080/products/${productId}/decrementar-stock`, {
+                method: 'PUT',
+                headers: {
+                    'Content-Type': 'application/json'
+                },
+                body: JSON.stringify({
+                    cantidad: quantity
+                })
+            })
+            .then(response => response.json())
+            .then(data => {
+                console.log(data);
+            })
+            .catch(error => {
+                console.log(error);
+            });
+        }
     })
     .catch(error => {
         console.error(error);
-        // Manejar el error de la solicitud
+        // Manejar el error de la solicitud POST
     });
 }
 

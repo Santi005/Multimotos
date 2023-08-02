@@ -67,6 +67,21 @@ const updateQuantity = (productId, value) => {
     quantity = 1;
   } else if (quantity > cartItemsData[productId].details.quantityProduct) {
     quantity = cartItemsData[productId].details.quantityProduct;
+
+    const Toast = Swal.mixin({
+      toast: true,
+      position: 'top-end',
+      showConfirmButton: false,
+      timer: 1000,
+      didOpen: (toast) => {
+        toast.addEventListener('mouseleave', Swal.resumeTimer)
+      }
+    })
+    
+    Toast.fire({
+      icon: 'warning',
+      title: 'Cantidad máxima alcanzada'
+    });
   }
 
 console.log(cartItemsData[productId].details.quantityProduct)
@@ -80,24 +95,42 @@ console.log(cartItemsData[productId].details.quantityProduct)
 const increaseQuantity = (productId) => {
   const cartItemsData = getCartItemsData();
   if (cartItemsData[productId]) {
-    cartItemsData[productId].quantity += 1;
-    saveCartItemsData(cartItemsData);
-    updateCartTable();
+    const maxQuantity = cartItemsData[productId].details.quantityProduct;
+    if (cartItemsData[productId].quantity < maxQuantity) {
+      cartItemsData[productId].quantity += 1;
+      saveCartItemsData(cartItemsData);
+      updateCartTable();
 
-    const Toast = Swal.mixin({
-      toast: true,
-      position: 'top-end',
-      showConfirmButton: false,
-      timer: 1000,
-      didOpen: (toast) => {
-        toast.addEventListener('mouseleave', Swal.resumeTimer)
-      }
-    })
-    
-    Toast.fire({
-      icon: 'success',
-      title: 'Se aumentó la cantidad :)'
-    });
+      const Toast = Swal.mixin({
+        toast: true,
+        position: 'top-end',
+        showConfirmButton: false,
+        timer: 1000,
+        didOpen: (toast) => {
+          toast.addEventListener('mouseleave', Swal.resumeTimer)
+        }
+      })
+
+      Toast.fire({
+        icon: 'success',
+        title: 'Se aumentó la cantidad :)'
+      });
+    } else {
+      const Toast = Swal.mixin({
+        toast: true,
+        position: 'top-end',
+        showConfirmButton: false,
+        timer: 1000,
+        didOpen: (toast) => {
+          toast.addEventListener('mouseleave', Swal.resumeTimer)
+        }
+      })
+
+      Toast.fire({
+        icon: 'warning',
+        title: 'Cantidad máxima alcanzada'
+      });
+    }
   }
 };
 

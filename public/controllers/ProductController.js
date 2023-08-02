@@ -244,6 +244,42 @@ const statusTrue = async (req, res) => {
 }
 
 
+const decrementarStock = async (req, res) => {
+
+    const id_product = req.params.id;
+    const cantidadVendida = req.body.cantidad;
+
+    try {
+
+        const product = await Product.findById(id_product);
+
+        if(!product) {
+            return res.status(404).json({
+                ok: 0,
+                message: "Producto no encontrado"
+            })
+        }
+
+        product.Stock -= cantidadVendida;
+
+        await product.save();
+        
+        res.json({
+            ok: 200,
+            message: "Stock decrementado",
+            product,
+        });
+
+    } catch (error) {
+        console.error(error);
+        res.status(500).json({
+            ok: 0,
+            message: "Error al decrementar el stock",
+        });
+    }
+}
+
+
 module.exports = {
     getProduct,
     postProducts,
@@ -252,6 +288,7 @@ module.exports = {
     searchProduct,
     fileUpload,
     incrementStock,
+    decrementarStock,
     statusFalse,
     statusTrue
 }

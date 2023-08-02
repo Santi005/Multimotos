@@ -53,11 +53,7 @@ const listProducts = () => {
             if (product) {
               let imageTags = product.Imagenes.map(
                 (image) =>
-<<<<<<< HEAD
                   `<img src="${window.location.origin}/public/uploads/${image}" alt="${image}" width="100%" height="100%" style="align-items: center; object-fit:  cover;">`
-=======
-                  `<img src="${window.location.origin}/public/uploads/${image}" alt="${image}" style="align-items: center">`
->>>>>>> 5ba82a3f796bc66648dc910b1fab5331382c3383
               ).join('');
 
               let estado;

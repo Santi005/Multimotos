@@ -3,7 +3,7 @@ const Sale = require('../models/SaleModel');
 const getSale = async (req, res) => {
 
     try {
-        const allSales = await Sale.find().sort({ createdAt: -1 });
+        const allSales = await Sale.find().sort({ Factura: -1 });
 
         res.json(allSales);
     }
@@ -19,16 +19,13 @@ const getSale = async (req, res) => {
 
 const postSale = async (req, res) => {
     
-    const { Productos, Cliente, Estado, Envio} = req.body;
+    const { Productos, Cliente, Estado, Envio } = req.body;
 
-    const highestInvoice = await Sale.findOne().sort({ Factura: -1 }).limit(1);
-    let nextInvoiceNumber = 1;
+    const highestInvoice = await Sale.findOne().sort({ Factura: -1 }).select('Factura');
+    const lastInvoiceNumber = highestInvoice ? parseInt(highestInvoice.Factura) : 0;
+    const nextInvoiceNumber = lastInvoiceNumber + 1;
 
-    if (highestInvoice) {
-        nextInvoiceNumber = parseInt(highestInvoice.Factura) + 1;
-    }
-
-    const Factura = nextInvoiceNumber.toString();
+    const Factura = nextInvoiceNumber;
 
     const Fecha = new Date();
 
@@ -42,7 +39,7 @@ const postSale = async (req, res) => {
     const MontoIva = Subtotal * Iva;
     Total = Subtotal  + MontoIva + Envio ;
 
-    const sale = new Sale( { Factura, Productos, Fecha, Cliente, Estado, Iva, Envio, Total });
+    const sale = new Sale( { Factura, Productos, Fecha, Cliente, Estado, Iva, Envio, Total } );
 
     await sale.save();
 
