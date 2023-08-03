@@ -18,14 +18,7 @@ const getSale = async (req, res) => {
 }
 
 const postSale = async (req, res) => {
-    
     const { Productos, Cliente, Estado, Envio } = req.body;
-
-    const highestInvoice = await Sale.findOne().sort({ Factura: -1 }).select('Factura');
-    const lastInvoiceNumber = highestInvoice ? parseInt(highestInvoice.Factura) : 0;
-    const nextInvoiceNumber = lastInvoiceNumber + 1;
-
-    const Factura = nextInvoiceNumber;
 
     const Fecha = new Date();
 
@@ -37,17 +30,30 @@ const postSale = async (req, res) => {
 
     const Iva = 0.091;
     const MontoIva = Subtotal * Iva;
-    Total = Subtotal  + MontoIva + Envio ;
+    Total = Subtotal + MontoIva + Envio;
 
-    const sale = new Sale( { Factura, Productos, Fecha, Cliente, Estado, Iva, Envio, Total } );
+    const EstadoEnvio = "Por enviar";
 
-    await sale.save();
+    const newSale = new Sale({
+        Productos,
+        Fecha,
+        Cliente,
+        Estado,
+        EstadoEnvio,
+        Iva,
+        Envio,
+        Total
+    });
+
+    // Asignar el mismo valor del _id de MongoDB al campo "Factura"
+    newSale.Factura = newSale._id.toString();
+
+    await newSale.save();
 
     res.send({
-        "ok" : 200,
-        sale
-    })
-
+        "ok": 200,
+        sale: newSale
+    });
 }
 
 const desactivateSale = async (req, res) => {
@@ -142,11 +148,104 @@ const getDocument = async (req, res) => {
 
 }
 
+const updateSaleToSend = async (req, res) => {
+
+    const id_sale = req.params.id;
+    const EstadoEnvio = "En camino";
+
+    try {
+        
+        const saleUpdate = await Sale.findByIdAndUpdate(id_sale, { EstadoEnvio });
+
+        if (saleUpdate) {
+            
+            res.json({
+                ok: 200,
+                message: "Venta actualizada a en camino."
+            })
+        } else {
+            res.status(404).json({
+                ok: 404,
+                message: "Venta no encontrada."
+            })
+        }
+
+    } catch (error) {
+        console.error(error);
+        res.status(500).json({
+            ok: 500,
+            message: "Error al actualizar el estado de envío.",
+        });
+    }
+}
+
+updateSaleToDelivered = async (req, res) => {
+
+    const id_sale = req.params.id;
+    const EstadoEnvio = "Entregado";
+
+    try {
+
+        const saleUpdate = await Sale.findByIdAndUpdate(id_sale, { EstadoEnvio });
+
+        if (saleUpdate) {
+
+            res.json({
+                ok: 200,
+                msg: "Venta actualizada a entregado."
+            })
+        } else {
+
+            res.status(404).json({
+                ok: 404,
+                msg: "Venta no encontrada."
+            })
+        }
+    } catch (error) {
+        console.error(error);
+
+        res.status(500).json({
+            ok: 500,
+            msg: "Error al actualizar el estado de envío."
+        })
+    }
+}
+
+const updateSaleToPending = async (req, res) => {
+    const id_sale = req.params.id;
+    const EstadoEnvio = "Por enviar";
+
+    try {
+        const saleUpdate = await Sale.findByIdAndUpdate(id_sale, { EstadoEnvio });
+
+        if (saleUpdate) {
+            res.json({
+                ok: true,
+                msg: "Venta actualizada a Por enviar"
+            });
+        } else {
+            res.status(404).json({
+                ok: false,
+                msg: "Venta no encontrada"
+            });
+        }
+    } catch (error) {
+        console.error(error);
+        res.status(500).json({
+            ok: false,
+            msg: "Error al actualizar el estado de envío a Por enviar"
+        });
+    }
+}
+
 module.exports = {
     getSale,
     postSale,
     desactivateSale,
     activateSale,
     searchSale,
-    getDocument
+    getDocument,
+    updateSaleToSend,
+    updateSaleToDelivered,
+    updateSaleToPending,
 }

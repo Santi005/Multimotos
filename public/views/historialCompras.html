@@ -174,22 +174,17 @@
     <div class="container">
         <h2 class="mt-4">Mis Pedidos</h2>
         <br>
-        <div>
-            <form role="search" class="app-search d-none d-md-block me-3" style="width:150px;">
-                <input type="text" id="searchInputSales" placeholder="Buscar" class="form-control mt-0">
-            </form>
-        </div>
         <br>
-        <div class="table-responsive">
-            <table id="salesTable" class="table text-nowrap">
+        <div class="table-responsive col-lg-12">
+            <table id="salesTable" class="table" style="white-space: nowrap;">
                 <thead>
                     <tr>
-                        <th class="border-top-0">#</th>
-                        <th class="border-top-0">Cliente</th>
-                        <th class="border-top-0"># Factura</th>
-                        <th class="border-top-0">Total</th>
-                        <th class="border-top-0">Fecha</th>
-                        <th class="border-top-0">Opciones</th>
+                        <th class="border-top-0" class="text-center">#</th>
+                        <th class="border-top-0" class="text-center">Cliente</th>
+                        <th class="border-top-0" class="text-center"># Factura</th>
+                        <th class="border-top-0" class="text-center">Total</th>
+                        <th class="border-top-0" class="text-center">Estado Envío</th>
+                        <th class="border-top-0" class="text-center">Opciones</th>
                     </tr>
                 </thead>
                 <tbody>
@@ -197,11 +192,6 @@
                 </tbody>
             </table>
         </div>
-        <nav aria-label="Page navigation">
-            <ul class="pagination">
-              <!-- Aquí se generarán los botones de paginación -->
-            </ul>
-          </nav>
     </div>
 
     <br>
@@ -276,6 +266,7 @@
     <script src="js/owl.carousel.min.js"></script>
     <script src="js/main.js"></script>
     <script src="js/pages/carrito/historial.js"></script>
+    <script src="https://cdn.datatables.net/v/bs5/dt-1.12.1/datatables.min.js"></script>
 
     <!-- 
         ──────▄▀▄─────▄▀▄

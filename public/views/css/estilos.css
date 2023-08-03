@@ -167,3 +167,70 @@ a.profile-pic {
 
   color: inherit;
 }
+
+.estado-etiqueta {
+  padding: 1px 5px;
+  border: 1px solid #ccc;
+  border-radius: 20px;
+  margin-right: 10px;
+  font-weight: bold;
+  font-size: 14px;
+
+  vertical-align: middle;
+  max-width: 100px; /* Ajusta este valor según sea necesario */
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+
+.estado-etiqueta[estado="En camino"] {
+    background-color: #ffc107;
+    color: #fff;
+    border: none;
+}
+
+.estado-etiqueta[estado="Entregado"] {
+    background-color: #28a745;
+    color: #fff;
+    border: none;
+}
+
+.estado-etiqueta[estado="Por enviar"] {
+    background-color: #f62d51;
+    color: #fff;
+    border: none;
+}
+
+.btn-custom-action {
+  width: 200px;
+  font-size: 14px;
+  border-radius: 4px;
+  padding: 6px 12px;
+  cursor: pointer;
+  background-color: #dc3545;
+  color: #fff;
+}
+
+.btn-custom-action:hover {
+  background-color: #b62741;
+  color: #fff;
+}
+
+.venta-info {
+  margin-bottom: 20px;
+}
+
+.venta-info p {
+  margin: 5px 0;
+}
+
+.total {
+  text-align: right;
+  margin-top: 20px;
+}
+
+.botones {
+  display: flex;
+  justify-content: space-between;
+  margin-top: 20px;
+}

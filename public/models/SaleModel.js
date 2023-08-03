@@ -19,7 +19,7 @@ const productoSchema = new Schema({
 const SaleModel = new Schema({
 
     Factura: {
-        type: Number,
+        type: String,
         required: ["El número de factura es obligatorio."],
         unique: true
     },
@@ -42,6 +42,12 @@ const SaleModel = new Schema({
     Estado: {
         type: Boolean,
         default: true
+    },
+
+    EstadoEnvio: {
+        type: String,
+        enum: ["Por enviar", "En camino", "Entregado"],
+        default: "Por enviar",
     },
 
     Iva: {
