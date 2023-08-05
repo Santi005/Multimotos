@@ -4,6 +4,7 @@ const Product = require("../models/ProductsModel");
 const Category = require("../models/CategoryModel"); // Importa el modelo de categoría en lugar del controlador
 const Mark = require("../models/MarkModel");
 const fs = require('fs');
+const path = require('path');
 
 const upload = multer(multerConfig).array('Imagenes', 5);
 
@@ -145,16 +146,36 @@ const putProduct = async (req, res) => {
 
 const deleteProduct = async (req, res) => {
     const id_product = req.params.id;
-    const deletedProduct = await Product.findByIdAndDelete(id_product);
-
-    res.json({
-      ok: 200,
-      mensaje: "Producto eliminado correctamente.",
-    });
+    try {
+      // Buscar el producto por ID para obtener el nombre de las imágenes
+      const deletedProduct = await Product.findByIdAndDelete(id_product);
+      if (!deletedProduct) {
+        return res.status(404).json({ error: 'Producto no encontrado' });
+      }
   
-};
-
-
+      // Verificar si el campo Imagenes está definido en el producto
+      if (deletedProduct.Imagenes && deletedProduct.Imagenes.length > 0) {
+        // Eliminar cada archivo de imagen de la carpeta local
+        deletedProduct.Imagenes.forEach((imagen) => {
+          const imagePath = path.join(__dirname, '../uploads', imagen);
+          fs.unlink(imagePath, (err) => {
+            if (err) {
+              console.error('Error al eliminar el archivo:', err);
+            }
+          });
+        });
+      }
+  
+      return res.json({
+        ok: 200,
+        mensaje: 'Producto eliminado correctamente.',
+      });
+    } catch (error) {
+      console.error('Error al eliminar el producto:', error);
+      return res.status(500).json({ error: 'Error interno del servidor' });
+    }
+  };
+  
 
 
 

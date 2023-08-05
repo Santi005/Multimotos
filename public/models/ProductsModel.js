@@ -40,10 +40,22 @@ const ProductModel = new Schema({
     Imagenes: {
         type: [String],
         required: "Las imagenes son obligatorias.",
-        get: (imagenes) => {
-            return imagenes.map((imagen) => `/uploads/${imagen}`)
-        }
-    }
+      }
 });
+
+ProductModel.pre('remove', function (next) {
+    const imagenes = this.Imagenes;
+    if (imagenes && imagenes.length > 0) {
+      imagenes.forEach((imagen) => {
+        const imagePath = path.join(__dirname, '../uploads', imagen);
+        fs.unlink(imagePath, (err) => {
+          if (err) {
+            console.error('Error al eliminar el archivo:', err);
+          }
+        });
+      });
+    }
+    next();
+  });
 
 module.exports = model("product", ProductModel);

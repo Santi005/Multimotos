@@ -13,12 +13,23 @@ const MarkModel = new Schema({
   },
   Imagenes: {
     type: [String],
-    required: "Las imágenes son obligatorias.",
-    get: (imagenes) => {
-      return imagenes.map((imagen) => `/uploads/${imagen}`);
-    }
+    required: "Las imagenes son obligatorias.",
   }
 })
 
+MarkModel.pre('remove', function (next) {
+  const imagenes = this.Imagenes;
+  if (imagenes && imagenes.length > 0) {
+    imagenes.forEach((imagen) => {
+      const imagePath = path.join(__dirname, '../uploads', imagen);
+      fs.unlink(imagePath, (err) => {
+        if (err) {
+          console.error('Error al eliminar el archivo:', err);
+        }
+      });
+    });
+  }
+  next();
+});
 
 module.exports = model("mark", MarkModel);

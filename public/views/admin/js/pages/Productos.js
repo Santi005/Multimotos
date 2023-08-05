@@ -30,26 +30,40 @@ function listProducts(){
                         <tr id="${product._id}">
                             <td>${index + 1}</td>
                             <td>${product.NombreProducto}</td>
-                            <td>${product.Descripcion}</td>
-                            <td>${product.Stock}</td>
                             <td>${product.Categoria.NombreCategoria}</td>
                             <td>${product.Marca.NombreMarca}</td>
                             <td>${product.Precio.toLocaleString('es-CO', { style: 'currency', currency: 'COP' })}</td>
                             <td>${estado}</td>
-                            <td>${imageTags}</td>
-                            <td>
+                            <td><button type="button" class="btn btn-primary" data-bs-toggle="modal" data-bs-target="#VerImagenes" id="Carrusel">
+                            Ver imagenes
+                            </button>
+                            </td>
+                            <td style="text-align:center;">
                             &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
                                 <i onclick="EditProduct('${product._id}', '${product.NombreProducto}', '${product.Descripcion}', '${product.Categoria}', '${product.Marca}', '${product.Precio}', '${product.Imagenes}')" class="bi bi-pencil-square productos" style="color:#f62d51; font-size: 1.3em; cursor: pointer;"></i>
                                 &nbsp;&nbsp;&nbsp;
                                 <i onclick="DeleteProduct('${product._id}')" class="bi bi-trash3 productos" style="color:#f62d51; font-size: 1.3em; cursor: pointer;"></i>
                                 &nbsp;&nbsp;&nbsp;
                                 <i onclick="incrementarStock('${product._id}', '${amount}')" class="bi bi-box-seam productos" style="color:#f62d51; font-size: 1.3em; cursor: pointer;"></i>
-                            </td>
+                                &nbsp;&nbsp;&nbsp;
+                                <a href="DetalleProducto.html?id=${product._id}"><i class="bi bi-eye" style="color: #f62d51; font-size: 1.3em;"></i></a>&nbsp;&nbsp;&nbsp;
+                                
+                                
+                                </td>
                         </tr>
                     `;
                     
                     
                     tableBody.append(row);
+
+                    let carrusel =`
+                     <div class="carousel-item active">
+                     <div class="d-block w-100">${imageTags}</div>
+                  </div>
+                 
+                  `
+                  
+                  $('#imagenCarrusel').append(carrusel);
 
                     
         })
@@ -108,8 +122,8 @@ $('#BtnConfirmarAdd').on('click', () => {
     const categoria = $('#AddCategoriaProducto').val();
     const marca = $('#AddMarcaProducto').val();
     const precio = $('#AddPrecioProducto').val();
-    const archivoImagen = $('#formFileAdd')[0].files[0];
-
+    const archivosImagen = $('#formFileAdd')[0].files; // Obtener todos los archivos seleccionados
+  
     const formData = new FormData();
     formData.append('NombreProducto', nombreProducto);
     formData.append('Descripcion', descripcion);
@@ -117,26 +131,30 @@ $('#BtnConfirmarAdd').on('click', () => {
     formData.append('Categoria', categoria);
     formData.append('Marca', marca);
     formData.append('Precio', precio);
-    formData.append('Imagenes', archivoImagen);
-    
+  
+    // Iterar sobre los archivos seleccionados y agregarlos al FormData con el mismo nombre de campo
+    for (let i = 0; i < archivosImagen.length; i++) {
+      formData.append('Imagenes', archivosImagen[i]);
+    }
+    console.log(archivosImagen.length);
 
+  
     fetch('http://localhost:8080/products/', {
-        method: 'POST',
-        body: formData
+      method: 'POST',
+      body: formData,
     })
-        .then(response => response.json())
-        .then(data => {
-            console.log(data); 
-            if(data.ok == 200){
-                listProducts()
-                
-            }
-        })
-        .catch(error => {
-            console.error(error);
-        });
-})
-
+      .then((response) => response.json())
+      .then((data) => {
+        console.log(data);
+        if (data.ok == 200) {
+          listProducts();
+        }
+      })
+      .catch((error) => {
+        console.error(error);
+      });
+  });
+  
 
 
 //EDITAR
