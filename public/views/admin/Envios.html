@@ -153,19 +153,19 @@
                 </a>
               </li>
 
-              <li class="sidebar-item active">
+              <li class="sidebar-item">
                 <a href="Ventas.html" class="sidebar-link">
                   <i class="bi bi-credit-card-fill"></i>
                   <span>Ventas</span>
                 </a>
               </li>
 
-              <li class="sidebar-item">
+              <li class="sidebar-item active">
                 <a href="Envios.html" class="sidebar-link">
                     <i class="bi bi-truck"></i>
                     <span>Envios</span>
                 </a>
-              </li>
+                </li>
 
               <li class="text-center p-20 upgrade-btn sidebar-item">
                 <a href="#" onclick="cerrarSesion()" class="btn d-grid btn-danger text-white" target="_blank">Cerrar sesión</a>
@@ -190,6 +190,48 @@
         </div>
       </div>
 
+      <div class="modal fade" id="modalSend" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
+        <div class="modal-dialog">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h1 class="modal-title fs-5" id="exampleModalLabel">Estado del envío</h1>
+                    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                </div>
+                <div class="modal-body">
+                    <input type="hidden" id="ventaId">
+                    <input type="hidden" id="newState">
+
+                    <select class="form-select" name="employee" id="employeesSelectModal"></select>
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-secondary" data-bs-dismiss="modal" style="color: #ffff;">Cancelar</button>
+                    <button type="button" class="btn" id="BtnConfirmarSend" style="background-color: #f62d51; color: #ffff;">Confirmar</button>
+                </div>
+            </div>
+        </div>
+      </div>
+
+      <div class="modal fade" id="modalDelivered" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
+        <div class="modal-dialog">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h1 class="modal-title fs-5" id="exampleModalLabel">Estado del envío</h1>
+                    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                </div>
+                <div class="modal-body">
+                    <input type="hidden" id="ventaId">
+                    <input type="hidden" id="newState">
+
+                    <p>¿Estás seguro de que deseas confirmar el envío de la venta?</p>
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-secondary" data-bs-dismiss="modal" style="color: #ffff;">Cancelar</button>
+                    <button type="button" class="btn" id="BtnConfirmarDelivered" style="background-color: #f62d51; color: #ffff;">Confirmar</button>
+                </div>
+            </div>
+        </div>
+      </div>
+
       <!--
         Dashboard
       -->
@@ -206,17 +248,17 @@
         <section class="section">
             <div class="card">
               <div class="card-header">
-                <h5>Administrar Ventas</h5>
+                <h5>Administrar Envios</h5>
                 </div>
               <div class="card-body">
                 <div class="table-responsive">
-                    <table class="table" id="salesTable" data-lang="es">
+                    <table class="table" id="enviosTable" data-lang="es">
                         <thead>
                           <tr>
                             <th class="text-center">#</th>
                             <th class="text-center">Cliente</th>
                             <th class="text-center">N° Cotización</th>
-                            <th class="text-center">Total</th>
+                            <th class="text-center">Empleado</th>
                             <th class="text-center">Estado de envío</th>
                             <th class="text-center">Opciones</th>
                           </tr>
@@ -255,11 +297,21 @@
     <script src="../../routes/auth.js"></script>
     <script src="js/datosUsuario.js"></script>
     <script src="js/botonesAside.js"></script>
-    <script src="js/pages/sales/sales.js"></script>
+    <script src="js/pages/sales/envios.js"></script>
 
     <script>
       $(document).ready(() => {
+        const userData = JSON.parse(localStorage.getItem('userData'));
+        console.log(userData);
+
         listSales();
+
+        // if (userData.Rol._id == '649ee49fa571b81a623f5772' || userData.Rol._id == '649d9526652816c809c8e998') {
+        //     return listSales();
+        //     console.log('Funciona');
+        // } else {
+        //     return;
+        // }
         showEmployees();
       })
     </script>

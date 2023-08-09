@@ -17,6 +17,17 @@ const getSale = async (req, res) => {
     }
 }
 
+async function generateNumberFactura() {
+
+    const lastSale = await Sale.findOne().sort({ Factura: -1 }).exec();
+
+    if (lastSale) {
+        const sumNumber = parseInt(lastSale.Factura.slice(-3), 10);
+        return (sumNumber + 1).toString().padStart(3, '0');
+    }
+    return '001';
+}
+
 const postSale = async (req, res) => {
     const { Productos, Cliente, Estado, Envio } = req.body;
 
@@ -45,8 +56,9 @@ const postSale = async (req, res) => {
         Total
     });
 
-    // Asignar el mismo valor del _id de MongoDB al campo "Factura"
-    newSale.Factura = newSale._id.toString();
+    const nextNumber = await generateNumberFactura();
+
+    newSale.Factura = nextNumber;
 
     await newSale.save();
 
@@ -152,10 +164,11 @@ const updateSaleToSend = async (req, res) => {
 
     const id_sale = req.params.id;
     const EstadoEnvio = "En camino";
+    const Empleado = req.body.Empleado;
 
     try {
         
-        const saleUpdate = await Sale.findByIdAndUpdate(id_sale, { EstadoEnvio });
+        const saleUpdate = await Sale.findByIdAndUpdate(id_sale, { EstadoEnvio, Empleado });
 
         if (saleUpdate) {
             
@@ -238,6 +251,65 @@ const updateSaleToPending = async (req, res) => {
     }
 }
 
+const updateSaleToReturn = async (req, res) => {
+    const id_sale = req.params.id;
+    const EstadoEnvio = "Devolución"
+
+    try {
+
+        const saleUpdate = await Sale.findByIdAndUpdate(id_sale, { EstadoEnvio });
+
+        if (saleUpdate) {
+            res.json({
+                ok: true,
+                msg: "Venta actualizada a Devolución"
+            });
+        } else {
+            res.status(404).json({
+                ok: false,
+                msg: "Venta no encontrada"
+            });
+        }
+
+    } catch (error) {
+        console.error(error);
+        res.status(500).json({
+            ok: false,
+            msg: "Error al actualizar el estado de envío a Devolución"
+        });
+    }
+}
+
+const updateSaleToCancelled = async (req, res) => {
+
+    const id_sale = req.params.id;
+    const EstadoEnvio = "Cancelado"
+
+    try {
+
+        const updateSale = await Sale.findByIdAndUpdate(id_sale, { EstadoEnvio });
+
+        if (updateSale) {
+            res.json({
+                ok: true,
+                msg: "Venta actualizada a Cancelado"
+            });
+        } else {
+            res.status(404).json({
+                ok: false,
+                msg: "Venta no encontrada"
+            });
+        }
+
+    } catch (error) {
+        console.error(error);
+        res.status(500).json({
+            ok: false,
+            msg: "Error al actualizar el estado de envío a Cancelado"
+        });
+    }
+}
+
 module.exports = {
     getSale,
     postSale,
@@ -248,4 +320,6 @@ module.exports = {
     updateSaleToSend,
     updateSaleToDelivered,
     updateSaleToPending,
+    updateSaleToReturn,
+    updateSaleToCancelled
 }
