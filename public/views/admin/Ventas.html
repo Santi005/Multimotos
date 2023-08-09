@@ -190,48 +190,6 @@
         </div>
       </div>
 
-      <div class="modal fade" id="modalSend" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
-        <div class="modal-dialog">
-            <div class="modal-content">
-                <div class="modal-header">
-                    <h1 class="modal-title fs-5" id="exampleModalLabel">Estado del envío</h1>
-                    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
-                </div>
-                <div class="modal-body">
-                    <input type="hidden" id="ventaId">
-                    <input type="hidden" id="newState">
-
-                    <p>¿Estás seguro de que deseas confirmar el envío de la venta?</p>
-                </div>
-                <div class="modal-footer">
-                    <button type="button" class="btn btn-secondary" data-bs-dismiss="modal" style="color: #ffff;">Cancelar</button>
-                    <button type="button" class="btn" id="BtnConfirmarSend" style="background-color: #f62d51; color: #ffff;">Confirmar</button>
-                </div>
-            </div>
-        </div>
-      </div>
-
-      <div class="modal fade" id="modalDelivered" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
-        <div class="modal-dialog">
-            <div class="modal-content">
-                <div class="modal-header">
-                    <h1 class="modal-title fs-5" id="exampleModalLabel">Estado del envío</h1>
-                    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
-                </div>
-                <div class="modal-body">
-                    <input type="hidden" id="ventaId">
-                    <input type="hidden" id="newState">
-
-                    <p>¿Estás seguro de que deseas confirmar el envío de la venta?</p>
-                </div>
-                <div class="modal-footer">
-                    <button type="button" class="btn btn-secondary" data-bs-dismiss="modal" style="color: #ffff;">Cancelar</button>
-                    <button type="button" class="btn" id="BtnConfirmarDelivered" style="background-color: #f62d51; color: #ffff;">Confirmar</button>
-                </div>
-            </div>
-        </div>
-      </div>
-
       <!--
         Dashboard
       -->
@@ -257,7 +215,7 @@
                           <tr>
                             <th class="text-center">#</th>
                             <th class="text-center">Cliente</th>
-                            <th class="text-center"># Factura</th>
+                            <th class="text-center">N° Cotización</th>
                             <th class="text-center">Total</th>
                             <th class="text-center">Estado de envío</th>
                             <th class="text-center">Opciones</th>
@@ -302,6 +260,7 @@
     <script>
       $(document).ready(() => {
         listSales();
+        showEmployees();
       })
     </script>
 

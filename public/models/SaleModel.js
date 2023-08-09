@@ -39,6 +39,11 @@ const SaleModel = new Schema({
         required: ["Ingrese un cliente válido."]
     },
 
+    Empleado: {
+        type: String,
+        default: "Por asignar"
+    },
+
     Estado: {
         type: Boolean,
         default: true
@@ -46,7 +51,7 @@ const SaleModel = new Schema({
 
     EstadoEnvio: {
         type: String,
-        enum: ["Por enviar", "En camino", "Entregado"],
+        enum: ["Por enviar", "En camino", "Entregado", "Devolución", "Cancelado"],
         default: "Por enviar",
     },
 
