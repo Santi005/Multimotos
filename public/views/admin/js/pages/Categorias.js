@@ -51,7 +51,7 @@ $(document).ready(function() {
 
     if (nombreCategoria === '') {
       $inputCategoria.addClass('is-invalid').removeClass('is-valid');
-      $errorAdd.text('El campo de nombre de categoría no puede estar vacío').removeClass('d-none');
+      $errorAdd.text('Ingrese un nombre para la categoría').removeClass('d-none');
       return false;
     } 
 
@@ -120,16 +120,16 @@ function validarEdicionCategoria() {
 
   if (nombreCategoria === '') {
     $('#InputEditarNombreCategoria').addClass('is-invalid').removeClass('is-valid');
-    $('#errorEdit').text('El campo de nombre de categoría no puede estar vacío').removeClass('d-none');
+    $('#errorEdit').text('Ingrese un nombre para la categoría').removeClass('d-none');
     return false;
   }
 
-  const $rows = $('#tablaCategorias tbody tr');
+  const $rows = $('#CategoriesTable tbody tr');
   for (let i = 0; i < $rows.length; i++) {
     const nombreCategoriaEnTabla = $rows.eq(i).find('td:eq(1)').text().trim(); // Asumiendo que el nombre de categoría está en la segunda columna de la tabla (índice 1)
     if (nombreCategoriaEnTabla === nombreCategoria) {
       $('#InputEditarNombreCategoria').addClass('is-invalid').removeClass('is-valid');
-      $('#errorEdit').text('El nombre de categoría ya está en uso en otra fila de la tabla').removeClass('d-none');
+      $('#errorEdit').text('El nombre de categoría ya está en uso.').removeClass('d-none');
       return false;
     }
   }

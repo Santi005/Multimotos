@@ -159,6 +159,13 @@
                 </a>
               </li>
 
+              <li class="sidebar-item">
+                <a href="Envios.html" class="sidebar-link">
+                    <i class="bi bi-truck"></i>
+                    <span>Envios</span>
+                </a>
+              </li>
+
               <li class="text-center p-20 upgrade-btn sidebar-item">
                 <a href="#" onclick="cerrarSesion()" class="btn d-grid btn-danger text-white" target="_blank">Cerrar sesión</a>
               </li>
@@ -208,30 +215,26 @@
                       aria-label="Close"></button>
               </div>
               <div class="modal-body">
-                  <form class="row g-3 needs-validation" novalidate>
-                      <div>
-                          <label for="NombreMarca">Nombre de la marca</label>
-                          <input type="text" class="form-control" id="NombreMarca" required>
-                          <div class="invalid-feedback">
-                              Por favor, ingresa un nombre de marca.
-                          </div>
-                      </div>
-                      <br>
-                      <div>
-                          <label for="FormFileAdd">Imagen</label>
-                          <input type="file" class="form-control" id="FormFileAdd"
-                              style="width: 400px" accept=".png, .jpg, .jpeg" required>
-                          <div class="invalid-feedback">
-                              Por favor, selecciona una imagen válida.
-                          </div>
-                      </div>
+                    <div>
+                      <label for="NombreMarca">Nombre de la marca</label>
+                      <input type="text" class="form-control" id="NombreMarca" required>
+                     <small class="form-text text-danger d-none" id="errorAdd"></small>
+                  </div>
+                  <br>
+                  <div>
+                      <label for="FormFileAdd">Imagen</label>
+                      <input type="file" class="form-control" id="FormFileAdd"
+                          style="width: 400px" accept=".png, .jpg, .jpeg" required>
+                          <small class="form-text text-danger d-none" id="errorAddFile"></small>
+
+                  </div>
+                  
               </div>
               <div class="modal-footer">
                   <button type="button" class="btn btn-secondary" data-bs-dismiss="modal"
                       style="color: #ffff;">Cancelar</button>
                   <button type="submit" class="btn btn-danger" id="BtnConfirmarAdd"
                       style="color: #ffff">Confirmar</button>
-                  </form>
               </div>
           </div>
       </div>
@@ -252,17 +255,16 @@
                         <label for="InputEditarNombreMarca">Nombre de la marca</label>
                         <input type="text" class="form-control" id="InputEditarNombreMarca" required>
                         <div class="invalid-feedback">
-                            Por favor, ingresa un nombre de marca.
+                            Ingrese un nombre para la marca.
                         </div>
+                        <small id="errorEdit" class="form-text text-danger d-none"></small>
                     </div>
                     <br>
                     <div>
                         <label for="formFileEdit">Imagen</label>
                         <input type="file" class="form-control" id="formFileEdit" style="width: 400px"
-                            accept=".png, .jpg, .jpeg" required>
-                        <div class="invalid-feedback">
-                            Por favor, selecciona una imagen válida.
-                        </div>
+                            accept=".png, .jpg, .jpeg" >
+                      
                     </div>
             </div>
             <div class="modal-footer">

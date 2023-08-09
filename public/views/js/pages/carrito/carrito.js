@@ -156,6 +156,9 @@ const addToCart = (productId, isButtonClicked) => {
     });
 };
 
+
+
+
 // Función para guardar el carrito en el localStorage.
 const saveCartToLocalStorage = () => {
   const cartItemsDataToSave = Object.entries(cartItemsData).reduce((acc, [productId, productData]) => {

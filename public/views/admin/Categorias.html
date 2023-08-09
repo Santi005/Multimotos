@@ -111,6 +111,13 @@
                                 </a>
                             </li>
 
+                            <li class="sidebar-item">
+                                <a href="Envios.html" class="sidebar-link">
+                                    <i class="bi bi-truck"></i>
+                                    <span>Envios</span>
+                                </a>
+                            </li>
+
                             <li class="text-center p-20 upgrade-btn sidebar-item">
                                 <a href="#" onclick="cerrarSesion()" class="btn d-grid btn-danger text-white" target="_blank">Cerrar sesión</a>
                             </li>
@@ -133,7 +140,6 @@
                     </div>
                 </div>
 
-                //Agregar categoría
                 <div class="modal fade" id="AgregarCategoria" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
                     <div class="modal-dialog">
                         <div class="modal-content">
@@ -144,17 +150,16 @@
                             <div class="modal-body">
                                 <label for="">Nombre de la categoría</label>
                                 <input type="text" id="InputAgregarNombreCategoria" class="form-control" style=" border-radius: 5px;" required>
-                                <small id="errorAdd" class="form-text text-danger d-none">Por favor, ingresa un nombre de categoría.</small>
+                                <small id="errorAdd" class="form-text text-danger d-none"></small>
                             </div>
                             <div class="modal-footer">
                                 <button type="button" class="btn btn-secondary" data-bs-dismiss="modal" style="color: #ffff;">Cancelar</button>
-                                <button type="button" class="btn btn-danger " id="BtnConfirmarAdd" style="color: #ffff">Confirmar</button>
+                                <button type="button" class="btn btn-danger " id="BtnConfirmarAdd" style="color: #ffff">Guardar</button>
                             </div>
                         </div>
                     </div>
                 </div>
 
-                //Editar categoría
                 <div class="modal fade" id="EditarCategoria" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
                     <div class="modal-dialog">
                         <div class="modal-content">
@@ -166,17 +171,16 @@
                                 <input type="hidden" id="IdEditarCategoria">
                                 <label for="">Nombre de la categoría</label>
                                 <input type="text" class="form-control" id="InputEditarNombreCategoria" style=" border-radius: 5px;" required>
-                                <small id="errorEdit" class="form-text text-danger d-none">Por favor, ingresa un nombre de categoría.</small>
+                                <small id="errorEdit" class="form-text text-danger d-none"></small>
                             </div>
                             <div class="modal-footer">
                                 <button type="button" class="btn btn-secondary" data-bs-dismiss="modal" style="color: #ffff;">Cancelar</button>
-                                <button type="button" class="btn btn-danger" id="BtnConfirmarEdit" style="color: #ffff">Confirmar</button>
+                                <button type="button" class="btn btn-danger" id="BtnConfirmarEdit" style="color: #ffff">Guardar</button>
                             </div>
                         </div>
                     </div>
                 </div>
 
-                //Eliminar categoría
                 <div class="modal fade" id="EliminarCategoria" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
                     <div class="modal-dialog">
                         <div class="modal-content">

@@ -1,4 +1,4 @@
-
+let marksData = [];
 //Método listar -------------------------------------------
 
 const listMarks = () => {
@@ -7,6 +7,7 @@ const listMarks = () => {
         .then(data => {
 
             if(Array.isArray(data.allMarks)) {
+                marksData = data.allMarks;
                 const tableBody = $("#MarksTable tbody");
                 tableBody.empty();
 
@@ -42,12 +43,67 @@ const listMarks = () => {
         });
 };
 //-----------------------------------------------------------
-
-
-//Método validar marca repetida -------------------------------------------
 $(document).ready(function() {
-    // Evento de clic en el botón de confirmar de marca
+    const $errorAdd = $('#errorAdd'); 
+    const $errorAddFile = $('#errorAddFile'); 
+
+
+    function validarNombreMarca() {
+        const nombreMarca = $('#NombreMarca').val();
+
+        if (nombreMarca.trim() === '') {
+            $('#NombreMarca').addClass('is-invalid');
+            $errorAdd.text('Ingrese un nombre para la marca').removeClass('d-none');
+
+            return false;
+        }
+
+        for (const marca of marksData) {
+            if (marca.NombreMarca === nombreMarca) {
+                $('#NombreMarca').addClass('is-invalid');
+                $errorAdd.text('El nombre de la marca ya está en uso').removeClass('d-none');
+
+                return false;
+            }
+        }
+
+        $('#NombreMarca').removeClass('is-invalid');
+        $errorAdd.addClass('d-none');
+        return true;
+    }
+
+
+    function validarArchivoImagen() {
+        const archivoImagen = $('#FormFileAdd')[0].files[0];
+        
+        if (!archivoImagen) {
+            $('#FormFileAdd').addClass('is-invalid');
+            $errorAddFile.text('Ingrese una imagen').removeClass('d-none');
+
+            return false;
+        } else {
+            $('#FormFileAdd').removeClass('is-invalid');
+
+            return true;
+        }  
+    }
+
+    function validarCampos() {
+        const esNombreValido = validarNombreMarca();
+        const esImagenValida = validarArchivoImagen();
+        
+        return esNombreValido && esImagenValida;
+    }
+    
+
+    $('#NombreMarca').on('input', validarNombreMarca);
+    $('#FormFileAdd').on('change', validarArchivoImagen);
+
     $('#BtnConfirmarAdd').on('click', () => {
+        if (!validarCampos()) {
+            return; // Evitar enviar el formulario si la validación falla
+        }
+        
         const nombreMarca = $('#NombreMarca').val();
         const archivoImagen = $('#FormFileAdd')[0].files[0];
         const formData = new FormData();
@@ -70,77 +126,80 @@ $(document).ready(function() {
         });
     });
 
-    // Reinicializar el formulario al abrir el modal de marca
-    $('#AgregarMarca').on('shown.bs.modal', function () {
+    $('#AgregarMarca').on('show.bs.modal', function () {
         $('#NombreMarca').val('');
         $('#FormFileAdd').val('');
+
+        // Reiniciar validaciones y ocultar mensajes de error
+        $('#NombreMarca').removeClass('is-invalid');
+        $('#FormFileAdd').removeClass('is-invalid');
+        $errorAdd.addClass('d-none');
+        $errorAddFile.addClass('d-none');
+
     });
 });
-
 //-----------------------------------------------------------
-
-
-
 
 //Método editar y validación de campo vacio -------------------------------------------
 function EditMark(id, name, image) {
     $('#EditarMarca').modal('show');
     $('#IdEditarMarca').val(id);
     $('#InputEditarNombreMarca').val(name);
-    $('#formFileEdit').val(image);
+    
+    // Almacena la imagen original al mostrar el modal de edición
+    $('#formFileEdit').data('original-image', image);
 }
+$('.needs-validation').on('submit', function (event) {
+    event.preventDefault();
 
-$(document).ready(function () {
-    'use strict';
+    var form = this;
+    if (form.checkValidity()) {
+        const id = $('#IdEditarMarca').val();
+        const nameMark = $('#InputEditarNombreMarca').val();
+        const image = $('#formFileEdit')[0].files[0];
+        const originalImage = $('#formFileEdit').data('original-image'); // Obtiene la imagen original
+        const $errorEdit = $('#errorEdit'); 
 
-    $('.needs-validation').on('submit', function (event) {
-        event.preventDefault();
 
-        var form = this;
-        if (form.checkValidity()) {
-            const id = $('#IdEditarMarca').val();
-            const nameMark = $('#InputEditarNombreMarca').val();
-            const image = $('#formFileEdit')[0].files[0];
+        const formData = new FormData();
+        formData.append('NombreMarca', nameMark);
 
-            const formData = new FormData();
-            formData.append('NombreMarca', nameMark);
+        // Agrega la imagen original si no se proporciona una nueva imagen
+        if (!image && originalImage) {
+            formData.append('Imagenes', originalImage);
+        } else if (image) {
+            formData.append('Imagenes', image);
+        }
+        const $rows = $('#MarksTable tbody tr');
+        for (let i = 0; i < $rows.length; i++) {
+          const nombreMarcaEnTabla = $rows.eq(i).find('td:eq(1)').text().trim(); // Asumiendo que el nombre de categoría está en la segunda columna de la tabla (índice 1)
+          if (nombreMarcaEnTabla === nameMark) {
+            $('#InputEditarNombreMarca').addClass('is-invalid').removeClass('is-valid');
+            $('#errorEdit').text('El nombre de categoría ya está en uso.').removeClass('d-none');
+            return false;
+          }
+        }
+        
 
-            if (image) {
-                formData.append('Imagenes', image);
-            }
+        fetch(`http://localhost:8080/marks/${id}`, {
+            method: 'PUT',
+            body: formData
+        })
+            .then(response => response.json())
+            .then(data => {
+                console.log('Marca editada:', data);
 
-            fetch(`http://localhost:8080/marks/${id}`, {
-                method: 'PUT',
-                body: formData
+                $('#EditarMarca').modal('hide');
+                location.reload();
             })
-                .then(response => response.json())
-                .then(data => {
-                    console.log('Marca editada:', data);
+            .catch(error => {
+                console.error(error);
+            });
+    }
 
-                    $('#EditarMarca').modal('hide');
-                    location.reload();
-                })
-                .catch(error => {
-                    console.error(error);
-                });
-        }
-        else {
-            // Agregar la clase is-invalid a los campos no válidos
-            $('#InputEditarNombreMarca').addClass('is-invalid');
-            $('#formFileEdit').addClass('is-invalid');
-        }
-
-        form.classList.add('was-validated');
-    });
-
-    $('#EditarMarca').on('show.bs.modal', function () {
-        var form = this.querySelector('.needs-validation');
-        form.classList.remove('was-validated');
-
-        $('#InputEditarNombreMarca').removeClass('is-invalid');
-        $('#formFileEdit').removeClass('is-invalid');
-    });
+    form.classList.add('was-validated');
 });
+
 //-----------------------------------------------------------
 
 
