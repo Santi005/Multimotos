@@ -1,6 +1,7 @@
 const multer = require("multer");
 const multerConfig = require("../utils/multerConfig");
 const Mark = require("../models/MarkModel");
+const Product = require("../models/ProductsModel");
 const fs = require('fs');
 const path = require('path');
 
@@ -96,33 +97,44 @@ const putMark = async (req, res) => {
 
 const deleteMark = async (req, res) => {
   const id_mark = req.params.id;
-  try{
-  const deletedMark = await Mark.findByIdAndDelete(id_mark);
-  if (!deletedMark) {
-    return res.status(404).json({ error: 'Marca no encontrada' });
-  }
 
-  
-  if (deletedMark.Imagenes && deletedMark.Imagenes.length > 0) {
-    deletedMark.Imagenes.forEach((imagen) => {
-      const imagePath = path.join(__dirname, '../uploads', imagen);
-          fs.unlink(imagePath, (err) => {
-            if (err) {
-              console.error('Error al eliminar el archivo:', err);
-            }
-          });
-    })
+  try {
+    // Verificar si la marca está asociada a algún producto
+    const productsWithMark = await Product.findOne({ Marca: id_mark });
+    if (productsWithMark) {
+      return res.status(409).json({ message: 'No se puede eliminar la marca porque está asociada a productos' });
+    }
+
+    // Si no hay productos asociados, proceder con la eliminación de la marca
+    const deletedMark = await Mark.findByIdAndDelete(id_mark);
+    
+    if (!deletedMark) {
+      return res.status(404).json({ error: 'Marca no encontrada' });
+    }
+
+    if (deletedMark.Imagenes && deletedMark.Imagenes.length > 0) {
+      deletedMark.Imagenes.forEach((imagen) => {
+        const imagePath = path.join(__dirname, '../uploads', imagen);
+        fs.unlink(imagePath, (err) => {
+          if (err) {
+            console.error('Error al eliminar el archivo:', err);
+          }
+        });
+      });
+    }
+
+    return res.json({
+      "ok": 200,
+      "mensaje": "Marca eliminada correctamente.",
+    });
+  } catch (error) {
+    console.error('Error al eliminar la marca:', error);
+    return res.status(500).json({ error: 'Error interno del servidor' });
   }
-  return res.json({
-    "ok" : 200,
-    "mensaje" : "Marca eliminada correctamente.",
-  })
-}
-catch(error){
-  console.error('Error al eliminar la marca:', error);
-      return res.status(500).json({ error: 'Error interno del servidor' });
-}
-}
+};
+
+
+
 
 
 const searchMark = async (req, res) => {

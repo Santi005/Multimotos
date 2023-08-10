@@ -47,9 +47,9 @@ const getProduct = async (req, res) => {
 
 
 const postProducts = async (req, res) => {
-    const { NombreProducto, Descripcion, Stock, Categoria, Marca, Precio } = req.body;
+    const { NombreProducto, Descripcion, Stock, Categoria, Marca, Precio, Estado } = req.body;
     let imagenes = [];
-
+    
     //Verifica si se adjuntaron imagenes y las guarda en "imagenes"
     if (req.files && req.files.length > 0) {
         imagenes = req.files.map((file) => file.filename);
@@ -71,14 +71,15 @@ const postProducts = async (req, res) => {
                 mensaje : 'La marca proporcionada no existe.'
             })
         }
-
-      
-
         const categoryId = category._id;
         const markId = mark._id;
 
         const product = new Product({ NombreProducto, Descripcion, Stock, Categoria: categoryId, Marca : markId, Precio, Imagenes: imagenes });
         await product.save();
+
+        if(Stock <= 0){
+            await Product.findByIdAndUpdate(product._id, { Estado: "Agotado" });
+        }
 
         res.json({
             ok: 200,
@@ -194,75 +195,37 @@ const searchProduct = async (req, res) => {
 const incrementStock = async (req, res) => {
     const { id } = req.params;
     const { amount } = req.body;
-  
-    try {
-      // Verificar si el producto existe
-      const product = await Product.findById(id);
-      if (!product) {
-        return res.status(404).json({ error: "Producto no encontrado" });
-      }
-  
-      // Verificar si la cantidad es un número válido
-      const parsedAmount = parseInt(amount);
-      if (isNaN(parsedAmount)) {
-        return res.status(400).json({ error: "La cantidad de incremento no es válida" });
-      }
-  
-      // Incrementar el stock
-      product.Stock += parsedAmount;
-      await product.save();
-  
-      res.status(200).json({ok : 200, message: "Stock incrementado exitosamente", product });
-    } catch (error) {
-      console.error(error);
-      res.status(500).json({ error: "Error al incrementar el stock del producto" });
-    }
-  };
-
-  
-  const statusFalse = async (req, res) => {
 
     try {
-        const id_product = req.params.id;
-        const Estado = false;
-
-        const productStatus = await Product.findByIdAndUpdate(id_product, { Estado });
-
-        if (productStatus) {
-            res.json({
-                ok: true,
-                msg: "Estado cambiado a falso"
-                
-            });
-        } else {
-            res.status(404).json({
-                ok: false,
-                msg: "Producto no encontrado"
-            });
+        // Verificar si el producto existe
+        const product = await Product.findById(id);
+        if (!product) {
+            return res.status(404).json({ error: "Producto no encontrado" });
         }
+
+        // Verificar si la cantidad es un número válido
+        const parsedAmount = parseInt(amount);
+        if (isNaN(parsedAmount)) {
+            return res.status(400).json({ error: "La cantidad de incremento no es válida" });
+        }
+
+        // Incrementar el stock
+        product.Stock += parsedAmount;
+
+        // Cambiar el estado a "Disponible"
+        product.Estado = "Disponible";
+
+        await product.save();
+
+        res.status(200).json({ ok: 200, message: "Stock incrementado exitosamente", product });
     } catch (error) {
         console.error(error);
-        res.status(500).json({
-            ok: false,
-            msg: "Error al cambiar el estado"
-        });
+        res.status(500).json({ error: "Error al incrementar el stock del producto" });
     }
-    
-}
+};
 
-const statusTrue = async (req, res) => {
+  
 
-    const id_product = req.params.id;
-    const Estado = true;
-
-    const productStatus = await Product.findByIdAndUpdate(id_product, { Estado });
-
-    res.json({
-        "ok" : 200,
-        "msg" : "Estado cambiado a true"
-    })
-
-}
 
 
 const decrementarStock = async (req, res) => {
@@ -310,6 +273,5 @@ module.exports = {
     fileUpload,
     incrementStock,
     decrementarStock,
-    statusFalse,
-    statusTrue
+
 }

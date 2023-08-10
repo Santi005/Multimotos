@@ -50,11 +50,12 @@ const listProducts = () => {
             const product = filteredProductsData[i];
 
             // Verifica si el producto existe antes de acceder a sus propiedades
+            const image = product.Imagenes[0]; // Tomar la primera imagen del array
+
             if (product) {
-              let imageTags = product.Imagenes.map(
-                (image) =>
-                  `<img src="${window.location.origin}/public/uploads/${image}" alt="${image}" width="100%" height="100%" style="align-items: center; object-fit:  cover;">`
-              ).join('');
+              const imageTag = `
+  <img src="${window.location.origin}/public/uploads/${image}" alt="${image}" width="100%" height="100%" style="align-items: center; object-fit: cover;">
+`;
 
               let estado;
               if (product.Estado == true) {
@@ -69,14 +70,14 @@ const listProducts = () => {
                 <div class="col-lg-4 col-md-4">
                   <div class="car__item">
                     <div class="productos" style="height: 200px; line-height: 200px;">
-                      ${imageTags}
+                      ${imageTag}
                     </div>
                     <div class="car__item__text">
                       <div class="car__item__text__inner">
                         <h5><a href="#">${product.NombreProducto}</a></h5>
                         <ul>
                           <li><span>${product.Precio.toLocaleString('es-CO', { style: 'currency', currency: 'COP' })}</span></li>
-                          <li><i id='${product._id}' ${product.Estado ? "class='fas fa-circle' style='color:green'" : "class='fas fa-circle' style='color:red'"}></i>${estado}</li>
+                          <li><i id='${product._id}' ${estado ? "class='fas fa-circle' style='color:green'" : "class='fas fa-circle' style='color:red'"}></i>${estado}</li>
                         </ul>
                       </div>
                       <div class="car__item__price">

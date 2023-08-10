@@ -34,8 +34,9 @@ const ProductModel = new Schema({
         required: "El precio del producto es obligatorio."
     },
     Estado: {
-        type: Boolean,
-        default: true
+        type: String,
+        enum: ["Disponible", "Agotado"],
+        default: "Disponible"
     },
     Imagenes: {
         type: [String],

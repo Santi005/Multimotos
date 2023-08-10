@@ -10,6 +10,7 @@
         <link rel="stylesheet" href="./assets/compiled/css/app.css" />
         <link rel="stylesheet" href="./assets/compiled/css/app-dark.css" />
         <link rel="stylesheet" href="./assets/compiled/css/iconly.css" />
+
     </head>
 
     <body>
@@ -190,13 +191,15 @@
                         <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
                     </div>
                     <div class="modal-body">
-                        <form class="row g-3 needs-validation" novalidate>
                             <label for="AddNombreProducto">Producto</label>
-                            <input type="text" id="AddNombreProducto" class="form-control" style=" border-radius: 5px; border-color: rgb(187, 187, 187);" required>
+                            <input type="text" id="AddNombreProducto" class="form-control" >
+                            <small class="form-text text-danger d-none" id="errorAddNombre"></small>
                             <br>
                             <label for="AddDescripcionProducto">Descripción</label>
-                            <textarea id="AddDescripcionProducto" cols="30" rows="5" class="form-control" style=" border-radius: 5px;  border-color: rgb(187, 187, 187);"
+                            <textarea id="AddDescripcionProducto" cols="30" rows="5" class="form-control" style=" resize: none; "
                             required></textarea>
+                            <small class="form-text text-danger d-none" id="errorAddDescripcion"></small>
+
                             <br>
                             <br>
                             <div style="display:flex ;">
@@ -204,7 +207,7 @@
                                 <label for="AddCategoriaProducto" style="padding-left: 178px;">Categoría</label>
                             </div>
                             <div style="display:flex ;" id="select">
-                                <select id="AddMarcaProducto" class="form-control" style="width:200px ;  border-radius: 5px;  border-color: rgb(187, 187, 187);">
+                                <select id="AddMarcaProducto" class="form-control" style="width:200px ;">
                                    <script>
                                     fetch('http://localhost:8080/marks/')
                                     .then(response => response.json())
@@ -225,7 +228,8 @@
                                     });
                                    </script>
                                 </select>
-                                <select id="AddCategoriaProducto" class="form-control" style="width: 200px; border-radius: 5px; margin-left: 20px;  border-color: rgb(187, 187, 187);">
+                                <small class="form-text text-danger d-none" id="errorAddMarca"></small>
+                                <select id="AddCategoriaProducto" class="form-control" style="width: 200px;  margin-left: 20px; ">
                                     <script>
                                             fetch('http://localhost:8080/categories/')
                                             .then(response => response.json())
@@ -246,6 +250,7 @@
                                             });
                                     </script>
                                 </select>
+                                <small class="form-text text-danger d-none" id="errorAddCategoria"></small>
                             </div>
                             <br>
                             <div style=" display: flex;">
@@ -253,21 +258,25 @@
                                 <label for="AddCantidadProducto"style="padding-left: 178px;">Cantidad </label>
                             </div>
                             <div style="display:flex ; ">
-                                <input type="number" id="AddPrecioProducto" class="form-control"style="width:200px ; border-radius: 5px;  border-color: rgb(187, 187, 187); " required>
-                                <input type="number" id="AddCantidadProducto" class="form-control"style="width:200px ; border-radius: 5px; margin-left: 20px;  border-color: rgb(187, 187, 187);" required>
+                                <input type="number" id="AddPrecioProducto"  class="form-control"style="width:200px ;  " required>
+                                <input type="number" id="AddCantidadProducto" class="form-control"style="width:200px ;  margin-left: 20px;" required>
+                            </div>
+                            <div style="display:flex ; ">
+                            <small class="form-text text-danger d-none" id="errorAddPrecio"></small>
+                            <small class="form-text text-danger d-none" id="errorAddCantidad" style="padding-left: 8px;"></small>
                             </div>
                             <br>
                             <br>
                             <label for="formFileAdd" class="form-label">Imagen</label>
                             <div class="mb-3">
-                                <input class="form-control " type="file" id="formFileAdd" accept=".png, .jpg, .jpeg" style=" border-color: rgb(187, 187, 187);" multiple required>
+                                <input class="form-control " type="file" id="formFileAdd" accept=".png, .jpg, .jpeg"  multiple required>
+                                <small class="form-text text-danger d-none" id="errorAddFile"></small>
                             </div>
                             </div>
                             <div class="modal-footer">
                                 <button type="button" class="btn btn-secondary" data-bs-dismiss="modal" style="color: #ffff;">Cancelar</button>
-                                <button type="button" class="btn btn-danger" id="BtnConfirmarAdd" style="color: #ffff">Confirmar</button>
+                                <button type="submit" class="btn btn-danger" id="BtnConfirmarAdd" style="color: #ffff">Confirmar</button>
                             </div>
-                        </form>
                 </div>
             </div>
         </div>
@@ -281,13 +290,14 @@
                         <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
                     </div>
                     <div class="modal-body">
-                        <form class="row g-3 needs-validation" novalidate>
                             <input type="hidden" id="IdEditarProducto">
                             <label for="EditNombreProducto" style="text-align: left;">Producto</label>
-                            <input type="text" id="EditNombreProducto" class="form-control" style=" border-radius: 5px; border-color: rgb(187, 187, 187)" required>
+                            <input type="text" id="EditNombreProducto" class="form-control">
+                            <small class="form-text text-danger d-none" id="errorEditNombre"></small>
                             <br>
                             <label for="EditDescripcionProducto" style="text-align: left;">Descripción</label>
-                            <input type="text" id="EditDescripcionProducto" class="form-control" style=" border-radius: 5px; border-color: rgb(187, 187, 187)" required>
+                            <input type="text" id="EditDescripcionProducto" class="form-control" style="  resize: none;" >
+                            <small class="form-text text-danger d-none" id="errorEditDescripcion"></small>
                             <br>
                             <br>
                             <div style="display:flex ;">
@@ -296,7 +306,7 @@
                                 <label for="EditPrecioProducto" style="padding-left: 86px;">Precio</label>
                             </div>
                             <div style="display:flex ;">
-                                <select name="" id="EditMarcaProducto" class="form-control" style="width:100px ;  border-radius: 5px; border-color: rgb(187, 187, 187)">
+                                <select name="" id="EditMarcaProducto" class="form-control" style="width:100px ;">
                                     <script>
                                         const getMarcasEdit = () => {
                                             fetch('http://localhost:8080/marks/')
@@ -316,12 +326,21 @@
                                                 .catch(error => {
                                                     console.error(error);
                                                 });
+
+                                                for (let i = 0; i < marcaProductoSelect.options.length; i++) {
+                                                if (marcaProductoSelect.options[i].value.trim() === mark.trim()) {
+                                                    marcaProductoSelect.selectedIndex = i;
+                                                    break;
+                                                }
+                                            }
                                         }
+
+                                      
                                         getMarcasEdit()
                                     </script>
                                 </select>
                                 &nbsp;&nbsp;
-                                <select name="" id="EditCategoriaProducto" class="form-control" style="width:140px ;  border-radius: 5px; border-color: rgb(187, 187, 187)">
+                                <select name="" id="EditCategoriaProducto" class="form-control" style="width:140px ;">
                                     <script>
                                         const getCategoriasEdit = () => {
                                             fetch('http://localhost:8080/categories/')
@@ -341,25 +360,32 @@
                                                 .catch(error => {
                                                     console.error(error);
                                                 });
+                                                for (let i = 0; i < categoriaProductoSelect.options.length; i++) {
+                                        if (categoriaProductoSelect.options[i].value.trim() === category.trim()) {
+                                            categoriaProductoSelect.selectedIndex = i;
+                                            break;
                                         }
+                                    }
+                                        }
+                                        
                                         getCategoriasEdit()
                                     </script>
                                 </select>
                                 &nbsp;&nbsp;
-                                <input type="number" id="EditPrecioProducto" class="form-control" style="width:25% ; border-radius: 5px; border-color: rgb(187, 187, 187); "required>
+                                <input type="number" id="EditPrecioProducto" class="form-control" style="width:25% ; ">
+                                <small class="form-text text-danger d-none" id="errorEditPrecio"></small>
                             </div>
                             <br>
                             <br>
                             <label  for="EditformFile" class="form-label" style="text-align: left;">Imagen</label>
                             <div class="mb-3">
-                                <input class="form-control " type="file" id="EditformFile" accept=".png, .jpg, .jpeg" style=" border-color: rgb(187, 187, 187)" multiple required>
+                                <input class="form-control " type="file" id="EditformFile" accept=".png, .jpg, .jpeg"  multiple >
                             </div>
                             </div>
                             <div class="modal-footer">
                                 <button type="button" class="btn btn-secondary" data-bs-dismiss="modal" style="color: #ffff;">Cancelar</button>
-                                <button type="submit" class="btn btn-danger " id="BtnConfirmarEdit" style="color: #ffff">Confirmar</button> 
+                                <button type="button" class="btn btn-danger " id="BtnConfirmarEdit" style="color: #ffff">Confirmar</button> 
                             </div>
-                        </form>
                 </div>
             </div>
         </div>
@@ -380,12 +406,12 @@
                     <div class="carousel-inner" id="imagenCarrusel">
                       <!-- Las imágenes se agregarán dinámicamente en JavaScript -->
                     </div>
-                    <button class="carousel-control-prev" type="button" data-bs-target="#carouselExampleIndicators" data-bs-slide="prev">
-                      <span class="carousel-control-prev-icon" aria-hidden="true"></span>
+                    <button class="carousel-control-prev" type="button" data-bs-target="#carouselExampleIndicators" data-bs-slide="prev" >
+                      <span class="carousel-control-prev-icon" aria-hidden="true" style="background-color: #f62d51; height: 40px; border-radius: 3px;"></span>
                       <span class="visually-hidden">Previous</span>
                     </button>
                     <button class="carousel-control-next" type="button" data-bs-target="#carouselExampleIndicators" data-bs-slide="next">
-                      <span class="carousel-control-next-icon" aria-hidden="true"></span>
+                      <span class="carousel-control-next-icon" aria-hidden="true"  style="background-color: #f62d51; height: 40px; border-radius: 3px;"></span>
                       <span class="visually-hidden">Next</span>
                     </button>
                   </div>

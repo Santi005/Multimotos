@@ -11,19 +11,35 @@ function ViewDetail(id) {
   fetch(`http://localhost:8080/products/${id}`)
   .then(response => response.json())
   .then(data => {
-    const producto = data.data; 
-      if (Array.isArray(producto.Imagenes)) {
-        imageTags = producto.Imagenes.map(image => `<img src="${window.location.origin}/public/uploads/${image}" alt="${image}" style="align-items:center">`).join('');
-      }
-      let disabledAttr = producto.Estado ? "" : "disabled";
-      let section = `
-        <div id="${producto._id}" class="row">
-          <div class="col-lg-9">
-            <div class="car__details__pic">
-              <div class="car__details__pic__large">
-                ${imageTags}
+    const producto = data.data;
+
+    let disabledAttr = producto.Estado ? "" : "disabled";
+    let section = `
+      <div id="${producto._id}" class="row">
+        <div class="col-lg-1">
+          <div class="d-flex flex-column align-items-center">
+            ${buildThumbnailImages(producto.Imagenes)}
+          </div>
+        </div>
+        <div class="col-lg-8">
+                <div id="carouselExampleIndicators" class="carousel slide" data-ride="carousel">
+                <ol class="carousel-indicators">
+                  <li data-target="#carouselExampleIndicators" data-slide-to="0" class="active"></li>
+                  <li data-target="#carouselExampleIndicators" data-slide-to="1"></li>
+                  <li data-target="#carouselExampleIndicators" data-slide-to="2"></li>
+                </ol>
+                <div class="carousel-inner">
+                ${buildCarouselImages(producto.Imagenes)}
+                </div>
+                <a class="carousel-control-prev" href="#carouselExampleIndicators" role="button" data-slide="prev">
+                  <span class="carousel-control-prev-icon" aria-hidden="true"></span>
+                  <span class="sr-only">Previous</span>
+                </a>
+                <a class="carousel-control-next" href="#carouselExampleIndicators" role="button" data-slide="next">
+                  <span class="carousel-control-next-icon" aria-hidden="true"></span>
+                  <span class="sr-only">Next</span>
+                </a>
               </div>
-            </div>
             <div class="car__details__tab">
               <div class="container" style="background-color: #e0e0e05d;">
               <br>
@@ -33,31 +49,52 @@ function ViewDetail(id) {
                 <br>
               </div>
             </div>
-          </div>
-
-
-          <div class="col-lg-3">
-            <div class="car__details__sidebar">
-              <div class="car__details__sidebar__model">
-                <h4>${producto.NombreProducto}</h4>
-                <br>
-                <p>${producto.Marca.NombreMarca}</p>
-              </div>
-              <div class="car__details__sidebar__payment">
-                <ul>
-                  <li>Precio: <span>${producto.Precio}</span></li>
-                  <li>Disponibilidad: <span>${producto.Stock}</span></li>
-                </ul>
-                <a  href="#" onclick="if(${producto.Estado}) addToCart('${producto._id}', true); event.preventDefault();" ${disabledAttr} class="primary-btn"><i class="fa fa-credit-card"></i> Agregar al carrito</a>
-               
+            </div>
+            <div class="col-lg-3"> <!-- Columna de detalles de compra -->
+              <div class="car__details__sidebar">
+                <div class="car__details__sidebar__model">
+                  <h4>${producto.NombreProducto}</h4> <!-- Muestra el nombre del producto -->
+                  <br>
+                  <p>${producto.Marca.NombreMarca}</p>
+                </div>
+                <div class="car__details__sidebar__payment">
+                  <ul>
+                    <li>Precio: <span>${producto.Precio}</span></li>
+                    <li>Disponibilidad: <span>${producto.Stock}</span></li>
+                  </ul>
+                  <a href="#" onclick="if(${producto.Estado}) addToCart('${producto._id}', true); event.preventDefault();" ${disabledAttr} class="primary-btn"><i class="fa fa-credit-card"></i> Agregar al carrito</a>
+                </div>
               </div>
             </div>
           </div>
-        </div>
+        `;
+        $('#section').append(section);
+      })
+      .catch(error => {
+        console.log('Fetch error:', error);
+      });
+    }
+
+function buildThumbnailImages(images) {
+  return images.map((image, index) => {
+    const imageUrl = `${window.location.origin}/public/uploads/${image}`;
+    const activeClass = index === 0 ? 'active' : '';
+    return `
+      <a data-bs-target="#carouselExampleIndicators" data-bs-slide-to="${index}" class="carousel-thumbnail ${activeClass}">
+        <img src="${imageUrl}" alt="${image}" style="height:50px;  padding-bottom:10px" class="thumbnail-img">
+      </a>
+    `;
+  }).join('');
+}
+
+function buildCarouselImages(images) {
+  return images.map((image, index) => {
+      const imageUrl = `${window.location.origin}/public/uploads/${image}`;
+      const activeClass = index === 0 ? 'active' : '';
+      return `
+          <div class="carousel-item ${activeClass}" style=" height:600px">
+              <img src="${imageUrl}" alt="${image}"  style="width: 100%; height: 600px; text-align:center">
+          </div>
       `;
-      $('#section').append(section);
-    })
-    .catch(error => {
-      console.log('Fetch error:', error);
-    });
+  }).join('');
 }
