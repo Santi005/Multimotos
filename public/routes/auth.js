@@ -30,44 +30,12 @@ router.post('/login', async (req, res) => {
     const { _id, Documento, Nombre, Apellidos, Correo: correoUsuario, Rol } = user;
 
     console.log('Nombre del rol:', Rol.nombre);
+    console.log('Permisos', Rol.permisos)
 
-    // Verificar los permisos del rol
-    const permisos = Rol.permisos;
-
-    const modulosAcceso = [];
-
-    if (permisos.dashboard) {
-      modulosAcceso.push('admin/index.html');
-    }
-
-    if (permisos.roles) {
-      modulosAcceso.push('admin/Roles.html');
-    }
-
-    if (permisos.usuarios) {
-      modulosAcceso.push('admin/usuarios.html');
-    }
-
-    if (permisos.productos) {
-      modulosAcceso.push('admin/productos.html');
-    }
-
-    if (permisos.categorias) {
-      modulosAcceso.push('admin/categorias.html');
-    }
-
-    if (permisos.marcas) {
-      modulosAcceso.push('admin/Marcas.html');
-    }
-
-    if (permisos.ventas) {
-      modulosAcceso.push('admin/Ventas.html');
-    }
-
-    if (modulosAcceso.length > 0) {
+    if (Rol.permisos.dashboard || Rol.permisos.roles || Rol.permisos.usuarios || Rol.permisos.productos || Rol.permisos.categorias || Rol.permisos.marcas || Rol.permisos.ventas) {
       console.log('Inicio de sesión exitoso (Administrador)');
       res.status(200).json({
-        redirectUrl: modulosAcceso[0], // Redirecciona al primer módulo disponible
+        redirectUrl: 'admin/index.html', // Redirigir al dashboard de administrador
         token: jwt.sign({ userId: _id }, process.env.SECRETKEY, { expiresIn: '1h' }),
         user: {
           _id,
@@ -84,7 +52,7 @@ router.post('/login', async (req, res) => {
 
       // Almacenar el nombre del usuario en el localStorage
       res.status(200).json({
-        redirectUrl: 'index.html',
+        redirectUrl: 'index.html', // Redirigir a la página del cliente
         token: jwt.sign({ userId: _id }, process.env.SECRETKEY, { expiresIn: '1h' }),
         user: {
           _id,

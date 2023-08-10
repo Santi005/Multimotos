@@ -5,6 +5,9 @@ const authRoutes = require("../public/routes/auth");
 const recoveryController = require('../public/controllers/recoveryController');
 const morgan = require("morgan");
 
+const bodyParser = require('body-parser');
+const sendEmail = require('../public/controllers/ContactanosController.js');
+
 class Server {
 
     constructor() {
@@ -35,6 +38,8 @@ class Server {
       // Definición información recibida (JSON)
       this.app.use( express.json() )
 
+      this.app.use(express.urlencoded({ extended: true }));
+
       // Definición directorio público (Directorio raíz)
       this.app.use( express.static('public') )
 
@@ -58,9 +63,33 @@ class Server {
 
       // Ruta para procesar el restablecimiento de contraseña
       this.app.post('/reset-password/:token', recoveryController.resetPassword);
-      // Ruta para cargar la página de restablecimiento de contraseña
 
-    }
+      // Endpoint para manejar el formulario de contacto
+      this.app.post('/contact', async (req, res) => {
+        const { nombre, correo, titulo, pregunta } = req.body;
+
+        try {
+          console
+
+          const mailOptions = {
+            from: 'serviciomultimotos@gmail.com',
+            to: 'serviciomultimotos@gmail.com',
+            subject: `Formulario de Contacto: ${titulo}`,
+            text: `Nombre: ${nombre}\nCorreo: ${correo}\nPregunta: ${pregunta}`,
+          };
+
+          await sendEmail(mailOptions);
+
+          // Envío exitoso
+          res.status(200).json({ message: 'Correo enviado con éxito' });
+        } catch (error) {
+          console.error('Error al manejar el formulario de contacto:', error);
+          res.status(500).json({ message: 'Error al enviar el correo' });
+        }
+      });
+      
+      }
+    
 
     listen() {
       this.app.listen(this.port, () => {
