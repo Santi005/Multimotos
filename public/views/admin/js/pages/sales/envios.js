@@ -12,7 +12,7 @@ const listSales = () => {
                 return; // Salta al siguiente iteración del bucle
             }
 
-            if (sale.Empleado == userData.Nombre + ' ' + userData.Apellidos) {
+            if (sale.Empleado == userData.Nombre + ' ' + userData.Apellidos && sale.EstadoEnvio == 'En camino') {
                 let row = `
                 <tr id='${sale._id}' ${sale.Estado ? "" : "class='venta-desactivada' style='color: #8b8a8a'"}>
                     <td class="text-center">${index + 1}</td>
@@ -27,26 +27,52 @@ const listSales = () => {
                             ${estadoActual === "Por enviar" ? "Enviar" : "Entregar"}
                             <i class="bi bi-truck" style="color: #fff; font-size: 1.3em; cursor: pointer;"></i>
                         </button>
+
+                        <br><br>
+
+                        <button style="width: 200px" class="btn btn-danger btn-new-button" data-id="${sale._id}">
+                            <i class="bi bi-truck" style="color: #fff; font-size: 1.3em; cursor: pointer;"></i> &nbsp; Marcar devolución
+                        </button>
+
+                        <button style="width: 200px" class="btn btn-danger btn-new-buttons" data-id="${sale._id}">
+                            <i class="bi bi-truck" style="color: #fff; font-size: 1.3em; cursor: pointer;"></i> &nbsp; Razón Devolución
+                        </button>
                     </td>
                 </tr>
                 `
                 $('#enviosTable tbody').append(row);
 
                 const btnChangeStatus = $('#enviosTable tbody').find('.btn-change-status:last');
+                const btnNewButton = $('#enviosTable tbody').find('.btn-new-button:last');
+                const btnNewButtons = $('#enviosTable tbody').find('.btn-new-buttons:last');
                 const icon = `<i class="bi bi-truck" style="color: #fff; font-size: 1.3em;"></i>`;
 
                 if(estadoActual === "Por enviar") {
                     btnChangeStatus.html(`${icon} &nbsp; Enviar`)
                     btnChangeStatus.on('click', () => openModalSend(sale._id, "En camino"));
+                    btnNewButton.hide();
+                    btnNewButtons.hide();
 
                     newState = 'En camino';
                 } else if (estadoActual === "En camino") {
+                    btnNewButtons.hide();
                     btnChangeStatus.html(`${icon} &nbsp; Confirmar entrega`)
-                    btnChangeStatus.on('click', () => openModalDelivered(sale._id, "Entregado"));
+                    btnChangeStatus.on('click', () => {
+                        openModalDelivered(sale._id, "Entregado");
+                        newState = 'Entregado';
+                    });
+        
+                    btnNewButton.on('click', () => {
+                        openModalReturn(sale._id, "Devolución");
+                        newState = 'Devolución';
+                    });
 
-                    newState = 'Entregado';
+                    // newState = 'Entregado';
                 } else if (estadoActual === "Devolución") {
-                    // Proximamente...
+                    btnChangeStatus.html(`${icon} &nbsp; Reenviar`);
+                    btnChangeStatus.on('click', () => openModalSend(sale._id, "En camino"));
+                    btnNewButton.hide();
+                    btnNewButtons.on('click', () => openModalRazon(sale.Razon));
                 } else if (estadoActual === "Cancelado") {
                     // Proximamente...
                 } else {
@@ -67,26 +93,53 @@ const listSales = () => {
                             ${estadoActual === "Por enviar" ? "Enviar" : "Entregar"}
                             <i class="bi bi-truck" style="color: #fff; font-size: 1.3em; cursor: pointer;"></i>
                         </button>
+
+                        <br><br>
+
+                        <button style="width: 200px" class="btn btn-danger btn-new-button" data-id="${sale._id}">
+                            <i class="bi bi-truck" style="color: #fff; font-size: 1.3em; cursor: pointer;"></i> &nbsp; Marcar devolución
+                        </button>
+
+                        <button style="width: 200px" class="btn btn-danger btn-new-buttons" data-id="${sale._id}">
+                            <i class="bi bi-truck" style="color: #fff; font-size: 1.3em; cursor: pointer;"></i> &nbsp; Razón Devolución
+                        </button>
+
                     </td>
                 </tr>
                 `
                 $('#enviosTable tbody').append(row);
 
                 const btnChangeStatus = $('#enviosTable tbody').find('.btn-change-status:last');
+                const btnNewButton = $('#enviosTable tbody').find('.btn-new-button:last');
+                const btnNewButtons = $('#enviosTable tbody').find('.btn-new-buttons:last');
                 const icon = `<i class="bi bi-truck" style="color: #fff; font-size: 1.3em;"></i>`;
 
                 if(estadoActual === "Por enviar") {
                     btnChangeStatus.html(`${icon} &nbsp; Enviar`)
                     btnChangeStatus.on('click', () => openModalSend(sale._id, "En camino"));
+                    btnNewButton.hide();
+                    btnNewButtons.hide();
 
                     newState = 'En camino';
                 } else if (estadoActual === "En camino") {
+                    btnNewButtons.hide();
                     btnChangeStatus.html(`${icon} &nbsp; Confirmar entrega`)
-                    btnChangeStatus.on('click', () => openModalDelivered(sale._id, "Entregado"));
+                    btnChangeStatus.on('click', () => {
+                        openModalDelivered(sale._id, "Entregado");
+                        newState = 'Entregado';
+                    });
+        
+                    btnNewButton.on('click', () => {
+                        openModalReturn(sale._id, "Devolución");
+                        newState = 'Devolución';
+                    });
 
-                    newState = 'Entregado';
+                    // newState = 'Entregado';
                 } else if (estadoActual === "Devolución") {
-                    // Proximamente...
+                    btnChangeStatus.html(`${icon} &nbsp; Reenviar`);
+                    btnChangeStatus.on('click', () => openModalSend(sale._id, "En camino"));
+                    btnNewButton.hide();
+                    btnNewButtons.on('click', () => openModalRazon(sale.Razon));
                 } else if (estadoActual === "Cancelado") {
                     // Proximamente...
                 } else {
@@ -127,9 +180,17 @@ $("#BtnConfirmarSend").on("click", () => {
     const ventaIdModal = $("#ventaId").val();
     const newStateModal = $("#newState").val();
     const employeeSelect = $('#employeesSelectModal').val();
-    
-    openModalSend(ventaIdModal, newStateModal); // Llamar a openModalSend con los valores adecuados
-    updateStateSend(ventaIdModal, newStateModal, employeeSelect);
+
+    if (employeeSelect) {
+        document.getElementById('employeesSelectModal').classList.remove('is-invalid');
+        document.getElementById('employeesSelectModal').classList.add('is-valid');
+
+        openModalSend(ventaIdModal, newStateModal); // Llamar a openModalSend con los valores adecuados
+        updateStateSend(ventaIdModal, newStateModal, employeeSelect);
+    } else {
+        document.getElementById('employeesSelectModal').classList.remove('is-valid');
+        document.getElementById('employeesSelectModal').classList.add('is-invalid');
+    }
 });
 
 const updateStateSend = async (saleId, newState, employeeSelect) => {
@@ -203,6 +264,60 @@ const updateStateDelivered = async (saleId, newState) => {
     }
 }
 
+const openModalReturn = (saleId, newState) => {
+    $('#ventaId').val(saleId);
+    $('#newState').val(newState);
+
+    $("#modalReturn").modal("show");
+}
+
+$("#BtnConfirmarReturn").on("click", () => {
+    const ventaIdModal = $("#ventaId").val();
+    const newStateModal = $("#newState").val();
+    const razon = $('#razonDevolution').val();
+
+    if (razon) {
+        document.getElementById('razonDevolution').classList.remove('is-invalid');
+        document.getElementById('razonDevolution').classList.add('is-valid');
+
+        openModalReturn(ventaIdModal, newStateModal); // Llamar a openModalSend con los valores adecuados
+        updateStateReturn(ventaIdModal, newStateModal, razon);
+    } else {
+        document.getElementById('razonDevolution').classList.remove('is-valid');
+        document.getElementById('razonDevolution').classList.add('is-invalid');
+    }
+    
+});
+
+const updateStateReturn = async (saleId, newState, razon) => {
+    
+    try {
+        
+        const response = await fetch(`http://localhost:8080/sales/updateToReturn/${saleId}`, {
+            method: 'PUT',
+            headers: {
+                'Content-Type': 'application/json',
+            },
+            body: JSON.stringify({
+                EstadoEnvio: newState,
+                Razon: razon
+            }),
+        });
+
+        if (response.ok) {
+
+            const estadoEtiqueta = $(`#salesTable tr#${saleId} .estado-etiqueta`);
+            estadoEtiqueta.text(newState);
+            
+            window.location.reload();
+        }
+
+    } catch (error) {
+        console.error(error);
+        alert('Error al actualizar el estado de envio de la venta.')
+    }
+}
+
 const showEmployees = async () => {
     const employeesSelect = document.getElementById('employeesSelectModal');
 
@@ -235,16 +350,23 @@ const showEmployees = async () => {
     }
 }
 
+const openModalRazon = (razonDevolution) => {
+    $("#modalReturnRazon").modal("show");
+    $('#razonDevolutionText').val(razonDevolution);
+}
+
 const getStatusClass = (estado) => {
     // Asignar la clase correspondiente al estado del envío para cambiar el color del círculo
     switch (estado) {
-      case "Por enviar":
-        return "estado-etiqueta-por-enviar";
-      case "En camino":
-        return "estado-etiqueta-enviado";
-      case "Entregado":
-        return "estado-etiqueta-entregado";
-      default:
-        return "";
+        case "Por enviar":
+            return "estado-etiqueta-por-enviar";
+        case "En camino":
+            return "estado-etiqueta-enviado";
+        case "Entregado":
+            return "estado-etiqueta-entregado";
+        case "Devolución":
+            return "estado-etiqueta-devolution";
+        default:
+            return "";
     }
 };

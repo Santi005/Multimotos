@@ -156,6 +156,8 @@ const pagar = () => {
             .catch(error => {
                 console.log(error);
             });
+
+            localStorage.removeItem('cartItemsData');
         }
     })
     .catch(error => {

@@ -253,11 +253,12 @@ const updateSaleToPending = async (req, res) => {
 
 const updateSaleToReturn = async (req, res) => {
     const id_sale = req.params.id;
-    const EstadoEnvio = "Devolución"
+    const EstadoEnvio = "Devolución";
+    const Razon = req.body.Razon;
 
     try {
 
-        const saleUpdate = await Sale.findByIdAndUpdate(id_sale, { EstadoEnvio });
+        const saleUpdate = await Sale.findByIdAndUpdate(id_sale, { EstadoEnvio, Razon });
 
         if (saleUpdate) {
             res.json({

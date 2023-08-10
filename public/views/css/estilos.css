@@ -201,6 +201,12 @@ a.profile-pic {
     border: none;
 }
 
+.estado-etiqueta[estado="Devolución"] {
+  background-color: #b02df6;
+  color: #fff;
+  border: none
+}
+
 .btn-custom-action {
   width: 200px;
   font-size: 14px;
@@ -245,3 +251,4 @@ a.profile-pic {
   box-shadow: 0px 2px 5px rgba(0, 0, 0, 0.1);
   transition: top 0.3s ease;
 }
+
