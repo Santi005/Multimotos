@@ -105,12 +105,12 @@ const pagar = () => {
     const direccionCompleta = `${citySelect.value}, ${adress}`;
 
     // Obtener los datos del cliente de los input
-    cliente.push(document.getElementById('firstName').value);
-    cliente.push(document.getElementById('lastName').value);
+    cliente.push(userData.Nombre);
+    cliente.push(userData.Apellidos);
     cliente.push(direccionCompleta);
     cliente.push(document.getElementById('email').value);
     cliente.push(document.getElementById('phone').value);
-    cliente.push(document.getElementById('idCard').value);
+    cliente.push(userData.Documento);
 
     const ventaData = {
         Productos: productos,
@@ -151,7 +151,7 @@ const pagar = () => {
             })
             .then(response => response.json())
             .then(data => {
-                console.log(data);
+                
             })
             .catch(error => {
                 console.log(error);

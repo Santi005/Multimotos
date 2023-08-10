@@ -8,7 +8,7 @@
   padding: 20px;
   transition: right 0.3s ease;
   box-shadow: -5px 0 5px rgba(0, 0, 0, 0.2);
-  z-index: 999;
+  z-index: 1001;
 }
   
 .sidebar.show {
@@ -235,3 +235,13 @@ a.profile-pic {
   margin-top: 20px;
 }
 
+.fixed-header {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100%;
+  background-color: #fff;
+  z-index: 1000;
+  box-shadow: 0px 2px 5px rgba(0, 0, 0, 0.1);
+  transition: top 0.3s ease;
+}
