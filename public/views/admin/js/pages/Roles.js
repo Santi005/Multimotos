@@ -1,9 +1,12 @@
+let rolesData = []; 
+
 const listRoles = () => {
   fetch('http://localhost:8080/roles/')
     .then((response) => response.json())
     .then((data) => {
       // Asegúrate de que data.data sea un arreglo válido
       if (Array.isArray(data.data)) {
+        rolesData = data.data;
         const tableBody = $("#RolesTable tbody");
         tableBody.empty(); // Limpiar la tabla antes de agregar los resultados filtrados
 
@@ -56,169 +59,232 @@ const showRoleDetails = (roleId) => {
 $("#search-input-roles").on("input", listRoles);
 
 $(document).ready(function() {
-  $("#BtnConfirmarAgregar").on("click", function(event) {
-    event.preventDefault();
-    event.stopPropagation();
+  const $inputAgregarNombreRol = $('#InputAgregarNombreRol');
+  const $errorAdd = $('#errorAdd');
+  const $modalAgregarRol = $('#AgregarRol');
+  const $btnConfirmarAgregar = $('#BtnConfirmarAgregar');
 
-    var inputAgregarNombreRol = $("#InputAgregarNombreRol");
-    var error = $("#errorAdd");
+  // Función de validación
+  function validarRol() {
+    const roleName = $inputAgregarNombreRol.val().trim();
+    const alphanumericRegex = /^[a-zA-Z\s]*$/;
 
-    var roleName = inputAgregarNombreRol.val().trim();
-    var alphanumericRegex = /^[a-zA-Z\s]*$/;
-
-    if (roleName === "") {
-      error.text("El campo no puede estar vacío.").removeClass("d-none");
-      inputAgregarNombreRol.addClass("is-invalid");
-      return;
+    if (roleName === '') {
+      $inputAgregarNombreRol.addClass('is-invalid').removeClass('is-valid');
+      $errorAdd.text('El campo no puede estar vacío.').removeClass('d-none');
+      return false;
     } else if (!alphanumericRegex.test(roleName)) {
-      error.text("No se permiten caracteres especiales ni números.").removeClass("d-none");
-      inputAgregarNombreRol.addClass("is-invalid");
-      return;
-    } else {
-      error.text("").addClass("d-none");
-      inputAgregarNombreRol.removeClass("is-invalid");
-      $("#AgregarRol").modal("hide");
+      $inputAgregarNombreRol.addClass('is-invalid').removeClass('is-valid');
+      $errorAdd.text('No se permiten caracteres especiales ni números.').removeClass('d-none');
+      return false;
+    }
 
-      var estado = $("#SelectAgregarEstadoRol").val();
-      var dashboard = $("#CheckDashboard").is(":checked");
-      var roles = $("#CheckRoles").is(":checked");
-      var usuarios = $("#CheckUsuarios").is(":checked");
-      var productos = $("#CheckProductos").is(":checked");
-      var categorias = $("#CheckCategorias").is(":checked");
-      var marcas = $("#CheckMarcas").is(":checked");
-      var ventas = $("#CheckVentas").is(":checked");
+    for (const role of rolesData) {
+      if (role.nombre === roleName) {
+        $inputAgregarNombreRol.addClass('is-invalid').removeClass('is-valid');
+        $errorAdd.text('El nombre de rol ya está en uso').removeClass('d-none');
+        return false;
+      }
+    }
 
-      var roleData = {
-        nombre: roleName,
-        estado: estado,
-        permisos: {
-          dashboard: dashboard,
-          roles: roles,
-          usuarios: usuarios,
-          productos: productos,
-          categorias: categorias,
-          marcas: marcas,
-          ventas: ventas,
-        },
-      };
+    $inputAgregarNombreRol.removeClass('is-invalid').addClass('is-valid');
+    $errorAdd.addClass('d-none');
+    return true;
+  }
 
-      fetch("http://localhost:8080/roles", {
-        method: "POST",
-        body: JSON.stringify(roleData),
-        headers: {
-          "Content-type": "application/json; charset=UTF-8",
-        },
+  // Función para agregar un rol
+  function agregarRol() {
+    const roleName = $inputAgregarNombreRol.val().trim();
+    const estado = $('#SelectAgregarEstadoRol').val();
+    const dashboard = $("#CheckDashboard").is(":checked");
+    const roles = $("#CheckRoles").is(":checked");
+    const usuarios = $("#CheckUsuarios").is(":checked");
+    const productos = $("#CheckProductos").is(":checked");
+    const categorias = $("#CheckCategorias").is(":checked");
+    const marcas = $("#CheckMarcas").is(":checked");
+    const ventas = $("#CheckVentas").is(":checked");
+
+    let roleData = {
+      nombre: roleName,
+      estado: estado,
+      permisos: {
+        dashboard: dashboard,
+        roles: roles,
+        usuarios: usuarios,
+        productos: productos,
+        categorias: categorias,
+        marcas: marcas,
+        ventas: ventas,
+      },
+    };
+
+    fetch('http://localhost:8080/roles', {
+      method: 'POST',
+      body: JSON.stringify(roleData),
+      headers: {
+        'Content-type': 'application/json; charset=UTF-8',
+      },
+    })
+      .then((response) => response.json())
+      .then((json) => {
+        $modalAgregarRol.modal('hide');
+        location.reload();
       })
-        .then((response) => response.json())
-        .then((json) => {
-          location.reload();
-          // Manejar la respuesta de la solicitud de agregar el rol
-        })
-        .catch((error) => {
-          console.error(error);
-        });
+      .catch((error) => {
+        console.error('Error al agregar el rol:', error);
+      });
+  }
+
+  // Reinicializar la validación al cerrar el modal
+  $modalAgregarRol.on('hidden.bs.modal', function () {
+    $inputAgregarNombreRol.val('');
+    $inputAgregarNombreRol.removeClass('is-invalid is-valid');
+    $errorAdd.addClass('d-none');
+  });
+
+  // Evento de entrada para la validación en tiempo real
+  $inputAgregarNombreRol.on('input', validarRol);
+
+  // Evento de clic en el botón de confirmar
+  $btnConfirmarAgregar.on('click', () => {
+    if (validarRol()) {
+      agregarRol();
     }
   });
 });
 
+//EDITAR-------------------------------------------------------
 
+// Función de validación para la edición de roles
+// Función de validación para la edición de roles
+function validarEdicionRol() {
+  let roleName = $('#InputNombreRol').val().trim();
+  let roleId = $('#IdEditarRol').val(); // Obtener el ID del rol en edición
 
-$(document).ready(function() {
-  $("#BtnConfirmarEdit").on("click", function(event) {
-    event.preventDefault();
-    event.stopPropagation();
+  if (roleName === '') {
+    $('#InputNombreRol').addClass('is-invalid').removeClass('is-valid');
+    $('#errorEdit').text('El campo no puede estar vacío.').removeClass('d-none');
+    return false;
+  }
 
-    var inputEditarNombreRol = $("#InputNombreRol");
-    var error = $("#errorEdit");
-
-    var roleName = inputEditarNombreRol.val().trim();
-    var alphanumericRegex = /^[a-zA-Z\s]*$/; // Expresión regular para permitir solo letras y espacios
-
-    if (roleName === "") {
-      error.text("El campo no puede estar vacío.").removeClass("d-none");
-      inputEditarNombreRol.addClass("is-invalid");
-      return;
-    } else if (!alphanumericRegex.test(roleName)) {
-      error.text("No se permiten caracteres especiales ni números.").removeClass("d-none");
-      inputEditarNombreRol.addClass("is-invalid");
-      return;
-    } else {
-      error.text("").addClass("d-none");
-      inputEditarNombreRol.removeClass("is-invalid");
-      $("#EditarRol").modal("hide");
-
-      var id = $("#IdEditarRol").val();
-      var estado = $("#InputEstadoRol").val();
-      var dashboard = $("#CheckDashboardEditar").is(":checked");
-      var roles = $("#CheckRolesEditar").is(":checked");
-      var usuarios = $("#CheckUsuariosEditar").is(":checked");
-      var productos = $("#CheckProductosEditar").is(":checked");
-      var categorias = $("#CheckCategoriasEditar").is(":checked");
-      var marcas = $("#CheckMarcasEditar").is(":checked");
-      var ventas = $("#CheckVentasEditar").is(":checked");
-
-      var roleData = {
-        nombre: roleName,
-        estado: estado,
-        permisos: {
-          dashboard: dashboard,
-          roles: roles,
-          usuarios: usuarios,
-          productos: productos,
-          categorias: categorias,
-          marcas: marcas,
-          ventas: ventas,
-        },
-      };
-
-      fetch(`http://localhost:8080/roles/${id}`, {
-        method: "PUT",
-        body: JSON.stringify(roleData),
-        headers: {
-          "Content-type": "application/json; charset=UTF-8",
-        },
-      })
-        .then((response) => response.json())
-        .then((json) => {
-          location.reload();
-          // Manejar la respuesta de la solicitud de edición del rol
-        })
-        .catch((error) => {
-          console.error(error);
-        });
+  const $rows = $('#RolesTable tbody tr');
+  for (let i = 0; i < $rows.length; i++) {
+    const roleIdInTable = $rows.eq(i).find('td:eq(0)').text().trim(); // Asumiendo que el ID de rol está en la primera columna de la tabla (índice 0)
+    const roleNameInTable = $rows.eq(i).find('td:eq(1)').text().trim(); // Asumiendo que el nombre de rol está en la segunda columna de la tabla (índice 1)
+    
+    if (roleNameInTable === roleName && roleIdInTable !== roleId) { // Verificar el nombre del rol y el ID
+      $('#InputNombreRol').addClass('is-invalid').removeClass('is-valid');
+      $('#errorEdit').text('El nombre de rol ya está en uso').removeClass('d-none');
+      return false;
     }
-  });
-});
+  }
 
-
-function editRole(id, name, estado, dashboard, roles, usuarios, productos, categorias, marcas, ventas) {
-  console.log('Dashboard:', dashboard);
-  $("#EditarRol").modal("show");
-  $("#IdEditarRol").val(id);
-  $("#InputNombreRol").val(name);
-
-  // Establecer el valor del estado actual seleccionando la opción correspondiente
-  $("#InputEstadoRol").val(estado);
-
-  // Establecer el estado de cada checkbox de permisos
-  $("#CheckDashboardEditar").prop("checked", dashboard === 'true');
-  $("#CheckRolesEditar").prop("checked", roles === 'true');
-  $("#CheckUsuariosEditar").prop("checked", usuarios === 'true');
-  $("#CheckProductosEditar").prop("checked", productos === 'true');
-  $("#CheckCategoriasEditar").prop("checked", categorias === 'true');
-  $("#CheckMarcasEditar").prop("checked", marcas === 'true');
-  $("#CheckVentasEditar").prop("checked", ventas === 'true');
-
-  console.log("Valores de permisos:", {
-    dashboard: dashboard,
-    roles: roles,
-    usuarios: usuarios,
-    productos: productos,
-    categorias: categorias,
-    marcas: marcas,
-    ventas: ventas,
-  });
+  $('#InputNombreRol').removeClass('is-invalid').addClass('is-valid');
+  $('#errorEdit').addClass('d-none');
+  return true;
 }
+
+// Función para mostrar el modal de edición de rol
+function editRole(id, name, estado, dashboard, roles, usuarios, productos, categorias, marcas, ventas) {
+  $('#IdEditarRol').val(id);
+  $('#InputNombreRol').val(name);
+  $('#InputEstadoRol').val(estado);
+  $('#CheckDashboardEditar').prop('checked', dashboard === 'true');
+  $('#CheckRolesEditar').prop('checked', roles === 'true');
+  $('#CheckUsuariosEditar').prop('checked', usuarios === 'true');
+  $('#CheckProductosEditar').prop('checked', productos === 'true');
+  $('#CheckCategoriasEditar').prop('checked', categorias === 'true');
+  $('#CheckMarcasEditar').prop('checked', marcas === 'true');
+  $('#CheckVentasEditar').prop('checked', ventas === 'true');
+  
+  $('#EditarRol').modal('show');
+}
+
+// Evento de entrada para la validación en tiempo real
+$('#InputNombreRol').on('input', validarEdicionRol);
+
+// Evento de clic en el botón de confirmar
+$('#BtnConfirmarEdit').on('click', () => {
+  const id = $('#IdEditarRol').val();
+  const roleName = $('#InputNombreRol').val().trim();
+  const estado = $('#InputEstadoRol').val();
+  const dashboard = $('#CheckDashboardEditar').is(':checked');
+  const roles = $('#CheckRolesEditar').is(':checked');
+  const usuarios = $('#CheckUsuariosEditar').is(':checked');
+  const productos = $('#CheckProductosEditar').is(':checked');
+  const categorias = $('#CheckCategoriasEditar').is(':checked');
+  const marcas = $('#CheckMarcasEditar').is(':checked');
+  const ventas = $('#CheckVentasEditar').is(':checked');
+
+  // Obtener el nombre original del rol antes de abrir el modal
+  const originalRoleName = $('#InputNombreRol').val().trim();
+  // Verificar si el nombre ha cambiado
+  if (roleName !== originalRoleName) {
+    // Realizar la validación del nuevo nombre si ha cambiado
+    if (!validarEdicionRol()) {
+      return; // No continuar si la validación falla
+    }
+  }
+
+  const roleData = {
+    nombre: roleName,
+    estado: estado,
+    permisos: {
+      dashboard: dashboard,
+      roles: roles,
+      usuarios: usuarios,
+      productos: productos,
+      categorias: categorias,
+      marcas: marcas,
+      ventas: ventas,
+    },
+  };
+
+  fetch(`http://localhost:8080/roles/${id}`, {
+    method: 'PUT',
+    body: JSON.stringify(roleData),
+    headers: {
+      'Content-type': 'application/json; charset=UTF-8',
+    },
+  })
+  .then((response) => {
+    if (!response.ok) {
+      throw new Error('El nombre del rol ya está en uso');
+    }
+    return response.json();
+  })
+  .then((json) => {
+    location.reload();
+    // Manejar la respuesta de la solicitud de edición del rol
+  })
+  .catch((error) => {
+    console.error(error);
+    $('#InputNombreRol').addClass('is-invalid').removeClass('is-valid');
+    $('#errorEdit').text(error.message).removeClass('d-none');
+  });
+});
+
+
+
+// Limpiar campos y mensajes de error al cerrar el modal
+$('#EditarRol').on('hidden.bs.modal', function () {
+  $('#InputNombreRol').val('');
+  $('#InputEstadoRol').val('');
+  $('#CheckDashboardEditar').prop('checked', false);
+  $('#CheckRolesEditar').prop('checked', false);
+  $('#CheckUsuariosEditar').prop('checked', false);
+  $('#CheckProductosEditar').prop('checked', false);
+  $('#CheckCategoriasEditar').prop('checked', false);
+  $('#CheckMarcasEditar').prop('checked', false);
+  $('#CheckVentasEditar').prop('checked', false);
+  $('#InputNombreRol').removeClass('is-invalid is-valid');
+  $('#errorEdit').addClass('d-none');
+});
+
+
+
+
+//FIN EDITAR-------------------------------------------------------
 
 function deleteRole(id) {
   $("#EliminarRol").modal("show");
@@ -236,3 +302,15 @@ $("#BtnConfirmarDelete").on("click", () => {
       location.reload();
     });
 });
+
+
+
+
+
+
+
+
+
+
+
+
