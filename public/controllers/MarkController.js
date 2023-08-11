@@ -4,9 +4,8 @@ const Mark = require("../models/MarkModel");
 const Product = require("../models/ProductsModel");
 const fs = require('fs');
 const path = require('path');
-
-
 const upload = multer(multerConfig).array('Imagenes', 5);
+
 
 const fileUpload = (req, res, next) => {
   upload(req, res, function (error) {
@@ -19,6 +18,8 @@ const fileUpload = (req, res, next) => {
     next()
   })
 }
+
+
 
 const getMark = async (req, res) => {
   try {
@@ -65,6 +66,7 @@ const postMark = async (req, res) => {
 };
 
 
+
 const putMark = async (req, res) => {
   const { id } = req.params;
   const { NombreMarca } = req.body;
@@ -93,6 +95,7 @@ const putMark = async (req, res) => {
     })
   }
 }
+
 
 
 const deleteMark = async (req, res) => {
@@ -135,8 +138,6 @@ const deleteMark = async (req, res) => {
 
 
 
-
-
 const searchMark = async (req, res) => {
   const { id } = req.params;
   const data = await Mark.find({ _id: id });
@@ -146,6 +147,7 @@ const searchMark = async (req, res) => {
     data
   })
 }
+
 
 
 module.exports = {

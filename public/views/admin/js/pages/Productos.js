@@ -278,6 +278,8 @@ $('#BtnConfirmarAdd').on('click', () => {
 
 
 //EDITAR
+
+
 function EditProduct(id, name, description, category, mark, price, images) {
     $('#EditarProducto').modal('show');
     $('#IdEditarProducto').val(id);
@@ -309,7 +311,10 @@ function EditProduct(id, name, description, category, mark, price, images) {
             break;
         }
     }
+
 }
+$(document).ready(() => {
+
 function resetValidation() {
     $('#EditNombreProducto').removeClass('is-invalid');
     $('#errorEditNombre').addClass('d-none');
@@ -323,6 +328,16 @@ function resetValidation() {
 
 $('#EditarProducto').on('hidden.bs.modal', () => {
     resetValidation();
+});
+
+$('#EditNombreProducto').on('blur', function () {
+    if ($(this).data('interactive') === 'true') {
+        validarNombreUnico($(this).val());
+    }
+});
+
+$('#EditNombreProducto').on('focus', function () {
+    $(this).data('interactive', 'true');
 });
 
 
@@ -359,8 +374,7 @@ function isNameUnique(nameProduct) {
 }
 
 
-$('#BtnConfirmarEdit').on('click', async (event) => {
-    
+$('#BtnConfirmarEdit').on('click', async (event) => {    
     event.preventDefault();
 
     let isValid = true; // Variable para rastrear la validez de los campos
@@ -375,17 +389,19 @@ $('#BtnConfirmarEdit').on('click', async (event) => {
 
 
     // Realiza la validación de los campos
-    if (!nameProductEdit.trim()) {
-        $('#errorEditNombre').text('Ingrese un nombre para el producto.').removeClass('d-none');
-        $('#EditNombreProducto').addClass('is-invalid');
-        isValid = false;
-    } else if (!isNameUnique(nameProductEdit)) {
-        $('#errorEditNombre').text('El nombre del producto ya está en uso.').removeClass('d-none');
-        $('#EditNombreProducto').addClass('is-invalid');
-        isValid = false;
-    } else {
-        $('#errorEditNombre').addClass('d-none');
-        $('#EditNombreProducto').removeClass('is-invalid');
+    if ($('#EditNombreProducto').data('interactive') === 'true') {
+        if (!nameProductEdit.trim()) {
+            $('#errorEditNombre').text('Ingrese un nombre para el producto.').removeClass('d-none');
+            $('#EditNombreProducto').addClass('is-invalid');
+            isValid = false;
+        } else if (!isNameUnique(nameProductEdit)) {
+            $('#errorEditNombre').text('El nombre del producto ya está en uso.').removeClass('d-none');
+            $('#EditNombreProducto').addClass('is-invalid');
+            isValid = false;
+        } else {
+            $('#errorEditNombre').addClass('d-none');
+            $('#EditNombreProducto').removeClass('is-invalid');
+        }
     }
     
     if (!descriptionEdit.trim()) {
@@ -447,6 +463,7 @@ $('#BtnConfirmarEdit').on('click', async (event) => {
     }
 });
 
+});
 
 //ELIMINAR
 function DeleteProduct(id) {
@@ -505,4 +522,68 @@ $('#BtnConfirmaEditStock').on('click', () => {
             // Maneja el error de alguna manera adecuada
         });
 });
+
+function mascara(o, f) {
+    v_obj = o;
+    v_fun = f;
+    setTimeout(execmascara, 1);
+}
+
+function execmascara() {
+    v_obj.value = v_fun(v_obj.value);
+}
+
+function cpf(v) {
+    v = v.replace(/[^\d]/g, ''); // Eliminar todos los caracteres no numéricos
+    v = v.replace(/^0+/g, ''); // Eliminar ceros iniciales
+    
+    if (v.length > 3) {
+        // Agregar puntos después de cada tres dígitos para los miles
+        v = v.replace(/\B(?=(\d{3})+(?!\d))/g, '.');
+    }
+    
+    if (v.length > 6) {
+        // Agregar comas después de cada tres dígitos para los millones
+        v = v.replace(/(\d)(?=(\d{3})+$)/g, '$1,');
+    }
+    
+    return "$" + v; // Agregar el signo de pesos al inicio
+}
+
+function convertirANumero(valor) {
+    return parseFloat(valor.replace(/[^\d,]/g, '').replace(/\./g, '').replace(',', '.'));
+}
+
+function convertirYActualizarEdicion(inputElement) {
+    let valorFormateado = inputElement.value;
+    
+    // Elimina el signo de pesos y otros caracteres no numéricos
+    let valorNumerico = parseInt(valorFormateado.replace(/[^\d]/g, ''));
+    
+    // Formatea el valor como texto con el signo de pesos y asigna al input
+    inputElement.value = "$" + cpf(valorNumerico.toString());
+}
+
+// Evento de entrada para aplicar formateo mientras se escribe
+// Evento de entrada para aplicar formateo mientras se escribe
+$('#EditPrecioProducto').on('input', () => {
+    mascara($('#EditPrecioProducto')[0], cpf);
+});
+
+// Evento de salida para quitar el formato y convertir el valor
+$('#EditPrecioProducto').on('blur', () => {
+    let inputElement = $('#EditPrecioProducto')[0];
+    let valorFormateado = inputElement.value;
+    let valorNumerico = parseInt(valorFormateado.replace(/[^\d]/g, ''));
+    inputElement.value = valorNumerico;
+});
+
+
+
+function convertirYActualizar(inputElement) {
+    let valorFormateado = inputElement.value;
+    let valorNumerico = parseInt(valorFormateado.replace(/[^\d]/g, ''));
+    inputElement.value = valorNumerico;
+}
+
 

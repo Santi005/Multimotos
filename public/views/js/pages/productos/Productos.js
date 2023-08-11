@@ -57,12 +57,6 @@ const listProducts = () => {
   <img src="${window.location.origin}/public/uploads/${image}" alt="${image}" width="100%" height="100%" style="align-items: center; object-fit: cover;">
 `;
 
-              let estado;
-              if (product.Estado == true) {
-                estado = "Disponible";
-              } else {
-                estado = "Agotado";
-              }
 
               let disabledAttr = product.Estado ? '' : 'disabled';
 
@@ -72,12 +66,12 @@ const listProducts = () => {
                     <div class="productos" style="height: 200px; line-height: 200px;">
                       ${imageTag}
                     </div>
-                    <div class="car__item__text">
-                      <div class="car__item__text__inner">
+                    <div class="car__item__text" >
+                      <div class="car__item__text__inner" style="height:120px">
                         <h5><a href="#">${product.NombreProducto}</a></h5>
                         <ul>
                           <li><span>${product.Precio.toLocaleString('es-CO', { style: 'currency', currency: 'COP' })}</span></li>
-                          <li><i id='${product._id}' ${estado ? "class='fas fa-circle' style='color:green'" : "class='fas fa-circle' style='color:red'"}></i>${estado}</li>
+                          <li><i id='${product._id}' ${product.Estado == "Disponible" ? "class='fas fa-circle' style='color:green'" : "class='fas fa-circle' style='color:red'"}></i>${product.Estado}</li>
                         </ul>
                       </div>
                       <div class="car__item__price">
@@ -85,7 +79,7 @@ const listProducts = () => {
                           <span class="car-option" id="btn-ver-mas">Ver más</span>
                         </a>
                         <a href="#" onclick="if(${product.Estado}) addToCart('${product._id}', true); event.preventDefault();" class="add-to-cart-button" >
-                          <h6 class="add-cart-button" style="${product.Estado ? '' : 'opacity: 0.5; cursor: not-allowed;'}" ${disabledAttr}>
+                          <h6 class="add-cart-button" style="${product.Estado == "Disponible" ? '' : 'opacity: 0.5; cursor: not-allowed;'}" ${disabledAttr}>
                             <i class="fas fa-cart-plus add-cart-button"></i>&nbsp;Añadir al carrito
                           </h6>
                         </a>

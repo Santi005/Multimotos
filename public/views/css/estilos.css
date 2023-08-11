@@ -240,8 +240,6 @@ a.profile-pic {
   justify-content: space-between;
   margin-top: 20px;
 }
-<<<<<<< HEAD
-=======
 
 .fixed-header {
   position: fixed;
@@ -254,4 +252,3 @@ a.profile-pic {
   transition: top 0.3s ease;
 }
 
->>>>>>> c87f813aedd850b0fc62c81440b4c8bcc07968ee
