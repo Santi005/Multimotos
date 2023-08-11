@@ -58,13 +58,13 @@ const listProducts = () => {
 `;
 
               let estado;
-              if (product.Estado == true) {
-                estado = "Disponible";
-              } else {
-                estado = "Agotado";
-              }
+              // if (product.Estado == true) {
+              //   estado = "Disponible";
+              // } else {
+              //   estado = "Agotado";
+              // }
 
-              let disabledAttr = product.Estado ? '' : 'disabled';
+              let disabledAttr = product.Estado == 'Disponible' ? '' : 'disabled';
 
               let card = `
                 <div class="col-lg-4 col-md-4">
@@ -77,15 +77,15 @@ const listProducts = () => {
                         <h5><a href="#">${product.NombreProducto}</a></h5>
                         <ul>
                           <li><span>${product.Precio.toLocaleString('es-CO', { style: 'currency', currency: 'COP' })}</span></li>
-                          <li><i id='${product._id}' ${estado ? "class='fas fa-circle' style='color:green'" : "class='fas fa-circle' style='color:red'"}></i>${estado}</li>
+                          <li><i id='${product._id}' ${product.Estado == 'Disponible' ? "class='fas fa-circle' style='color:green'" : "class='fas fa-circle' style='color:red'"}></i> ${product.Estado}</li>
                         </ul>
                       </div>
                       <div class="car__item__price">
                         <a href="detalles.html?id=${product._id}">
                           <span class="car-option" id="btn-ver-mas">Ver más</span>
                         </a>
-                        <a href="#" onclick="if(${product.Estado}) addToCart('${product._id}', true); event.preventDefault();" class="add-to-cart-button" >
-                          <h6 class="add-cart-button" style="${product.Estado ? '' : 'opacity: 0.5; cursor: not-allowed;'}" ${disabledAttr}>
+                        <a href="#" onclick="if(${product.Estado == 'Disponible'}) addToCart('${product._id}', true); event.preventDefault();" class="add-to-cart-button" >
+                          <h6 class="add-cart-button" style="${product.Estado == 'Disponible' ? '' : 'opacity: 0.5; cursor: not-allowed;'}" ${disabledAttr}>
                             <i class="fas fa-cart-plus add-cart-button"></i>&nbsp;Añadir al carrito
                           </h6>
                         </a>

@@ -4,6 +4,7 @@ const { DbConection } = require('../public/db/config')
 const authRoutes = require("../public/routes/auth");
 const recoveryController = require('../public/controllers/recoveryController');
 const morgan = require("morgan");
+const path = require('path')
 
 class Server {
 
@@ -11,6 +12,8 @@ class Server {
         
       this.app = express();
       this.port = process.env.PORT;
+
+      this.app.use(express.static(path.join(__dirname, 'public')));
 
       // Conexión a la base de datos
       this.DbConexionMongo();
