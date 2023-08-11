@@ -258,7 +258,7 @@
                                 <label for="AddCantidadProducto"style="padding-left: 178px;">Cantidad </label>
                             </div>
                             <div style="display:flex ; ">
-                                <input type="number" id="AddPrecioProducto"  class="form-control"style="width:200px ;  " required>
+                                <input type="text" id="AddPrecioProducto" class="form-control" style="width:200px;" onblur="convertirYActualizar(this)" onkeypress="mascara(this, cpf)" onpaste="return false" required>
                                 <input type="number" id="AddCantidadProducto" class="form-control"style="width:200px ;  margin-left: 20px;" required>
                             </div>
                             <div style="display:flex ; ">
@@ -271,6 +271,7 @@
                             <div class="mb-3">
                                 <input class="form-control " type="file" id="formFileAdd" accept=".png, .jpg, .jpeg"  multiple required>
                                 <small class="form-text text-danger d-none" id="errorAddFile"></small>
+
                             </div>
                             </div>
                             <div class="modal-footer">
@@ -292,7 +293,7 @@
                     <div class="modal-body">
                             <input type="hidden" id="IdEditarProducto">
                             <label for="EditNombreProducto" style="text-align: left;">Producto</label>
-                            <input type="text" id="EditNombreProducto" class="form-control">
+                            <input type="text" id="EditNombreProducto" class="form-control" data-interactive="false">
                             <small class="form-text text-danger d-none" id="errorEditNombre"></small>
                             <br>
                             <label for="EditDescripcionProducto" style="text-align: left;">Descripción</label>
@@ -372,7 +373,7 @@
                                     </script>
                                 </select>
                                 &nbsp;&nbsp;
-                                <input type="number" id="EditPrecioProducto" class="form-control" style="width:25% ; ">
+                                <input type="text" id="EditPrecioProducto" class="form-control" style="width:30% ; " oninput="mascara(this, cpf)" onblur="convertirYActualizarEdicion(this)" placeholder="$" onpaste="return false"  >
                                 <small class="form-text text-danger d-none" id="errorEditPrecio"></small>
                             </div>
                             <br>
@@ -380,6 +381,8 @@
                             <label  for="EditformFile" class="form-label" style="text-align: left;">Imagen</label>
                             <div class="mb-3">
                                 <input class="form-control " type="file" id="EditformFile" accept=".png, .jpg, .jpeg"  multiple >
+                                <small class="form-text text-danger d-none" id="errorEditFileLength"></small>
+
                             </div>
                             </div>
                             <div class="modal-footer">

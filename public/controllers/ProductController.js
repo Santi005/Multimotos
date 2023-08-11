@@ -23,26 +23,26 @@ const fileUpload = (req, res, next) => {
 
 
 const getProduct = async (req, res) => {
-    try {
-      const products = await Product.find().sort({ createdAt: -1 });
-  
-      const populatedProducts = await Product.populate(products, [
-        { path: 'Categoria', select: 'NombreCategoria' },
-        { path: 'Marca', select: 'NombreMarca' }
-      ]);
-  
-      res.json({
-        ok: 200,
-        products: populatedProducts
-      });
-    } catch (error) {
-      res.status(500).json({
-        error: 500,
-        mensaje: 'Ocurrió un error al obtener los productos.'
-      });
-    }
-  };
-  
+  try {
+    const products = await Product.find().sort({ createdAt: -1 });
+
+    const populatedProducts = await Product.populate(products, [
+      { path: 'Categoria', select: 'NombreCategoria' },
+      { path: 'Marca', select: 'NombreMarca' }
+    ]);
+
+    res.json({
+      ok: 200,
+      products: populatedProducts
+    });
+  }
+  catch (error) {
+    res.status(500).json({
+      error: 500,
+      mensaje: 'Ocurrió un error al obtener los productos.'
+    });
+  }
+};
 
 
 
@@ -55,7 +55,7 @@ const postProducts = async (req, res) => {
         imagenes = req.files.map((file) => file.filename);
     }
     try {
-        //Busca el nombre de la categoría y marca que se envió
+        //Busca el nombre de la categoría y  la marca que se envió
         const category = await Category.findOne({ NombreCategoria: Categoria });
         const mark = await Mark.findOne({ NombreMarca: Marca});
 
@@ -71,6 +71,7 @@ const postProducts = async (req, res) => {
                 mensaje : 'La marca proporcionada no existe.'
             })
         }
+      
         const categoryId = category._id;
         const markId = mark._id;
 
@@ -78,70 +79,67 @@ const postProducts = async (req, res) => {
         await product.save();
 
         if(Stock <= 0){
-            await Product.findByIdAndUpdate(product._id, { Estado: "Agotado" });
+          await Product.findByIdAndUpdate(product._id, { Estado: "Agotado" });
         }
 
         res.json({
-            ok: 200,
-            mensaje: 'Producto registrado correctamente.',
-            product
+          ok: 200,
+          mensaje: 'Producto registrado correctamente.',
+          product
         });
     } 
     catch (error) {
-        res.json({
-            error: 500,
-            mensaje: 'Ocurrió un error al registrar el producto.'
-        });
+      res.json({
+        error: 500,
+        mensaje: 'Ocurrió un error al registrar el producto.'
+      });
     }
 };
 
 
 
 const putProduct = async (req, res) => {
-    const { id } = req.params;
-    const { NombreProducto, Descripcion, Categoria, Marca, Precio } = req.body;
-    let newProduct = { NombreProducto, Descripcion, Precio }; //Se crea el producto con los atributos principales
+  const { id } = req.params;
+  const { NombreProducto, Descripcion, Categoria, Marca, Precio } = req.body;
+  let newProduct = { NombreProducto, Descripcion, Precio };
 
-    //Verifica si hay nuevas imagenes y las adjunta, si no, deja la anterior
-    if (req.files && req.files.length > 0) {
-        imagenes = req.files.map((file) => file.filename);
-        newProduct.Imagenes = imagenes;
-    } 
-    else {
-        const product = await Product.findById(id);
-        newProduct.Imagenes = product.Imagenes;
+  //Verifica si hay nuevas imagenes y las adjunta, si no, deja la anterior
+  if (req.files && req.files.length > 0) {
+    imagenes = req.files.map((file) => file.filename);
+    newProduct.Imagenes = imagenes;
+  } 
+  else {
+    const product = await Product.findById(id);
+    newProduct.Imagenes = product.Imagenes;
+  }
+
+  try {
+    // Buscar el objeto de categoría correspondiente al nombre
+    const categoria = await Category.findOne({ NombreCategoria: Categoria });
+    if (categoria) {
+      newProduct.Categoria = categoria._id; // Asignar el ObjectId encontrado
     }
 
-
-    try {
-        // Buscar el objeto de categoría correspondiente al nombre
-        const categoria = await Category.findOne({ NombreCategoria: Categoria });
-        if (categoria) {
-            newProduct.Categoria = categoria._id; // Asignar el ObjectId encontrado
-        }
-
-        const marca = await Mark.findOne({ NombreMarca: Marca });
-        if (marca) {
-            newProduct.Marca = marca._id; 
-        }
-        //Se envía el id y newProduct (new:true devuelve el documento actualizado en lugar del original)
-        const productUpdate = await Product.findOneAndUpdate({ _id: id }, newProduct, { new: true });
-        res.json({
-            ok: 200,
-            mensaje: "Producto actualizado correctamente.",
-            producto: productUpdate
-        });
-    } 
-    catch (error) {
-        res.json({
-            ok: 500,
-            mensaje: "Ocurrió un error al actualizar el producto.",
-            error: error.message
-        });
+    const marca = await Mark.findOne({ NombreMarca: Marca });
+    if (marca) {
+      newProduct.Marca = marca._id; 
     }
+    //Se envía el id y newProduct
+    const productUpdate = await Product.findOneAndUpdate({ _id: id }, newProduct, { new: true });
+    res.json({
+      ok: 200,
+      mensaje: "Producto actualizado correctamente.",
+      producto: productUpdate
+    });
+  } 
+  catch (error) {
+    res.json({
+      ok: 500,
+      mensaje: "Ocurrió un error al actualizar el producto.",
+      error: error.message
+    });
+  }
 };
-
-
 
 
 
@@ -171,7 +169,8 @@ const deleteProduct = async (req, res) => {
         ok: 200,
         mensaje: 'Producto eliminado correctamente.',
       });
-    } catch (error) {
+    }
+    catch (error) {
       console.error('Error al eliminar el producto:', error);
       return res.status(500).json({ error: 'Error interno del servidor' });
     }
@@ -181,97 +180,98 @@ const deleteProduct = async (req, res) => {
 
 
 const searchProduct = async (req, res) => {
-    const { id } = req.params;
-    const data = await Product.findOne({ _id: id })
-    . populate('Categoria', 'NombreCategoria')
-    .populate('Marca', 'NombreMarca');
+  const { id } = req.params;
+  const data = await Product.findOne({ _id: id })
+  .populate('Categoria', 'NombreCategoria')
+  .populate('Marca', 'NombreMarca');
 
-    res.json({
-        "ok": 200,
-        data
-    });
+  res.json({
+    "ok": 200,
+    data
+  });
 };
+
+
 
 const incrementStock = async (req, res) => {
-    const { id } = req.params;
-    const { amount } = req.body;
+  const { id } = req.params;
+  const { amount } = req.body;
 
-    try {
-        // Verificar si el producto existe
-        const product = await Product.findById(id);
-        if (!product) {
-            return res.status(404).json({ error: "Producto no encontrado" });
-        }
-
-        // Verificar si la cantidad es un número válido
-        const parsedAmount = parseInt(amount);
-        if (isNaN(parsedAmount)) {
-            return res.status(400).json({ error: "La cantidad de incremento no es válida" });
-        }
-
-        // Incrementar el stock
-        product.Stock += parsedAmount;
-
-        // Cambiar el estado a "Disponible"
-        product.Estado = "Disponible";
-
-        await product.save();
-
-        res.status(200).json({ ok: 200, message: "Stock incrementado exitosamente", product });
-    } catch (error) {
-        console.error(error);
-        res.status(500).json({ error: "Error al incrementar el stock del producto" });
+  try {
+    // Verificar si el producto existe
+    const product = await Product.findById(id);
+    if (!product) {
+        return res.status(404).json({ error: "Producto no encontrado" });
     }
-};
 
-  
+    // Verificar si la cantidad es un número válido
+    const parsedAmount = parseInt(amount);
+    if (isNaN(parsedAmount)) {
+        return res.status(400).json({ error: "La cantidad de incremento no es válida" });
+    }
+
+    // Incrementar el stock
+    product.Stock += parsedAmount;
+
+    // Cambiar el estado a "Disponible"
+    product.Estado = "Disponible";
+
+    await product.save();
+
+    res.status(200).json({ ok: 200, message: "Stock incrementado exitosamente", product });
+  }
+  catch (error) {
+    console.error(error);
+    res.status(500).json({ error: "Error al incrementar el stock del producto" });
+  }
+};
 
 
 
 const decrementarStock = async (req, res) => {
 
-    const id_product = req.params.id;
-    const cantidadVendida = req.body.cantidad;
+  const id_product = req.params.id;
+  const cantidadVendida = req.body.cantidad;
 
-    try {
+  try {
 
-        const product = await Product.findById(id_product);
+    const product = await Product.findById(id_product);
 
-        if(!product) {
-            return res.status(404).json({
-                ok: 0,
-                message: "Producto no encontrado"
-            })
-        }
-
-        product.Stock -= cantidadVendida;
-
-        await product.save();
-        
-        res.json({
-            ok: 200,
-            message: "Stock decrementado",
-            product,
-        });
-
-    } catch (error) {
-        console.error(error);
-        res.status(500).json({
-            ok: 0,
-            message: "Error al decrementar el stock",
-        });
+    if(!product) {
+      return res.status(404).json({
+        ok: 0,
+        message: "Producto no encontrado"
+      })
     }
+
+    product.Stock -= cantidadVendida;
+    await product.save();
+      
+    res.json({
+      ok: 200,
+      message: "Stock decrementado",
+      product,
+    });
+
+  }
+  catch (error) {
+    console.error(error);
+    res.status(500).json({
+      ok: 0,
+      message: "Error al decrementar el stock",
+    });
+  }
 }
 
 
-module.exports = {
-    getProduct,
-    postProducts,
-    putProduct,
-    deleteProduct,
-    searchProduct,
-    fileUpload,
-    incrementStock,
-    decrementarStock,
 
+module.exports = {
+  getProduct,
+  postProducts,
+  putProduct,
+  deleteProduct,
+  searchProduct,
+  fileUpload,
+  incrementStock,
+  decrementarStock,
 }
