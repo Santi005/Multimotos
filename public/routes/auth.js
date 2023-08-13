@@ -32,7 +32,7 @@ router.post('/login', async (req, res) => {
     console.log('Nombre del rol:', Rol.nombre);
     console.log('Permisos', Rol.permisos)
 
-    if (Rol.permisos.dashboard || Rol.permisos.roles || Rol.permisos.usuarios || Rol.permisos.productos || Rol.permisos.categorias || Rol.permisos.marcas || Rol.permisos.ventas) {
+    if (Rol.permisos.dashboard || Rol.permisos.roles || Rol.permisos.usuarios || Rol.permisos.productos || Rol.permisos.categorias || Rol.permisos.marcas || Rol.permisos.ventas || Rol.permisos.pedidos) {
       console.log('Inicio de sesión exitoso (Administrador)');
       res.status(200).json({
         redirectUrl: 'admin/index.html', // Redirigir al dashboard de administrador

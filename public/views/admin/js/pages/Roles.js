@@ -17,19 +17,29 @@ const listRoles = () => {
               <td>${role.nombre}</td>
               <td>${role.estado}</td>
               <td>
+          `;
+        
+          // Verificar si el rol es "Administrador", "Cliente" o "Empleado"
+          if (role.nombre !== "Administrador" && role.nombre !== "Cliente" && role.nombre !== "Empleado") {
+            // Agregar los botones de editar y eliminar solo si no es uno de esos roles
+            row += `
               <i onclick="editRole('${role._id}', '${role.nombre}', '${role.estado}', '${role.permisos.dashboard}',
               '${role.permisos.roles}', '${role.permisos.usuarios}', '${role.permisos.productos}', 
-              '${role.permisos.categorias}', '${role.permisos.marcas}', '${role.permisos.ventas}')" 
+              '${role.permisos.categorias}', '${role.permisos.marcas}', '${role.permisos.ventas}', '${role.permisos.pedidos}')" 
               class="bi bi-pencil-square role" style="color:#f62d51; font-size: 1.3em; cursor: pointer;"></i>
               &nbsp; &nbsp; 
               <i onclick="deleteRole('${role._id}')"
               class="bi bi-trash3 roles"  style="color:#f62d51;font-size: 1.3em; cursor: pointer;"></i>
+            `;
+          }
+        
+          row += `
               </td>
             </tr>
           `;
+        
           tableBody.append(row);
         });
-
         // Inicializar el DataTable después de agregar los registros a la tabla
         $("#RolesTable").DataTable({language: {
           url: "https://cdn.datatables.net/plug-ins/1.10.25/i18n/Spanish.json"
@@ -103,6 +113,7 @@ $(document).ready(function() {
     const categorias = $("#CheckCategorias").is(":checked");
     const marcas = $("#CheckMarcas").is(":checked");
     const ventas = $("#CheckVentas").is(":checked");
+    const pedidos = $("#CheckPedidos").is(":checked");
 
     let roleData = {
       nombre: roleName,
@@ -115,6 +126,7 @@ $(document).ready(function() {
         categorias: categorias,
         marcas: marcas,
         ventas: ventas,
+        pedidos: pedidos,
       },
     };
 
@@ -153,13 +165,15 @@ $(document).ready(function() {
   });
 });
 
-//EDITAR-------------------------------------------------------
 
-// Función de validación para la edición de roles
+
+
+//INICIO EDITAR-------------------------------------------------------
+
 // Función de validación para la edición de roles
 function validarEdicionRol() {
   let roleName = $('#InputNombreRol').val().trim();
-  let roleId = $('#IdEditarRol').val(); // Obtener el ID del rol en edición
+  let roleId = $('#IdEditarRol').val();
 
   if (roleName === '') {
     $('#InputNombreRol').addClass('is-invalid').removeClass('is-valid');
@@ -167,15 +181,19 @@ function validarEdicionRol() {
     return false;
   }
 
-  const $rows = $('#RolesTable tbody tr');
-  for (let i = 0; i < $rows.length; i++) {
-    const roleIdInTable = $rows.eq(i).find('td:eq(0)').text().trim(); // Asumiendo que el ID de rol está en la primera columna de la tabla (índice 0)
-    const roleNameInTable = $rows.eq(i).find('td:eq(1)').text().trim(); // Asumiendo que el nombre de rol está en la segunda columna de la tabla (índice 1)
-    
-    if (roleNameInTable === roleName && roleIdInTable !== roleId) { // Verificar el nombre del rol y el ID
-      $('#InputNombreRol').addClass('is-invalid').removeClass('is-valid');
-      $('#errorEdit').text('El nombre de rol ya está en uso').removeClass('d-none');
-      return false;
+  const originalRoleName = $('#InputNombreRol').data('original-name');
+
+  if (roleName !== originalRoleName) {
+    const $rows = $('#RolesTable tbody tr');
+    for (let i = 0; i < $rows.length; i++) {
+      const roleIdInTable = $rows.eq(i).find('td:eq(0)').text().trim();
+      const roleNameInTable = $rows.eq(i).find('td:eq(1)').text().trim();
+
+      if (roleNameInTable === roleName && roleIdInTable !== roleId) {
+        $('#InputNombreRol').addClass('is-invalid').removeClass('is-valid');
+        $('#errorEdit').text('El nombre de rol ya está en uso').removeClass('d-none');
+        return false;
+      }
     }
   }
 
@@ -184,11 +202,14 @@ function validarEdicionRol() {
   return true;
 }
 
+// Evento de entrada para la validación en tiempo real del campo del nombre del rol
+$('#InputNombreRol').on('input', validarEdicionRol);
+
 // Función para mostrar el modal de edición de rol
-function editRole(id, name, estado, dashboard, roles, usuarios, productos, categorias, marcas, ventas) {
+function editRole(id, name, estado, dashboard, roles, usuarios, productos, categorias, marcas, ventas, pedidos) {
   $('#IdEditarRol').val(id);
-  $('#InputNombreRol').val(name);
-  $('#InputEstadoRol').val(estado);
+  $('#InputNombreRol').val(name).data('original-name', name);
+  $('#InputEstadoRol').val(estado).data('original-estado', estado);
   $('#CheckDashboardEditar').prop('checked', dashboard === 'true');
   $('#CheckRolesEditar').prop('checked', roles === 'true');
   $('#CheckUsuariosEditar').prop('checked', usuarios === 'true');
@@ -196,14 +217,11 @@ function editRole(id, name, estado, dashboard, roles, usuarios, productos, categ
   $('#CheckCategoriasEditar').prop('checked', categorias === 'true');
   $('#CheckMarcasEditar').prop('checked', marcas === 'true');
   $('#CheckVentasEditar').prop('checked', ventas === 'true');
-  
+  $('#CheckPedidosEditar').prop('checked', pedidos === 'true');
   $('#EditarRol').modal('show');
 }
 
-// Evento de entrada para la validación en tiempo real
-$('#InputNombreRol').on('input', validarEdicionRol);
-
-// Evento de clic en el botón de confirmar
+// Evento de clic en el botón de confirmar (Guardar)
 $('#BtnConfirmarEdit').on('click', () => {
   const id = $('#IdEditarRol').val();
   const roleName = $('#InputNombreRol').val().trim();
@@ -215,14 +233,14 @@ $('#BtnConfirmarEdit').on('click', () => {
   const categorias = $('#CheckCategoriasEditar').is(':checked');
   const marcas = $('#CheckMarcasEditar').is(':checked');
   const ventas = $('#CheckVentasEditar').is(':checked');
-
-  // Obtener el nombre original del rol antes de abrir el modal
-  const originalRoleName = $('#InputNombreRol').val().trim();
-  // Verificar si el nombre ha cambiado
-  if (roleName !== originalRoleName) {
-    // Realizar la validación del nuevo nombre si ha cambiado
+  const pedidos = $('#CheckPedidosEditar').is(':checked');
+  
+  const originalRoleName = $('#InputNombreRol').data('original-name');
+  const originalRoleEstado = $('#InputEstadoRol').data('original-estado');
+  
+  if (roleName !== originalRoleName || estado !== originalRoleEstado) {
     if (!validarEdicionRol()) {
-      return; // No continuar si la validación falla
+      return;
     }
   }
 
@@ -237,6 +255,7 @@ $('#BtnConfirmarEdit').on('click', () => {
       categorias: categorias,
       marcas: marcas,
       ventas: ventas,
+      pedidos: pedidos,
     },
   };
 
@@ -255,7 +274,6 @@ $('#BtnConfirmarEdit').on('click', () => {
   })
   .then((json) => {
     location.reload();
-    // Manejar la respuesta de la solicitud de edición del rol
   })
   .catch((error) => {
     console.error(error);
@@ -264,11 +282,9 @@ $('#BtnConfirmarEdit').on('click', () => {
   });
 });
 
-
-
 // Limpiar campos y mensajes de error al cerrar el modal
 $('#EditarRol').on('hidden.bs.modal', function () {
-  $('#InputNombreRol').val('');
+  $('#InputNombreRol').val('').removeData('original-name');
   $('#InputEstadoRol').val('');
   $('#CheckDashboardEditar').prop('checked', false);
   $('#CheckRolesEditar').prop('checked', false);
@@ -277,14 +293,21 @@ $('#EditarRol').on('hidden.bs.modal', function () {
   $('#CheckCategoriasEditar').prop('checked', false);
   $('#CheckMarcasEditar').prop('checked', false);
   $('#CheckVentasEditar').prop('checked', false);
+  $('#CheckPedidosEditar').prop('checked', false);
   $('#InputNombreRol').removeClass('is-invalid is-valid');
   $('#errorEdit').addClass('d-none');
 });
 
-
-
+// Al abrir el modal, guardamos el nombre original del rol en un atributo de datos
+$('#EditarRol').on('show.bs.modal', function (event) {
+  const button = $(event.relatedTarget); // Botón que activó el modal
+  const originalName = button.data('original-name');
+  $('#InputNombreRol').data('original-name', originalName);
+});
 
 //FIN EDITAR-------------------------------------------------------
+
+
 
 function deleteRole(id) {
   $("#EliminarRol").modal("show");

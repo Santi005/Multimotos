@@ -48,7 +48,8 @@ const putRole = async (req, res) => {
     }
 
     // Verificar si el estado del rol cambió a "inactivo"
-    if (estado === "Inactivo" && role.estado !== "Inactivo") {
+    const normalizedEstado = estado.toLowerCase(); // Convertir el estado a minúsculas para normalizar
+    if (normalizedEstado === "inactivo") {
       // Cambiar el estado de los usuarios asociados al rol a "inactivo"
       await User.updateMany({ Rol: roleId }, { Estado: "Inactivo" });
     }
@@ -73,6 +74,7 @@ const putRole = async (req, res) => {
     });
   }
 };
+
 
 
 const deleteRole = async (req, res) => {
