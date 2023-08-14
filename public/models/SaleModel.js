@@ -55,6 +55,10 @@ const SaleModel = new Schema({
         default: "Por enviar",
     },
 
+    Razon: {
+        type: String,
+    },
+
     Iva: {
         type: Number,
     },

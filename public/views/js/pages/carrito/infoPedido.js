@@ -156,6 +156,8 @@ const pagar = () => {
             .catch(error => {
                 console.log(error);
             });
+
+            localStorage.removeItem('cartItemsData');
         }
     })
     .catch(error => {
@@ -164,6 +166,15 @@ const pagar = () => {
     });
 }
 
+const checkout = document.getElementById('checkout');
+checkout.addEventListener('click', async () => {
+    const response = await fetch(`http://localhost:8080/payment/create-order`,{
+        method: 'POST'
+    });
+    const data = await response.json();
+    console.log(data);
+    window.location.href = data.init_point;
+});
 // Cargar los elementos del carrito al cargar la página
 window.addEventListener('load', () => {
     loadCartItems();

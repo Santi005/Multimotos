@@ -149,78 +149,94 @@ function EditMark(id, name, image) {
     // Almacena la imagen original al mostrar el modal de edición
     $('#formFileEdit').data('original-image', image);
 }
-$('.needs-validation').on('submit', function (event) {
-    event.preventDefault();
 
-    var form = this;
-    if (form.checkValidity()) {
-        const id = $('#IdEditarMarca').val();
-        const nameMark = $('#InputEditarNombreMarca').val();
-        const image = $('#formFileEdit')[0].files[0];
-        const originalImage = $('#formFileEdit').data('original-image'); // Obtiene la imagen original
-        const $errorEdit = $('#errorEdit'); 
-
-
-        const formData = new FormData();
-        formData.append('NombreMarca', nameMark);
-
-        // Agrega la imagen original si no se proporciona una nueva imagen
-        if (!image && originalImage) {
-            formData.append('Imagenes', originalImage);
-        } else if (image) {
-            formData.append('Imagenes', image);
-        }
-        const $rows = $('#MarksTable tbody tr');
-        for (let i = 0; i < $rows.length; i++) {
-          const nombreMarcaEnTabla = $rows.eq(i).find('td:eq(1)').text().trim(); // Asumiendo que el nombre de categoría está en la segunda columna de la tabla (índice 1)
-          if (nombreMarcaEnTabla === nameMark) {
-            $('#InputEditarNombreMarca').addClass('is-invalid').removeClass('is-valid');
-            $('#errorEdit').text('El nombre de categoría ya está en uso.').removeClass('d-none');
+function isNameUnique(nameMark) {
+    const $rows = $('#MarksTable tbody tr');
+    for (let i = 0; i < $rows.length; i++) {
+        const nombreMarcaEnTabla = $rows.eq(i).find('td:eq(1)').text().trim();
+        if (nombreMarcaEnTabla === nameMark) {
             return false;
-          }
         }
-        
+    }
+    return true;
+}
+$('#EditarMarca').on('hide.bs.modal', function () {
+    // Restablecer clases y mensajes de error
+    $('#InputEditarNombreMarca').removeClass('is-invalid is-valid');
+    $('#errorEdit').addClass('d-none').text('');
+});
 
-        fetch(`http://localhost:8080/marks/${id}`, {
-            method: 'PUT',
-            body: formData
-        })
-            .then(response => response.json())
-            .then(data => {
-                console.log('Marca editada:', data);
+$('#BtnConfirmarEdit').on('click', function () {
+    const id = $('#IdEditarMarca').val();
+    const nameMark = $('#InputEditarNombreMarca').val();
+    const newImage = $('#formFileEdit')[0].files[0];
+    const originalImage = $('#formFileEdit').data('original-image');
+    const $errorEdit = $('#errorEdit');
 
-                $('#EditarMarca').modal('hide');
-                location.reload();
-            })
-            .catch(error => {
-                console.error(error);
-            });
+    if (nameMark.trim() === '') {
+        $('#InputEditarNombreMarca').addClass('is-invalid');
+        $errorEdit.text('Ingrese un nombre para la marca').removeClass('d-none');
+        return false;
     }
 
-    form.classList.add('was-validated');
+    if (!isNameUnique(nameMark)) {
+        $('#InputEditarNombreMarca').addClass('is-invalid').removeClass('is-valid');
+        $errorEdit.text('El nombre de categoría ya está en uso.').removeClass('d-none');
+        return false;
+    }
+
+    const formData = new FormData();
+    formData.append('NombreMarca', nameMark);
+
+    if (!newImage && originalImage) {
+        formData.append('Imagenes', originalImage);
+    } else if (newImage) {
+        formData.append('Imagenes', newImage);
+    }
+
+    fetch(`http://localhost:8080/marks/${id}`, {
+        method: 'PUT',
+        body: formData
+    })
+    .then(response => response.json())
+    .then(data => {
+        console.log('Marca editada:', data);
+
+        $('#EditarMarca').modal('hide');
+        location.reload();
+    })
+    .catch(error => {
+        console.error(error);
+    });
 });
+
 
 //-----------------------------------------------------------
 
 
 //Método eliminar -------------------------------------------
 function DeleteMark(id) {
-    $('#EliminarMarca').modal('show')
-    $('#IdEliminarMarca').val(id); //
+    $('#EliminarMarca').modal('show');
+    $('#IdEliminarMarca').val(id);
+    $('#errorDelete').addClass('d-none'); 
 }
 
 $('#BtnConfirmarDelete').on('click', () => {
-    const id = $('#IdEliminarMarca').val(); // Lo cambié a JQuery - Almaceno el id de la función.
+    const id = $('#IdEliminarMarca').val();
 
     fetch(`http://localhost:8080/marks/${id}`, {
         method: 'DELETE',
     })
-
-        .then(res => res.json())
-        .then(res => {
+    .then((res) => res.json())
+    .then((res) => {
+        if (!res.ok) {
+            $('#errorDelete').text('La marca no se puede eliminar ya que está asociada a un producto').removeClass('d-none');
+        } 
+        else {
             $('#EliminarMarca').modal('hide');
-            location.reload()
-            console.log(res);
-        });
+            location.reload();
+        }
+    });
 });
+
 //-----------------------------------------------------------

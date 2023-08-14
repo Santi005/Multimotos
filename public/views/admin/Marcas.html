@@ -249,14 +249,10 @@
                 <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
             </div>
             <div class="modal-body">
-                <form class="row g-3 needs-validation" novalidate>
                     <input type="hidden" class="form-control" id="IdEditarMarca" >
                     <div>
                         <label for="InputEditarNombreMarca">Nombre de la marca</label>
                         <input type="text" class="form-control" id="InputEditarNombreMarca" required>
-                        <div class="invalid-feedback">
-                            Ingrese un nombre para la marca.
-                        </div>
                         <small id="errorEdit" class="form-text text-danger d-none"></small>
                     </div>
                     <br>
@@ -272,35 +268,33 @@
                     style="color: #ffff;">Cancelar</button>
                 <button type="submit" class="btn btn-danger" id="BtnConfirmarEdit"
                     style="color: #ffff">Confirmar</button>
-                </form>
             </div>
         </div>
     </div>
 </div>
 
   <!-- Modal para eliminar rol -->
-  <div class="modal fade" id="EliminarMarca" tabindex="-1"
-  aria-labelledby="exampleModalLabel" aria-hidden="true">
-  <div class="modal-dialog">
+  <div class="modal fade" id="EliminarMarca" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
+    <div class="modal-dialog">
       <div class="modal-content">
-          <div class="modal-header">
-              <h1 class="modal-title fs-5" id="exampleModalLabel">Eliminar marca
-              </h1>
-              <button type="button" class="btn-close" data-bs-dismiss="modal"
-                  aria-label="Close"></button>
-          </div>
-          <div class="modal-body">
-              <input type="hidden" id="IdEliminarMarca">
-              ¿Estás seguro de que deseas eliminar esta marca?
-          </div>
-          <div class="modal-footer">
-              <button type="button" class="btn btn-secondary"
-                  data-bs-dismiss="modal" style="color: #ffff;">Cancelar</button>
-              <button type="button" class="btn" id="BtnConfirmarDelete"
-                  style="background-color: #f62d51;  color: #ffff;">Confirmar</button>
-          </div>
+        <div class="modal-header">
+          <h1 class="modal-title fs-5" id="exampleModalLabel">Eliminar marca</h1>
+          <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+        </div>
+        <div class="modal-body">
+          <input type="hidden" id="IdEliminarMarca">
+          ¿Estás seguro de que deseas eliminar esta marca?
+          <br>
+          <small id="errorDelete" class="form-text text-danger d-none">No se puede eliminar la marca porque está asociada a un producto.</small>
+        </div>
+        <div class="modal-footer">
+          <button type="button" class="btn btn-secondary" data-bs-dismiss="modal" style="color: #ffff;">Cancelar</button>
+          <button type="button" class="btn" id="BtnConfirmarDelete" style="background-color: #f62d51; color: #ffff;">Confirmar</button>
+        </div>
       </div>
+    </div>
   </div>
+  
 </table>
 </div>
 
