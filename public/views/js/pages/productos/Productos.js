@@ -57,8 +57,7 @@ const listProducts = () => {
   <img src="${window.location.origin}/public/uploads/${image}" alt="${image}" width="100%" height="100%" style="align-items: center; object-fit: cover;">
 `;
 
-
-              let disabledAttr = product.Estado ? '' : 'disabled';
+              let disabledAttr = product.Estado == 'Disponible' ? '' : 'disabled';
 
               let card = `
                 <div class="col-lg-4 col-md-4">
