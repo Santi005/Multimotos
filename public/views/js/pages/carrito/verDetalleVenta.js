@@ -19,7 +19,7 @@ function viewDetail(id) {
         const detalleVenta = data.data[0];
 
         // Asignación de valores hacia los input que ya existen.
-        $('#documentInputVenta').val(detalleVenta.Cliente[0]);
+        $('#documentoInput').val(detalleVenta.Cliente[0]);
         $('#nombreInput').val(detalleVenta.Cliente[0]);
         $('#apellidosInput').val(detalleVenta.Cliente[1])
         $('#telefonoInput').val(detalleVenta.Cliente[4])

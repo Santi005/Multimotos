@@ -50,33 +50,27 @@ const listProducts = () => {
             const product = filteredProductsData[i];
 
             // Verifica si el producto existe antes de acceder a sus propiedades
+            const image = product.Imagenes[0]; // Tomar la primera imagen del array
+
             if (product) {
-              let imageTags = product.Imagenes.map(
-                (image) =>
-                  `<img src="${window.location.origin}/public/uploads/${image}" alt="${image}" width="100%" height="100%" style="align-items: center; object-fit:  cover;">`
-              ).join('');
+              const imageTag = `
+  <img src="${window.location.origin}/public/uploads/${image}" alt="${image}" width="100%" height="100%" style="align-items: center; object-fit: cover;">
+`;
 
-              let estado;
-              if (product.Estado == true) {
-                estado = "Disponible";
-              } else {
-                estado = "Agotado";
-              }
-
-              let disabledAttr = product.Estado ? '' : 'disabled';
+              let disabledAttr = product.Estado == 'Disponible' ? '' : 'disabled';
 
               let card = `
                 <div class="col-lg-4 col-md-4">
                   <div class="car__item">
                     <div class="productos" style="height: 200px; line-height: 200px;">
-                      ${imageTags}
+                      ${imageTag}
                     </div>
-                    <div class="car__item__text">
-                      <div class="car__item__text__inner">
+                    <div class="car__item__text" >
+                      <div class="car__item__text__inner" style="height:120px">
                         <h5><a href="#">${product.NombreProducto}</a></h5>
                         <ul>
                           <li><span>${product.Precio.toLocaleString('es-CO', { style: 'currency', currency: 'COP' })}</span></li>
-                          <li><i id='${product._id}' ${product.Estado ? "class='fas fa-circle' style='color:green'" : "class='fas fa-circle' style='color:red'"}></i>${estado}</li>
+                          <li><i id='${product._id}' ${product.Estado == "Disponible" ? "class='fas fa-circle' style='color:green'" : "class='fas fa-circle' style='color:red'"}></i>${product.Estado}</li>
                         </ul>
                       </div>
                       <div class="car__item__price">
@@ -84,7 +78,7 @@ const listProducts = () => {
                           <span class="car-option" id="btn-ver-mas">Ver más</span>
                         </a>
                         <a href="#" onclick="if(${product.Estado}) addToCart('${product._id}', true); event.preventDefault();" class="add-to-cart-button" >
-                          <h6 class="add-cart-button" style="${product.Estado ? '' : 'opacity: 0.5; cursor: not-allowed;'}" ${disabledAttr}>
+                          <h6 class="add-cart-button" style="${product.Estado == "Disponible" ? '' : 'opacity: 0.5; cursor: not-allowed;'}" ${disabledAttr}>
                             <i class="fas fa-cart-plus add-cart-button"></i>&nbsp;Añadir al carrito
                           </h6>
                         </a>
@@ -148,4 +142,61 @@ $('#search-input-products-client').on('input', function () {
 // Llama a la función listProducts cuando la página se haya cargado completamente
 $(document).ready(() => {
   listProducts();
+});
+
+
+// Obtener referencias a los selects y botón
+// Obtener referencias a los selects y botón
+
+const categorySelect = document.getElementById('categorySelect');
+const brandSelect = document.getElementById('brandSelect');
+const searchButton = document.getElementById('searchButton');
+
+// Función para llenar un select con opciones
+function populateSelect(selectElement, options) {
+  options.forEach(option => {
+    const optionElement = document.createElement('option');
+    optionElement.value = option;
+    optionElement.text = option;
+    selectElement.appendChild(optionElement);
+  });
+}
+
+// Cargar categorías
+fetch('http://localhost:8080/categories/')
+  .then(response => response.json())
+  .then(data => {
+    console.log('Categorías recibidas:', data);
+    if (Array.isArray(data.allCategories)) {
+      console.log('Categorías válidas:', data.allCategories);
+      populateSelect(categorySelect, data.allCategories);
+    }
+  })
+  .catch(error => {
+    console.error(error);
+  });
+
+// Cargar marcas
+fetch('http://localhost:8080/marks/')
+  .then(response => response.json())
+  .then(data => {
+    console.log('Marcas recibidas:', data);
+    if (Array.isArray(data.allMarks)) {
+      console.log('Marcas válidas:', data.allMarks);
+      populateSelect(brandSelect, data.allMarks);
+    }
+  })
+  .catch(error => {
+    console.error(error);
+  });
+
+// Evento del botón de búsqueda
+searchButton.addEventListener('click', () => {
+  const selectedCategory = categorySelect.value;
+  const selectedBrand = brandSelect.value;
+
+  // Lógica para realizar la búsqueda y mostrar resultados
+  // Puedes mostrar los resultados en una lista o cualquier otro elemento del DOM
+  // Aquí solo un ejemplo genérico
+  alert(`Categoría seleccionada: ${selectedCategory}\nMarca seleccionada: ${selectedBrand}`);
 });

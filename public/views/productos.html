@@ -210,61 +210,20 @@
                             <h5>Filtrar</h5>
                             <form>
                               <p>Marca</p>
-                              <select id="FiltrarMarcaProducto"></select>
+                              <select id="brandSelect">
+                                <option value="" selected disabled>Seleccione una opción</option>
+                              </select>
                               <p>Categoría</p>
-                              <select id="FiltrarCategoriaProducto"></select>
+                              <select id="categorySelect">
+                                <option value="" selected disabled>Seleccione una opción</option>
+                              </select>
                               <br>
                               <div class="car__filter__btn">
-                                <button type="submit" class="site-btn">Filtrar</button>
+                                <button type="submit" class="site-btn" id="searchButton">Filtrar</button>
                               </div>
                             </form>
                           </div>
-                         <script>
-                            const fetchMarks = () => {
-                                return fetch('http://localhost:8080/marks/')
-                                .then(response => response.json())
-                                .then(data => {
-                                    const selectElement = document.getElementById('FiltrarMarcaProducto');
-                                    selectElement.innerHTML = '';
-                                    if (Array.isArray(data.allMarks)) {
-                                    data.allMarks.forEach((mark, index) => {
-                                        const option = document.createElement('option');
-                                        option.value = mark.NombreMarca;
-                                        option.textContent = mark.NombreMarca;
-                                        selectElement.appendChild(option);
-                                    });
-                                    }
-                                })
-                                .catch(error => {
-                                    console.error(error);
-                                });
-                            };
-
-                            const fetchCategories = () => {
-                                return fetch('http://localhost:8080/categories/')
-                                .then(response => response.json())
-                                .then(data => {
-                                    const selectElement = document.getElementById('FiltrarCategoriaProducto');
-                                    selectElement.innerHTML = '';
-                                    if (Array.isArray(data.allCategories)) {
-                                    data.allCategories.forEach((category, index) => {
-                                        const option = document.createElement('option');
-                                        option.value = category.NombreCategoria;
-                                        option.textContent = category.NombreCategoria;
-                                        selectElement.appendChild(option);
-                                    });
-                                    }
-                                })
-                                .catch(error => {
-                                    console.error(error);
-                                });
-                            };
-
-                            document.addEventListener('DOMContentLoaded', () => {
-                                fetchMarks();
-                                fetchCategories();
-                            });
-                        </script>                       
+                          
                     </div>
                 </div>
 

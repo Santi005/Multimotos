@@ -16,6 +16,8 @@ function viewDetail(id) {
     fetch(`http://localhost:8080/sales/${id}`)
     .then(response => response.json())
     .then(data => {
+
+        console.log(data);
         
         // Asignación de detalle venta que devuelve el Json.
         detalleVenta = data.data[0];
@@ -73,7 +75,7 @@ const generatePDF = () => {
                 {
                   stack: [
                     { text: `Fecha: ${new Date(detalleVenta.Fecha).toLocaleString('es-CO')}`, style: 'info' },
-                    { text: `Venta No: ${detalleVenta.Factura}`, style: 'info' },
+                    { text: `N° Cotización: ${detalleVenta.Factura}`, style: 'info' },
                     { text: `Precio envío: ${detalleVenta.Envio.toLocaleString('es-CO', { style: 'currency', currency: 'COP' })}`, style: 'info' },
                     { text: `Estado: ${detalleVenta.EstadoEnvio}`, style: 'info' },
                     { text: `Total IVA: ${ivaPorcentajeFormateado}`, style: 'info' }

@@ -35,6 +35,7 @@ const postCategory = async (req, res) => {
 }
 
 
+
 const putCategory = async (req, res) => {
   const categoryId = req.params.id;
   const { NombreCategoria } = req.body;
@@ -88,6 +89,7 @@ const deleteCategory = async (req, res) => {
 };
 
 
+
 const searchCategory = async (req, res) => {
   const {id} = req.params;
   const data = await Category.find({_id : id});
@@ -97,6 +99,7 @@ const searchCategory = async (req, res) => {
     data
   })
 }
+
 
 
 module.exports = {
