@@ -4,11 +4,10 @@ const listRoles = () => {
   fetch('http://localhost:8080/roles/')
     .then((response) => response.json())
     .then((data) => {
-      // Asegúrate de que data.data sea un arreglo válido
       if (Array.isArray(data.data)) {
         rolesData = data.data;
         const tableBody = $("#RolesTable tbody");
-        tableBody.empty(); // Limpiar la tabla antes de agregar los resultados filtrados
+        tableBody.empty(); 
 
         data.data.forEach((role, index) => {
           let row = `
@@ -21,7 +20,6 @@ const listRoles = () => {
         
           // Verificar si el rol es "Administrador", "Cliente" o "Empleado"
           if (role.nombre !== "Administrador" && role.nombre !== "Cliente" && role.nombre !== "Empleado") {
-            // Agregar los botones de editar y eliminar solo si no es uno de esos roles
             row += `
               <i onclick="editRole('${role._id}', '${role.nombre}', '${role.estado}', '${role.permisos.dashboard}',
               '${role.permisos.roles}', '${role.permisos.usuarios}', '${role.permisos.productos}', 
@@ -40,7 +38,6 @@ const listRoles = () => {
         
           tableBody.append(row);
         });
-        // Inicializar el DataTable después de agregar los registros a la tabla
         $("#RolesTable").DataTable({language: {
           url: "https://cdn.datatables.net/plug-ins/1.10.25/i18n/Spanish.json"
         }});
@@ -65,7 +62,6 @@ const showRoleDetails = (roleId) => {
     });
 };
 
-// Asignar la función de búsqueda al evento 'input' del campo de búsqueda
 $("#search-input-roles").on("input", listRoles);
 
 $(document).ready(function() {
@@ -202,7 +198,6 @@ function validarEdicionRol() {
   return true;
 }
 
-// Evento de entrada para la validación en tiempo real del campo del nombre del rol
 $('#InputNombreRol').on('input', validarEdicionRol);
 
 // Función para mostrar el modal de edición de rol
@@ -298,7 +293,6 @@ $('#EditarRol').on('hidden.bs.modal', function () {
   $('#errorEdit').addClass('d-none');
 });
 
-// Al abrir el modal, guardamos el nombre original del rol en un atributo de datos
 $('#EditarRol').on('show.bs.modal', function (event) {
   const button = $(event.relatedTarget); // Botón que activó el modal
   const originalName = button.data('original-name');

@@ -255,64 +255,72 @@
         </div>
     </div>
 
-    <!-------MODAL EDITAR-------->
+    <!-- MODAL EDITAR -->
     <div class="modal fade" id="EditarUsuario" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
-        <div class="modal-dialog">
-            <div class="modal-content">
-                <div class="modal-header">
-                    <h1 class="modal-title fs-5" id="exampleModalLabel">Editar usuario</h1>
-                    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+      <div class="modal-dialog">
+          <div class="modal-content">
+              <div class="modal-header">
+                  <h1 class="modal-title fs-5" id="exampleModalLabel">Editar usuario</h1>
+                  <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+              </div>
+              <div class="modal-body">
+                <div class="form-group" style="display: none;">
+                  <label for="IdEditarUsuario">Id</label>
+                  <input type="text" id="IdEditarUsuario" class="form-control" required>
                 </div>
-                <div class="modal-body">
-                    <input type="hidden" id="IdEditarUsuario">
-    
-                    <div class="form-group">
-                        <label for="InputEditarDocumento">Documento</label>
-                        <input type="text" id="InputEditarDocumento" class="form-control" required>
-                    </div>
-                    <div class="form-group">
-                        <label for="InputEditarNombre">Nombre</label>
-                        <input type="text" id="InputEditarNombre" class="form-control" required>
-                    </div>
-                    <div class="form-group">
-                        <label for="InputEditarApellidos">Apellidos</label>
-                        <input type="text" id="InputEditarApellidos" class="form-control" required>
-                    </div>
-                    <div class="form-group">
-                        <label for="InputEditarCelular">Celular</label>
-                        <input type="text" id="InputEditarCelular" class="form-control" required>
-                    </div>
-                    <div class="form-group">
-                        <label for="InputEditarCorreo">Correo</label>
-                        <input type="email" id="InputEditarCorreo" class="form-control" required>
-                    </div>
-                    <div class="form-group">
-                        <label for="InputEditarDireccion">Dirección</label>
-                        <input type="text" id="InputEditarDireccion" class="form-control" required>
-                    </div>
-                    <div class="form-group">
-                        <label for="InputEditarRol">Rol</label>
-                        <select id="InputEditarRol" class="form-control" required>
-                            <option value="administrador">Administrador</option>
-                            <option value="cliente">Cliente</option>
-                        </select>
-                    </div>
-                    <div class="form-group">
-                        <label for="InputEditarEstado">Estado</label>
-                        <select id="InputEditarEstado" class="form-control" required>
-                            <option value="Activo">Activo</option>
-                            <option value="Inactivo">Inactivo</option>
-                        </select>
-                    </div>
-                    <small id="errorEdit" class="form-text text-danger d-none">El campo no puede estar vacío.</small>
-                </div>
-                <div class="modal-footer">
-                    <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cancelar</button>
-                    <button type="button" class="btn btn-danger" id="BtnConfirmarEdit">Guardar</button>
-                </div>
-            </div>
-        </div>
+                  <div class="form-group">
+                      <label for="InputEditarDocumento">Documento</label>
+                      <input type="number" id="InputEditarDocumento" class="form-control" required>
+                      <div class="invalid-feedback" id="errorEditarDocumento"></div>
+                  </div>
+                  <div class="form-group">
+                      <label for="InputEditarNombre">Nombre</label>
+                      <input type="text" id="InputEditarNombre" class="form-control" required>
+                      <div class="invalid-feedback" id="errorEditarNombre"></div>
+                  </div>
+                  <div class="form-group">
+                      <label for="InputEditarApellidos">Apellidos</label>
+                      <input type="text" id="InputEditarApellidos" class="form-control" required>
+                      <div class="invalid-feedback" id="errorEditarApellidos"></div>
+                  </div>
+                  <div class="form-group">
+                      <label for="InputEditarCelular">Celular</label>
+                      <input type="number" id="InputEditarCelular" class="form-control" required>
+                      <div class="invalid-feedback" id="errorEditarCelular"></div>
+                  </div>
+                  <div class="form-group">
+                      <label for="InputEditarCorreo">Correo</label>
+                      <input type="email" id="InputEditarCorreo" class="form-control" required>
+                      <div class="invalid-feedback" id="errorEditarCorreo"></div>
+                  </div>
+                  <div class="form-group">
+                      <label for="InputEditarDireccion">Dirección</label>
+                      <input type="text" id="InputEditarDireccion" class="form-control" required>
+                      <div class="invalid-feedback" id="errorEditarDireccion"></div>
+                  </div>
+                  <div class="form-group">
+                      <label for="InputEditarRol">Rol</label>
+                      <select id="InputEditarRol" class="form-control" required>
+                          <!-- Las opciones se generarán dinámicamente utilizando JavaScript -->
+                      </select>
+                  </div>
+                  <div class="form-group">
+                      <label for="InputEditarEstado">Estado</label>
+                      <select id="InputEditarEstado" class="form-control" disabled>
+                          <option value="Activo" selected>Activo</option>
+                          <option value="Inactivo">Inactivo</option>
+                      </select>
+                  </div>
+                  <div class="invalid-feedback" id="errorEdit"></div>
+              </div>
+              <div class="modal-footer">
+                  <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cancelar</button>
+                  <button type="button" class="btn btn-danger" id="BtnConfirmarEdit">Guardar</button>
+              </div>
+          </div>
+      </div>
     </div>
+
 
     <div class="modal fade" id="EliminarUsuario" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
         <div class="modal-dialog">
