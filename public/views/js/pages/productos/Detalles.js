@@ -32,11 +32,11 @@ function ViewDetail(id) {
                 ${buildCarouselImages(producto.Imagenes)}
                 </div>
                 <a class="carousel-control-prev" href="#carouselExampleIndicators" role="button" data-slide="prev">
-                  <span class="carousel-control-prev-icon" aria-hidden="true"></span>
+                  <span class="carousel-control-prev-icon" aria-hidden="true"  style="background-color: #db2d2e; height: 40px; border-radius: 3px;"></span>
                   <span class="sr-only">Previous</span>
                 </a>
                 <a class="carousel-control-next" href="#carouselExampleIndicators" role="button" data-slide="next">
-                  <span class="carousel-control-next-icon" aria-hidden="true"></span>
+                  <span class="carousel-control-next-icon" aria-hidden="true"  style="background-color: #db2d2e; height: 40px; border-radius: 3px;"></span>
                   <span class="sr-only">Next</span>
                 </a>
               </div>
@@ -75,17 +75,18 @@ function ViewDetail(id) {
       });
     }
 
-function buildThumbnailImages(images) {
-  return images.map((image, index) => {
-    const imageUrl = `${window.location.origin}/public/uploads/${image}`;
-    const activeClass = index === 0 ? 'active' : '';
-    return `
-      <a data-bs-target="#carouselExampleIndicators" data-bs-slide-to="${index}" class="carousel-thumbnail ${activeClass}">
-        <img src="${imageUrl}" alt="${image}" style="height:50px;  padding-bottom:10px" class="thumbnail-img">
-      </a>
-    `;
-  }).join('');
-}
+    function buildThumbnailImages(images) {
+      return images.map((image, index) => {
+        const imageUrl = `${window.location.origin}/public/uploads/${image}`;
+        const activeClass = index === 0 ? 'active' : '';
+        return `
+          <a data-bs-target="#carouselExampleIndicators" data-bs-slide-to="${index}" style="cursor:pointer" class="carousel-thumbnail ${activeClass}" onclick="changeCarouselImage(${index})">
+            <img src="${imageUrl}" alt="${image}" style="height:50px;  padding-bottom:10px" class="thumbnail-img">
+          </a>
+        `;
+      }).join('');
+    }
+    
 
 function buildCarouselImages(images) {
   return images.map((image, index) => {
@@ -97,4 +98,10 @@ function buildCarouselImages(images) {
           </div>
       `;
   }).join('');
+}
+
+function changeCarouselImage(index) {
+  $('.carousel-thumbnail').removeClass('active'); // Remueve la clase 'active' de todas las miniaturas
+  $('.carousel-thumbnail[data-bs-slide-to="' + index + '"]').addClass('active'); // Agrega 'active' a la miniatura correspondiente
+  $('#carouselExampleIndicators').carousel(index); // Cambia la imagen activa del carrusel al índice proporcionado
 }
