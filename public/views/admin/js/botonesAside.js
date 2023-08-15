@@ -6,6 +6,7 @@ var productosItem = document.getElementById('productosItem');
 var categoriasItem = document.getElementById('categoriasItem');
 var marcasItem = document.getElementById('marcasItem');
 var ventasItem = document.getElementById('ventasItem');
+var pedidosItem = document.getElementById('pedidosItem');
 // Verificar y mostrar/ocultar el elemento del menú
 if (permisoDashboard) {
     dashboardItem.style.display = 'block';
@@ -39,6 +40,15 @@ if (permisoMarcas) {
 }
 if (permisoVentas) {
     ventasItem.style.display = 'block';
+}
+if (permisoVentas) {
+    ventasItem.style.display = 'block';
 } else {
     ventasItem.style.display = 'none';
 }
+if (permisoPedidos) {
+    pedidosItem.style.display = 'block';
+} else {
+    pedidosItem.style.display = 'none';
+}
+
