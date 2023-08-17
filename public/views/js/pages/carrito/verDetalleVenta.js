@@ -51,6 +51,8 @@ function viewDetail(id) {
     });
 }
 
+localStorage.removeItem('cartItemsData');
+
 $('#btnImprimir').on('click', function () {
     window.print();
     return false;

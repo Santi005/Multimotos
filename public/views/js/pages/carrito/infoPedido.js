@@ -6,6 +6,7 @@ const Documento = userData.Documento;
 const firstName = userData.Nombre;
 const lastName = userData.Apellidos;
 const email = userData.Correo
+let cantidadProducto;
 
 document.getElementById('idCard').value = Documento;
 document.getElementById('firstName').value = firstName;
@@ -46,6 +47,7 @@ const updateResume = () => {
     let cardHTML = '';
     let total = 0;
     subtotal = 0;
+    const iva = 0.19;  
 
     for (const productId in cartItemsData) {
         const productData = cartItemsData[productId];
@@ -57,7 +59,7 @@ const updateResume = () => {
         `;
     }
 
-    total = subtotal + shippingCost;
+    total = (subtotal * iva) + subtotal + shippingCost;
 
     productList.innerHTML = cardHTML;
 
@@ -83,11 +85,13 @@ citySelect.addEventListener('change', (event) => {
     console.log(citySelect.value)
 });
 
-const pagar = () => {
+const checkout = async () => {
+
     const cartItemsData = getCartItemsData();
     const productos = [];
     const cliente = [];
     let subtotal = 0;
+    const iva = 0.19;
 
     for (const productId in cartItemsData) {
         const productData = cartItemsData[productId];
@@ -95,10 +99,12 @@ const pagar = () => {
         subtotal += price;
 
         productos.push({
+            Id: productId,
             Nombre: details.productName,
             Cantidad: quantity,
             Precio: price
         });
+
     }
 
     const adress = document.getElementById('address').value;
@@ -115,66 +121,24 @@ const pagar = () => {
     const ventaData = {
         Productos: productos,
         Cliente: cliente,
-        Envio: shippingCost
+        Envio: shippingCost,
+        Iva: subtotal * iva
     };
 
-    // Realizar la solicitud POST para registrar la venta
-    fetch('http://localhost:8080/sales/', {
-        method: 'POST',
-        headers: {
-            'Content-Type': 'application/json',
-        },
-        body: JSON.stringify(ventaData),
-    })
-    .then(response => response.json())
-    .then(data => {
-        console.log(data);
-        const saleId = data.sale._id;
-
-        // Redirigir a la página de finalización después de completar la venta
-        window.location.href = `finalizar.html?id=${saleId}`;
-
-        // Luego de completar la venta, decrementar la cantidad de productos en la base de datos
-        for (const productId in cartItemsData) {
-            const productData = cartItemsData[productId];
-            const { quantity } = productData;
-
-            // Realizar la solicitud PUT para decrementar el stock de productos
-            fetch(`http://localhost:8080/products/${productId}/decrementar-stock`, {
-                method: 'PUT',
-                headers: {
-                    'Content-Type': 'application/json'
-                },
-                body: JSON.stringify({
-                    cantidad: quantity
-                })
-            })
-            .then(response => response.json())
-            .then(data => {
-                
-            })
-            .catch(error => {
-                console.log(error);
-            });
-
-            localStorage.removeItem('cartItemsData');
-        }
-    })
-    .catch(error => {
-        console.error(error);
-        // Manejar el error de la solicitud POST
-    });
-}
-
-const checkout = document.getElementById('checkout');
-checkout.addEventListener('click', async () => {
     const response = await fetch(`http://localhost:8080/payment/create-order`,{
-        method: 'POST'
+        method: 'POST',
+        'headers': { 
+            'Content-Type': 'application/json'
+        },
+        body: JSON.stringify({ 
+            venta: ventaData,
+        })
     });
     const data = await response.json();
     console.log(data);
     window.location.href = data.init_point;
-});
+};
+
 // Cargar los elementos del carrito al cargar la página
 window.addEventListener('load', () => {
     loadCartItems();
