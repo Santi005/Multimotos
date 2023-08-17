@@ -449,58 +449,6 @@ function editarUsuario() {
 }
 
 
-//BORRARRRRRRRRRRRRRRRR
-// Función para abrir el modal de edición de usuario con los valores actuales
-// function EditUser(id, documento, nombre, apellidos, celular, correo, direccion, rol, estado) {
-//   $('#EditarUsuario').modal('show');
-//   $('#IdEditarUsuario').val(id);
-//   $('#InputEditarDocumento').val(documento);
-//   $('#InputEditarNombre').val(nombre);
-//   $('#InputEditarApellidos').val(apellidos);
-//   $('#InputEditarCelular').val(celular);
-//   $('#InputEditarCorreo').val(correo);
-//   $('#InputEditarDireccion').val(direccion);
-//   $('#InputEditarRol').val(rol);
-//   $('#InputEditarEstado').val(estado);
-// }
-
-// // Evento click del botón de confirmar edición
-// $('#BtnConfirmarEdit').on('click', () => {
-//   const id = $('#IdEditarUsuario').val();
-//   const userData = {
-//     Documento: $('#InputEditarDocumento').val(),
-//     Nombre: $('#InputEditarNombre').val(),
-//     Apellidos: $('#InputEditarApellidos').val(),
-//     Celular: $('#InputEditarCelular').val(),
-//     Correo: $('#InputEditarCorreo').val(),
-//     Direccion: $('#InputEditarDireccion').val(),
-//     Rol: $('#InputEditarRol').val(),
-//     Estado: $('#InputEditarEstado').val()
-//   };
-
-//   if (userData.Documento !== '') {
-//     fetch(`http://localhost:8080/users/${id}`, {
-//         method: 'PUT',
-//         headers: {
-//           'Content-Type': 'application/json'
-//         },
-//         body: JSON.stringify(userData)
-//       })
-//       .then(response => response.json())
-//       .then(data => {
-//         console.log('Usuario editado:', data);
-
-//         $('#EditarUsuario').modal('hide');
-//         location.reload();
-//       })
-//       .catch(error => {
-//         console.error(error);
-//       });
-//   } else {
-//     ValidateForm();
-//   }
-// });
-
 
 // ELIMINAR --------
 

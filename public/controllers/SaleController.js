@@ -311,6 +311,16 @@ const updateSaleToCancelled = async (req, res) => {
     }
 }
 
+// Función para obtener la cantidad total de ventas
+const getTotalVentas = async (req, res) => {
+    try {
+      const totalVentas = await Sale.countDocuments();
+      res.json({ totalVentas });
+    } catch (error) {
+      res.status(500).json({ error: error.message });
+    }
+  };
+
 module.exports = {
     getSale,
     postSale,
@@ -322,5 +332,6 @@ module.exports = {
     updateSaleToDelivered,
     updateSaleToPending,
     updateSaleToReturn,
-    updateSaleToCancelled
+    updateSaleToCancelled,
+    getTotalVentas
 }

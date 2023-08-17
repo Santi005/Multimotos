@@ -212,7 +212,7 @@
                           <h6 class="text-muted font-semibold">
                             Total ventas
                           </h6>
-                          <h6 class="font-extrabold mb-0">19</h6>
+                          <p id="noVentas" style="display: none;">No hay ventas registradas.</p>
                         </div>
                       </div>
                     </div>
@@ -231,7 +231,8 @@
                         </div>
                         <div class="col-md-8 col-lg-12 col-xl-12 col-xxl-7">
                           <h6 class="text-muted font-semibold">Total usuarios</h6>
-                          <h6 class="font-extrabold mb-0">15</h6>
+                          <h6 class="font-extrabold mb-0" id="totalUsuarios"></h6>
+                          <p id="noUsuarios" style="display: none;">No hay usuarios registrados.</p>
                         </div>
                       </div>
                     </div>
@@ -250,7 +251,8 @@
                         </div>
                         <div class="col-md-8 col-lg-12 col-xl-12 col-xxl-7">
                           <h6 class="text-muted font-semibold">Total productos</h6>
-                          <h6 class="font-extrabold mb-0">20</h6>
+                          <h6 class="font-extrabold mb-0" id="totalProductos"></h6>
+                          <p id="noProductos" style="display: none;">No hay productos registrados.</p>
                         </div>
                       </div>
                     </div>
@@ -269,13 +271,15 @@
                         </div>
                         <div class="col-md-8 col-lg-12 col-xl-12 col-xxl-7">
                           <h6 class="text-muted font-semibold">Total clientes</h6>
-                          <h6 class="font-extrabold mb-0">8</h6>
+                          <h6 class="font-extrabold mb-0" id="totalClientes"></h6>
+                          <p id="noClientes" style="display: none;">No hay clientes registrados.</p>
                         </div>
                       </div>
                     </div>
                   </div>
                 </div>
               </div>
+              
 
               <div class="row">
                 <div class="col-12">
@@ -334,5 +338,82 @@
       }
     </script>
 
+<script>
+  // Hacer una solicitud a tu servidor para obtener la cantidad de usuarios
+  fetch('http://localhost:8080/users/usuarios/count')
+    .then((response) => response.json())
+    .then((data) => {
+      const totalUsuariosElement = document.getElementById('totalUsuarios');
+      const noUsuariosElement = document.getElementById('noUsuarios');
+      
+      if (data.totalUsuarios > 0) {
+        totalUsuariosElement.textContent = data.totalUsuarios;
+      } else {
+        noUsuariosElement.style.display = 'block';
+      }
+    })
+    .catch((error) => {
+      console.error(error);
+    });
+</script>
+
+
+
+<script>
+  // Hacer una solicitud a tu servidor para obtener la cantidad de usuarios
+  fetch('http://localhost:8080/products/productos/count')
+    .then((response) => response.json())
+    .then((data) => {
+      const totalProductosElement = document.getElementById('totalProductos');
+      const noProductosElement = document.getElementById('noProductos');
+      
+      if (data.totalProductos > 0) {
+        totalUsuariosElement.textContent = data.totalProductos;
+      } else {
+        noProductosElement.style.display = 'block';
+      }
+    })
+    .catch((error) => {
+      console.error(error);
+    });
+</script>
+
+<script>
+  // Hacer una solicitud a tu servidor para obtener la cantidad de usuarios
+  fetch('http://localhost:8080/sales/ventas/count')
+    .then((response) => response.json())
+    .then((data) => {
+      const totalVentasElement = document.getElementById('totalVentas');
+      const noVentasElement = document.getElementById('noVentas');
+      
+      if (data.totalVentas > 0) {
+        totalVentasElement.textContent = data.totalVentas;
+      } else {
+        noVentasElement.style.display = 'block';
+      }
+    })
+    .catch((error) => {
+      console.error(error);
+    });
+</script>
+
+<script>
+  // Hacer una solicitud a tu servidor para obtener la cantidad de usuarios
+  fetch('http://localhost:8080/users/clientes/count')
+    .then((response) => response.json())
+    .then((data) => {
+      const totalClientesElement = document.getElementById('totalClientes');
+      const noClientesElement = document.getElementById('noClientes');
+      
+      if (data.totalClientes > 0) {
+        totalClientesElement.textContent = data.totalClientes;
+      } else {
+        noClientesElement.style.display = 'block';
+      }
+    })
+    .catch((error) => {
+      console.error(error);
+    });
+</script>
   </body>
 </html>
