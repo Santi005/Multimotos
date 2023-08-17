@@ -1,4 +1,4 @@
-const PAGE_SIZE = 4;
+const PAGE_SIZE = 9;
 let currentPage = 1;
 let totalPages = 0;
 let productsData = [];
