@@ -143,3 +143,60 @@ $('#search-input-products-client').on('input', function () {
 $(document).ready(() => {
   listProducts();
 });
+
+
+// Obtener referencias a los selects y botón
+// Obtener referencias a los selects y botón
+
+const categorySelect = document.getElementById('categorySelect');
+const brandSelect = document.getElementById('brandSelect');
+const searchButton = document.getElementById('searchButton');
+
+// Función para llenar un select con opciones
+function populateSelect(selectElement, options) {
+  options.forEach(option => {
+    const optionElement = document.createElement('option');
+    optionElement.value = option;
+    optionElement.text = option;
+    selectElement.appendChild(optionElement);
+  });
+}
+
+// Cargar categorías
+fetch('http://localhost:8080/categories/')
+  .then(response => response.json())
+  .then(data => {
+    console.log('Categorías recibidas:', data);
+    if (Array.isArray(data.allCategories)) {
+      console.log('Categorías válidas:', data.allCategories);
+      populateSelect(categorySelect, data.allCategories);
+    }
+  })
+  .catch(error => {
+    console.error(error);
+  });
+
+// Cargar marcas
+fetch('http://localhost:8080/marks/')
+  .then(response => response.json())
+  .then(data => {
+    console.log('Marcas recibidas:', data);
+    if (Array.isArray(data.allMarks)) {
+      console.log('Marcas válidas:', data.allMarks);
+      populateSelect(brandSelect, data.allMarks);
+    }
+  })
+  .catch(error => {
+    console.error(error);
+  });
+
+// Evento del botón de búsqueda
+searchButton.addEventListener('click', () => {
+  const selectedCategory = categorySelect.value;
+  const selectedBrand = brandSelect.value;
+
+  // Lógica para realizar la búsqueda y mostrar resultados
+  // Puedes mostrar los resultados en una lista o cualquier otro elemento del DOM
+  // Aquí solo un ejemplo genérico
+  alert(`Categoría seleccionada: ${selectedCategory}\nMarca seleccionada: ${selectedBrand}`);
+});
