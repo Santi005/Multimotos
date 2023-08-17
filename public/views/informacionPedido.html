@@ -291,7 +291,7 @@
                     <p class="precioDebajo text-center" id="totalInfoCart">Total: $0.00</p>
 
                     <!-- <a href="#" id="Btn" class="primary-btn cart-buttons">Pagar ahora</a> -->
-                    <a href="#" id="checkout" class="primary-btn cart-buttons">Pagar xd</a>
+                    <a href="#" id="checkout" class="primary-btn cart-buttons">Pagar ahora</a>
                     <a href="carrito.html" class="primary-btn cart-buttons">Modificar carrito</a>
 
                   </div>
@@ -378,28 +378,19 @@
             const forms = document.querySelectorAll('.needs-validation')
 
             Array.from(forms).forEach(form => {
-            document.getElementById("Btn").addEventListener('click', event => {
+            document.getElementById("checkout").addEventListener('click', event => {
             if (!form.checkValidity()) {
                 event.preventDefault()
                 event.stopPropagation()
             } else {
-                pagar();
+                checkout();
             }
 
             form.classList.add('was-validated')
             }, false)
         })
         })()
-    </script>
 
-    <script src="js/botonesHeader.js"></script>
-    <script src="js/cerrarsesion.js"></script>
-    <script src="js/Userdata.js"></script>
-    <script src="js/datosUsuario.js"></script>
-    <script src="js/ventanaEmergent.js"></script>
-    <script src="js/vallidarToken.js"></script>
-
-    <script>
         var prevScrollPos = window.pageYOffset;
     
         window.addEventListener("scroll", function() {
@@ -409,12 +400,19 @@
             if (prevScrollPos > currentScrollPos) {
                 header.style.top = "0";
             } else {
-                header.style.top = "-300px"; // Cambia esta distancia según tus necesidades
+                header.style.top = "-400px";
             }
     
             prevScrollPos = currentScrollPos;
         });
     </script>
+
+    <script src="js/botonesHeader.js"></script>
+    <script src="js/cerrarsesion.js"></script>
+    <script src="js/Userdata.js"></script>
+    <script src="js/datosUsuario.js"></script>
+    <script src="js/ventanaEmergent.js"></script>
+    <script src="js/vallidarToken.js"></script>
 
     <!-- 
         ──────▄▀▄─────▄▀▄

@@ -101,7 +101,7 @@ const listProducts = () => {
                         <a href="detalles.html?id=${product._id}">
                           <span class="car-option" id="btn-ver-mas">Ver más</span>
                         </a>
-                        <a href="#" onclick="if(${product.Estado}) addToCart('${product._id}', true); event.preventDefault();" class="add-to-cart-button" >
+                        <a href="#" onclick=" addToCart('${product._id}', true); event.preventDefault();" class="add-to-cart-button" >
                           <h6 class="add-cart-button" style="${product.Estado == "Disponible" ? '' : 'opacity: 0.5; cursor: not-allowed;'}" ${disabledAttr}>
                             <i class="fas fa-cart-plus add-cart-button"></i>&nbsp;Añadir al carrito
                           </h6>
