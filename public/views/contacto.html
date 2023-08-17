@@ -209,20 +209,27 @@
                 </div>
                 <div class="col-lg-6 col-md-6">
                     <div class="contact__form">
-                        <form action="#">
+                        <form id="contactForm">
                             <div class="row">
                                 <div class="col-lg-6">
-                                    <input type="text" placeholder="Nombre">
+                                    <input type="text" id="nombre" name="nombre" placeholder="Nombre">
+                                    <p id="nombreError" style="color: red;"></p>
                                 </div>
                                 <div class="col-lg-6">
-                                    <input type="text" placeholder="Correo eléctronico">
+                                    <input type="text" id="correo" name="correo" placeholder="Correo eléctronico">
+                                    <p id="correoError" style="color: red;"></p>
                                 </div>
                             </div>
-                            <input type="text" placeholder="Titulo">
-                            <textarea placeholder="Tu pregunta"></textarea>
+                            <input type="text" id="titulo" name="titulo" placeholder="Titulo">
+                            <textarea id="pregunta" name="pregunta" placeholder="Tu pregunta"></textarea>
                             <button type="submit" class="site-btn">Enviar</button>
                         </form>
                     </div>
+                </div>
+                
+
+                
+                
                 </div>
             </div>
         </div>
@@ -316,6 +323,8 @@
     <script src="js/Userdata.js"></script>
     <script src="js/datosUsuario.js"></script>
     <script src="js/ventanaEmergent.js"></script>
+
+
     <script>
         // Menú fijo
         var prevScrollPos = window.pageYOffset;
@@ -332,5 +341,71 @@
             prevScrollPos = currentScrollPos;
         });
     </script>
+
+<script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+<script>
+    function validarCorreo(correo) {
+        const pattern = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+        return pattern.test(correo);
+    }
+
+    $(document).ready(function() {
+        $('#contactForm').submit(function(event) {
+            event.preventDefault();
+
+            const nombre = $('#nombre').val();
+            const correo = $('#correo').val();
+            const titulo = $('#titulo').val();
+            const pregunta = $('#pregunta').val();
+
+            // Validar los campos aquí
+            if (!nombre || !correo || !titulo || !pregunta) {
+                alert('Por favor, completa todos los campos obligatorios.');
+                return;
+            }
+
+            // Validar el correo
+            if (!validarCorreo(correo)) {
+                $('#correoError').text('Por favor, ingresa un correo válido.');
+                return;
+            } else {
+                $('#correoError').text('');
+            }
+
+            // Si todas las validaciones son exitosas, enviar el formulario
+            $.ajax({
+                url: '/contact',
+                type: 'POST',
+                data: {
+                    nombre: nombre,
+                    correo: correo,
+                    titulo: titulo,
+                    pregunta: pregunta
+                },
+                success: function(response) {
+                    if (response.message === 'Correo enviado con éxito') {
+                        alert('Correo enviado exitosamente. Nos comunicaremos lo más pronto posible.');
+                        $('#contactForm')[0].reset();
+                    } else {
+                        alert('Error al enviar el correo.');
+                    }
+                },
+                error: function(xhr, status, error) {
+                    console.error('Error:', error);
+                    alert('Error al enviar el correo.');
+                }
+            });
+        });
+    });
+</script>
+
+
+<style>
+    .error-message {
+        color: red;
+        font-size: 0.8em;
+    }
+</style>
+  
 </body>
 </html>

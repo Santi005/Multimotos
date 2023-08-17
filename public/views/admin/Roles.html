@@ -110,56 +110,56 @@
             <ul class="menu">
               <li class="sidebar-title">Menu</li>
 
-              <li class="sidebar-item">
+              <li id="dashboardItem" class="sidebar-item">
                 <a href="index.html" class="sidebar-link">
                   <i class="bi bi-grid-fill"></i>
                   <span>Dashboard</span>
                 </a>
               </li>
 
-              <li class="sidebar-item active">
+              <li id="rolesItem" class="sidebar-item active">
                 <a href="Roles.html" class="sidebar-link">
                   <i class="bi bi-people-fill"></i>
                   <span>Roles</span>
                 </a>
               </li>
 
-              <li class="sidebar-item">
+              <li id="usuariosItem" class="sidebar-item">
                 <a href="usuarios.html" class="sidebar-link">
                   <i class="bi bi-person-fill"></i>
                   <span>Usuarios</span>
                 </a>
               </li>
 
-              <li class="sidebar-item">
+              <li id="productosItem" class="sidebar-item">
                 <a href="productos.html" class="sidebar-link">
                   <i class="bi bi-bag-fill"></i>
                   <span>Productos</span>
                 </a>
               </li>
 
-              <li class="sidebar-item">
+              <li id="categoriasItem" class="sidebar-item">
                 <a href="categorias.html" class="sidebar-link">
                   <i class="bi bi-tags-fill"></i>
                   <span>Categorías</span>
                 </a>
               </li>
 
-              <li class="sidebar-item">
+              <li id="marcasItem" class="sidebar-item">
                 <a href="Marcas.html" class="sidebar-link">
                   <i class="bi bi-collection-fill"></i>
                   <span>Marcas</span>
                 </a>
               </li>
 
-              <li class="sidebar-item">
+              <li id="ventasItem" class="sidebar-item">
                 <a href="Ventas.html" class="sidebar-link">
                   <i class="bi bi-credit-card-fill"></i>
                   <span>Ventas</span>
                 </a>
               </li>
 
-              <li class="sidebar-item">
+              <li id="pedidosItem" class="sidebar-item">
                 <a href="Envios.html" class="sidebar-link">
                     <i class="bi bi-truck"></i>
                     <span>Envios</span>
@@ -212,16 +212,15 @@
               <div class="invalid-feedback" id="errorAdd"></div>
               
               <label for="SelectAgregarEstadoRol">Estado</label>
-              <select id="SelectAgregarEstadoRol" class="form-select" style="border-radius: 5px">
+              <select id="SelectAgregarEstadoRol" class="form-select" style="border-radius: 5px" disabled>
                 <option value="Activo" selected>Activo</option>
-                <option value="Inactivo">Inactivo</option>
               </select>
             </div>
   
             <div class="col-md-7">
               <h3><strong>Permisos</strong></h3>
               <div class="form-check">
-                <input class="form-check-input" type="checkbox" id="CheckDashboard" />
+                <input class="form-check-input" type="checkbox" id="CheckDashboard" checked disabled/>
                 <label class="form-check-label" for="CheckDashboard">Dashboard</label>
               </div>
               <div class="form-check">
@@ -248,13 +247,17 @@
                 <input class="form-check-input" type="checkbox" id="CheckVentas" />
                 <label class="form-check-label" for="CheckVentas">Ventas</label>
               </div>
+              <div class="form-check">
+                <input class="form-check-input" type="checkbox" id="CheckPedidos" />
+                <label class="form-check-label" for="CheckPedidos">Pedidos</label>
+              </div>
             </div>
           </div>
         </div>
   
         <div class="modal-footer">
           <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cancelar</button>
-          <button type="button" class="btn btn-danger" id="BtnConfirmarAgregar">Confirmar</button>
+          <button type="button" class="btn btn-danger" id="BtnConfirmarAgregar">Guardar</button>
         </div>
       </div>
     </div>
@@ -321,12 +324,16 @@
                 <input class="form-check-input" type="checkbox" id="CheckVentasEditar" />
                 <label class="form-check-label" for="CheckVentasEditar">Ventas</label>
               </div>
+              <div class="form-check">
+                <input class="form-check-input" type="checkbox" id="CheckPedidosEditar" />
+                <label class="form-check-label" for="CheckPedidosEditar">Pedidos</label>
+              </div>
             </div>
           </div>
         </div>
         <div class="modal-footer">
           <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cancelar</button>
-          <button type="button" class="btn btn-danger" id="BtnConfirmarEdit">Confirmar</button>
+          <button type="button" class="btn btn-danger" id="BtnConfirmarEdit">Guardar</button>
         </div>
       </div>
     </div>
@@ -344,7 +351,7 @@
     <div class="modal-content">
       <div class="modal-header">
         <h1 class="modal-title fs-5" id="exampleModalLabel">
-          Eliminar usuario
+          Eliminar rol
         </h1>
         <button
           type="button"
@@ -356,7 +363,7 @@
       <div class="modal-body">
         <input type="hidden" id="IdEliminarRol" />
 
-        ¿Estás seguro de que deseas eliminar este usuario?
+        ¿Estás seguro de que deseas eliminar este rol?
       </div>
       <div class="modal-footer">
         <button

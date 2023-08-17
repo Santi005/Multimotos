@@ -133,6 +133,28 @@ const getRoles = async (req, res) => {
   }
 };
 
+// Función para obtener la cantidad total de usuarios
+const getTotalUsuarios = async (req, res) => {
+  try {
+    const totalUsuarios = await User.countDocuments();
+    res.json({ totalUsuarios });
+  } catch (error) {
+    res.status(500).json({ error: error.message });
+  }
+};
+
+// Función para obtener la cantidad total de usuarios con el rol "Cliente"
+const getTotalClientes = async (req, res) => {
+  try {
+    const rolClienteObjectId = "64db84338ef9480385345a8a"; 
+    const totalClientes = await User.countDocuments({ Rol: rolClienteObjectId });
+    res.json({ totalClientes });
+  } catch (error) {
+    res.status(500).json({ error: error.message });
+  }
+};
+
+
 module.exports = {
   getUsers,
   postUser,
@@ -142,5 +164,7 @@ module.exports = {
   getRoles,
   checkExistingCorreo, 
   checkExistingDocumento, 
+  getTotalUsuarios,
+  getTotalClientes
 };
 

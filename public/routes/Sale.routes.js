@@ -2,7 +2,7 @@ const { Router } = require('express');
 const { check } = require('express-validator');
 const { ValidatorPath, SaleExisting } = require('../middlewares/SaleValidator');
 
-const { getSale, postSale, desactivateSale, activateSale, searchSale, getDocument, updateSaleToSend, updateSaleToDelivered, updateSaleToPending, updateSaleToReturn, updateSaleToCancelled } = require('../controllers/SaleController');
+const { getSale, postSale, desactivateSale, activateSale, searchSale, getDocument, updateSaleToSend, updateSaleToDelivered, updateSaleToPending, updateSaleToReturn, updateSaleToCancelled, getTotalVentas } = require('../controllers/SaleController');
 
 const route = Router();
 
@@ -11,6 +11,8 @@ route.get('/', getSale);
 route.get('/:id', searchSale);
 
 route.get('/compras/:document', getDocument);
+
+route.get('/ventas/count', getTotalVentas);
 
 route.post('/',
 [

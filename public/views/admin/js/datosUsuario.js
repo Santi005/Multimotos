@@ -12,6 +12,7 @@
         const permisoCategorias = permisosUsuario.categorias;
         const permisoMarcas = permisosUsuario.marcas;
         const permisoVentas = permisosUsuario.ventas;
+        const permisoPedidos = permisosUsuario.pedidos;
 
 
         // console.log('Permisos',permisoDashboard);
@@ -26,3 +27,4 @@
         document.getElementById('permisoCategorias').textContent = permisoCategorias;
         document.getElementById('permisoMarcas').textContent = permisoMarcas;
         document.getElementById('permisoVentas').textContent = permisoVentas;
+        document.getElementById('permisoPedidos').textContent = permisoPedidos;

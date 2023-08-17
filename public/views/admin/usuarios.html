@@ -110,56 +110,56 @@
             <ul class="menu">
               <li class="sidebar-title">Menu</li>
 
-              <li class="sidebar-item">
+              <li id="dashboardItem" class="sidebar-item">
                 <a href="index.html" class="sidebar-link">
                   <i class="bi bi-grid-fill"></i>
                   <span>Dashboard</span>
                 </a>
               </li>
 
-              <li class="sidebar-item">
+              <li id="rolesItem" class="sidebar-item">
                 <a href="Roles.html" class="sidebar-link">
                   <i class="bi bi-people-fill"></i>
                   <span>Roles</span>
                 </a>
               </li>
 
-              <li class="sidebar-item active">
+              <li id="usuariosItem" class="sidebar-item active">
                 <a href="usuarios.html" class="sidebar-link">
                   <i class="bi bi-person-fill"></i>
                   <span>Usuarios</span>
                 </a>
               </li>
 
-              <li class="sidebar-item">
+              <li id="productosItem" class="sidebar-item">
                 <a href="productos.html" class="sidebar-link">
                   <i class="bi bi-bag-fill"></i>
                   <span>Productos</span>
                 </a>
               </li>
 
-              <li class="sidebar-item">
+              <li id="categoriasItem" class="sidebar-item">
                 <a href="categorias.html" class="sidebar-link">
                   <i class="bi bi-tags-fill"></i>
                   <span>Categorías</span>
                 </a>
               </li>
 
-              <li class="sidebar-item">
+              <li id="marcasItem" class="sidebar-item">
                 <a href="Marcas.html" class="sidebar-link">
                   <i class="bi bi-collection-fill"></i>
                   <span>Marcas</span>
                 </a>
               </li>
 
-              <li class="sidebar-item">
+              <li id="ventasItem" class="sidebar-item">
                 <a href="Ventas.html" class="sidebar-link">
                   <i class="bi bi-credit-card-fill"></i>
                   <span>Ventas</span>
                 </a>
               </li>
 
-              <li class="sidebar-item">
+              <li id="pedidosItem" class="sidebar-item">
                 <a href="Envios.html" class="sidebar-link">
                     <i class="bi bi-truck"></i>
                     <span>Envios</span>
@@ -249,70 +249,78 @@
             </div>
             <div class="modal-footer">
               <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cancelar</button>
-              <button type="button" class="btn btn-danger" id="BtnConfirmarAdd">Confirmar</button>
+              <button type="button" class="btn btn-danger" id="BtnConfirmarAdd">Guardar</button>
             </div>
           </div>
         </div>
     </div>
 
-    <!-------MODAL EDITAR-------->
+    <!-- MODAL EDITAR -->
     <div class="modal fade" id="EditarUsuario" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
-        <div class="modal-dialog">
-            <div class="modal-content">
-                <div class="modal-header">
-                    <h1 class="modal-title fs-5" id="exampleModalLabel">Editar usuario</h1>
-                    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+      <div class="modal-dialog">
+          <div class="modal-content">
+              <div class="modal-header">
+                  <h1 class="modal-title fs-5" id="exampleModalLabel">Editar usuario</h1>
+                  <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+              </div>
+              <div class="modal-body">
+                <div class="form-group" style="display: none;">
+                  <label for="IdEditarUsuario">Id</label>
+                  <input type="text" id="IdEditarUsuario" class="form-control" required>
                 </div>
-                <div class="modal-body">
-                    <input type="hidden" id="IdEditarUsuario">
-    
-                    <div class="form-group">
-                        <label for="InputEditarDocumento">Documento</label>
-                        <input type="text" id="InputEditarDocumento" class="form-control" required>
-                    </div>
-                    <div class="form-group">
-                        <label for="InputEditarNombre">Nombre</label>
-                        <input type="text" id="InputEditarNombre" class="form-control" required>
-                    </div>
-                    <div class="form-group">
-                        <label for="InputEditarApellidos">Apellidos</label>
-                        <input type="text" id="InputEditarApellidos" class="form-control" required>
-                    </div>
-                    <div class="form-group">
-                        <label for="InputEditarCelular">Celular</label>
-                        <input type="text" id="InputEditarCelular" class="form-control" required>
-                    </div>
-                    <div class="form-group">
-                        <label for="InputEditarCorreo">Correo</label>
-                        <input type="email" id="InputEditarCorreo" class="form-control" required>
-                    </div>
-                    <div class="form-group">
-                        <label for="InputEditarDireccion">Dirección</label>
-                        <input type="text" id="InputEditarDireccion" class="form-control" required>
-                    </div>
-                    <div class="form-group">
-                        <label for="InputEditarRol">Rol</label>
-                        <select id="InputEditarRol" class="form-control" required>
-                            <option value="administrador">Administrador</option>
-                            <option value="cliente">Cliente</option>
-                        </select>
-                    </div>
-                    <div class="form-group">
-                        <label for="InputEditarEstado">Estado</label>
-                        <select id="InputEditarEstado" class="form-control" required>
-                            <option value="Activo">Activo</option>
-                            <option value="Inactivo">Inactivo</option>
-                        </select>
-                    </div>
-                    <small id="errorEdit" class="form-text text-danger d-none">El campo no puede estar vacío.</small>
-                </div>
-                <div class="modal-footer">
-                    <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cancelar</button>
-                    <button type="button" class="btn btn-danger" id="BtnConfirmarEdit">Confirmar</button>
-                </div>
-            </div>
-        </div>
+                  <div class="form-group">
+                      <label for="InputEditarDocumento">Documento</label>
+                      <input type="number" id="InputEditarDocumento" class="form-control" required>
+                      <div class="invalid-feedback" id="errorEditarDocumento"></div>
+                  </div>
+                  <div class="form-group">
+                      <label for="InputEditarNombre">Nombre</label>
+                      <input type="text" id="InputEditarNombre" class="form-control" required>
+                      <div class="invalid-feedback" id="errorEditarNombre"></div>
+                  </div>
+                  <div class="form-group">
+                      <label for="InputEditarApellidos">Apellidos</label>
+                      <input type="text" id="InputEditarApellidos" class="form-control" required>
+                      <div class="invalid-feedback" id="errorEditarApellidos"></div>
+                  </div>
+                  <div class="form-group">
+                      <label for="InputEditarCelular">Celular</label>
+                      <input type="number" id="InputEditarCelular" class="form-control" required>
+                      <div class="invalid-feedback" id="errorEditarCelular"></div>
+                  </div>
+                  <div class="form-group">
+                      <label for="InputEditarCorreo">Correo</label>
+                      <input type="email" id="InputEditarCorreo" class="form-control" required>
+                      <div class="invalid-feedback" id="errorEditarCorreo"></div>
+                  </div>
+                  <div class="form-group">
+                      <label for="InputEditarDireccion">Dirección</label>
+                      <input type="text" id="InputEditarDireccion" class="form-control" required>
+                      <div class="invalid-feedback" id="errorEditarDireccion"></div>
+                  </div>
+                  <div class="form-group">
+                      <label for="InputEditarRol">Rol</label>
+                      <select id="InputEditarRol" class="form-control" required>
+                          <!-- Las opciones se generarán dinámicamente utilizando JavaScript -->
+                      </select>
+                  </div>
+                  <div class="form-group">
+                      <label for="InputEditarEstado">Estado</label>
+                      <select id="InputEditarEstado" class="form-control" disabled>
+                          <option value="Activo" selected>Activo</option>
+                          <option value="Inactivo">Inactivo</option>
+                      </select>
+                  </div>
+                  <div class="invalid-feedback" id="errorEdit"></div>
+              </div>
+              <div class="modal-footer">
+                  <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cancelar</button>
+                  <button type="button" class="btn btn-danger" id="BtnConfirmarEdit">Guardar</button>
+              </div>
+          </div>
+      </div>
     </div>
+
 
     <div class="modal fade" id="EliminarUsuario" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
         <div class="modal-dialog">
@@ -456,7 +464,7 @@
                     });
     
                     // Establecer el rol actual seleccionando la opción correspondiente
-                    const currentRoleId = 'ID_DEL_ROL_ACTUAL'; // Reemplazar con el ID del rol actual
+                    const currentRoleId = 'ID_DEL_ROL_ACTUAL'; 
                     selectElement.value = currentRoleId;
                 })
                 .catch(error => {

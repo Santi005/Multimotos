@@ -263,6 +263,16 @@ const decrementarStock = async (req, res) => {
   }
 }
 
+// Función para obtener la cantidad total de productos
+const getTotalProductos = async (req, res) => {
+  try {
+    const totalProductos = await Product.countDocuments();
+    res.json({ totalProductos });
+  } catch (error) {
+    res.status(500).json({ error: error.message });
+  }
+};
+
 
 
 module.exports = {
@@ -274,4 +284,5 @@ module.exports = {
   fileUpload,
   incrementStock,
   decrementarStock,
+  getTotalProductos
 }
