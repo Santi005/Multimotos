@@ -17,7 +17,6 @@
     <link rel="stylesheet" href="css/bootstrap.min.css" type="text/css">
     <link rel="stylesheet" href="css/font-awesome.min.css" type="text/css">
     <link rel="stylesheet" href="css/elegant-icons.css" type="text/css">
-    <link rel="stylesheet" href="css/nice-select.css" type="text/css">
     <link rel="stylesheet" href="css/magnific-popup.css" type="text/css">
     <link rel="stylesheet" href="css/jquery-ui.min.css" type="text/css">
     <link rel="stylesheet" href="css/owl.carousel.min.css" type="text/css">
@@ -187,10 +186,11 @@
     <!-- Breadcrumb Begin -->
     <div>
         <div style="width: 100px; margin-left: 75%; margin-top: 2%;">
-            <select name="" id="">
-                <option value="">De mayor a menor</option>
-                <option value="">De menor a mayor</option>
+            <select name="" id="sortSelect" class="form-control" style="border-color: rgba(182, 182, 182, 0.658); border-radius: 2px; width:200px ;">
+                <option value="MayorAMenor">De mayor a menor</option>
+                <option value="MenorAMayor">De menor a mayor</option>
             </select>
+            
         </div>
     
     <!-- Car Section Begin -->
@@ -198,29 +198,25 @@
         <div class="container">
             <div class="row">
                 <div class="col-lg-3">
-                    <div class="car__sidebar" style="background-color: #bfbfbf75;">
+                    <div class="car__sidebar" style="background-color: #bfbfbf52;">
                         <div class="car__search">
                             <h5>Buscar repuesto</h5>
                           
                             <form  role="search" >
-                                <input type="text" placeholder="Buscar" id="search-input-products-client">
+                                <input type="text" placeholder="Buscar" style="border-color: rgba(182, 182, 182, 0.658); border-radius: 2px;" id="search-input-products-client">
                             </form>
                         </div>
                         <div class="car__filter">
                             <h5>Filtrar</h5>
                             <form>
                               <p>Marca</p>
-                              <select id="brandSelect">
-                                <option value="" selected disabled>Seleccione una opción</option>
-                              </select>
-                              <p>Categoría</p>
-                              <select id="categorySelect">
-                                <option value="" selected disabled>Seleccione una opción</option>
+                              <select id="marksSelect" class="form-control" style="border-color: rgba(182, 182, 182, 0.658); border-radius: 2px;">
                               </select>
                               <br>
-                              <div class="car__filter__btn">
-                                <button type="submit" class="site-btn" id="searchButton">Filtrar</button>
-                              </div>
+                              <p>Categoría</p>
+                              <select id="categoriesSelect" class="form-control" style="border-color: rgba(182, 182, 182, 0.658); border-radius: 2px;">
+                              </select>
+                              <br>
                             </form>
                           </div>
                           
@@ -229,16 +225,18 @@
 
                 
                 <div class="col-lg-9">
-                    <div id="cards"  class="card-group">
+                    <div id="cards" class="card-group">
+                      <!-- Aquí se mostrarán los productos -->
                     </div>
                     <nav aria-label="Page navigation">
-                        <ul class="pagination">
-                          <!-- Aquí se generarán los botones de paginación -->
-                        </ul>
-                      </nav>
-
-                    
-                </div>
+                      <ul class="pagination">
+                        <li><button id="prevButton" class="btn pagination-link">Anterior</button></li>
+                        <!-- Aquí se generarán los botones de paginación -->
+                        <li><button id="nextButton" class="btn pagination-link">Siguiente</button></li>
+                      </ul>
+                    </nav>
+                  </div>
+                  
             </div>
         </div>
     </section>
@@ -319,7 +317,6 @@
   <script src="https://kit.fontawesome.com/02fc697ff9.js" crossorigin="anonymous"></script>
   <script src="js/jquery-3.3.1.min.js"></script>
   <script src="js/bootstrap.min.js"></script>
-  <script src="js/jquery.nice-select.min.js"></script>
   <script src="js/jquery-ui.min.js"></script>
   <script src="js/jquery.magnific-popup.min.js"></script>
   <script src="js/mixitup.min.js"></script>

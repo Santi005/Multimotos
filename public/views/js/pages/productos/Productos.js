@@ -1,8 +1,25 @@
-const PAGE_SIZE = 9; // Tamaño de página
-let currentPage = 1; // Página actual
-let totalPages = 0; // Total de páginas
-let productsData = []; // Almacena los datos de todos los productos
-let filteredProductsData = []; // Almacena los datos de los productos filtrados
+const PAGE_SIZE = 4;
+let currentPage = 1;
+let totalPages = 0;
+let productsData = [];
+let filteredProductsData = [];
+
+//Id para filtro de categorías 
+document.getElementById('categoriesSelect').addEventListener('change', () => {
+  currentPage = 1;
+  listProducts();
+});
+
+//Id para filtro de marcas
+document.getElementById('marksSelect').addEventListener('change', () => {
+  currentPage = 1;
+  listProducts();
+});
+
+//Id para ordenar por
+document.getElementById('sortSelect').addEventListener('change', () => {
+  listProducts();
+});
 
 const listProducts = () => {
   fetch('http://localhost:8080/products/')
@@ -11,41 +28,48 @@ const listProducts = () => {
       if (Array.isArray(data.products)) {
         productsData = data.products;
 
-        // Obtiene la búsqueda del usuario
+        //Buscador
         const searchValue = $('#search-input-products-client').val().toLowerCase();
 
-        if (searchValue !== '') {
-          // Filtra los productos
-          filteredProductsData = productsData.filter((product) => {
-            return (
-              product.NombreProducto.toLowerCase().includes(searchValue) ||
-              product.Precio.toString().includes(searchValue)
-            );
-          });
-        } else {
-          // Muestra todos los productos si no hay una búsqueda
-          filteredProductsData = [...productsData];
+        filteredProductsData = productsData.filter((product) => {
+          return (
+            product.NombreProducto.toLowerCase().includes(searchValue) ||
+            product.Precio.toString().includes(searchValue)
+          );
+        });
+
+        //Filtro
+        const selectedCategory = document.getElementById('categoriesSelect').value;
+        const selectedBrand = document.getElementById('marksSelect').value;
+
+        filteredProductsData = filteredProductsData.filter((product) => {
+          const categoryMatch = !selectedCategory || product.Categoria.NombreCategoria === selectedCategory;
+          const brandMatch = !selectedBrand || product.Marca.NombreMarca === selectedBrand;
+          return categoryMatch && brandMatch;
+        });
+
+        //Ordenar por
+        const sortOption = document.getElementById('sortSelect').value;
+        if (sortOption === 'MayorAMenor') {
+          filteredProductsData.sort((a, b) => b.Precio - a.Precio);
+        } else if (sortOption === 'MenorAMayor') {
+          filteredProductsData.sort((a, b) => a.Precio - b.Precio);
         }
 
-        // Calcula el total de productos y total de páginas
         const totalProducts = filteredProductsData.length;
         totalPages = Math.ceil(totalProducts / PAGE_SIZE);
 
-        // Ajusta el número de página según la búsqueda
         if (currentPage > totalPages) {
           currentPage = totalPages;
         }
 
-        // Calcula el índice inicial y final de los productos a mostrar en la página
         const startIndex = (currentPage - 1) * PAGE_SIZE;
         const endIndex = Math.min(startIndex + PAGE_SIZE, totalProducts);
 
-        // Limpia el contenedor antes de cargar los nuevos datos
         const cardsContainer = $('#cards');
         cardsContainer.empty();
 
         if (filteredProductsData.length > 0) {
-          // Recorre los productos que se van a mostrar en la página actual y genera los elementos
           for (let i = startIndex; i < endIndex; i++) {
             const product = filteredProductsData[i];
 
@@ -54,8 +78,8 @@ const listProducts = () => {
 
             if (product) {
               const imageTag = `
-  <img src="${window.location.origin}/public/uploads/${image}" alt="${image}" width="100%" height="100%" style="align-items: center; object-fit: cover;">
-`;
+                <img src="${window.location.origin}/public/uploads/${image}" alt="${image}" width="100%" height="100%" style="align-items: center; object-fit: cover;">
+              `;
 
               let disabledAttr = product.Estado == 'Disponible' ? '' : 'disabled';
 
@@ -67,7 +91,7 @@ const listProducts = () => {
                     </div>
                     <div class="car__item__text" >
                       <div class="car__item__text__inner" style="height:120px">
-                        <h5><a href="#">${product.NombreProducto}</a></h5>
+                        <h5 style="font-weight:600">${product.NombreProducto}</h5>
                         <ul>
                           <li><span>${product.Precio.toLocaleString('es-CO', { style: 'currency', currency: 'COP' })}</span></li>
                           <li><i id='${product._id}' ${product.Estado == "Disponible" ? "class='fas fa-circle' style='color:green'" : "class='fas fa-circle' style='color:red'"}></i>${product.Estado}</li>
@@ -91,40 +115,12 @@ const listProducts = () => {
               cardsContainer.append(card);
             }
           }
-        } else {
-          // Muestra un mensaje cuando no se encuentran productos
-          cardsContainer.html(`
-            <div class="col-12">No se encontraron productos.</div>
-          `);
+        } 
+        else {
+          cardsContainer.html(`<div class="col-12">No se encontraron productos.</div>`);
         }
 
-        // Crea la sección de paginación
-        const paginationContainer = document.querySelector('.pagination');
-        paginationContainer.innerHTML = '';
-
-        // Recorre el número total de páginas y crea el enlace para cambiar de página
-        for (let i = 1; i <= totalPages; i++) {
-          const link = document.createElement('button');
-          link.textContent = i;
-          link.style.fontSize = "15px"
-          link.style.backgroundColor = "#EBEBEA"
-          link.style.marginLeft = "4px"
-          link.classList.add("btn");
-          link.classList.add('pagination-link');
-
-          // Agrega la clase 'active' al enlace de la página actual
-          if (i === currentPage) {
-            link.classList.add('active');
-          }
-
-          // Agrega el evento al hacer clic en el enlace para cambiar la página actual y listar los productos correspondientes
-          link.addEventListener('click', () => {
-            currentPage = i;
-            listProducts();
-          });
-
-          paginationContainer.appendChild(link);
-        }
+        generatePaginationButtons();
       }
     })
     .catch((error) => {
@@ -132,71 +128,189 @@ const listProducts = () => {
     });
 };
 
-// Método buscar
-// Se ejecuta cuando se usa el input de búsqueda
 $('#search-input-products-client').on('input', function () {
-  currentPage = 1; // Reinicia la página al hacer una nueva búsqueda
-  listProducts(); // Lista los productos buscados
+  currentPage = 1;
+  listProducts();
 });
 
-// Llama a la función listProducts cuando la página se haya cargado completamente
 $(document).ready(() => {
   listProducts();
 });
 
+const getcategories = () => {
+  const categoriesSelect = document.getElementById('categoriesSelect')
 
-// Obtener referencias a los selects y botón
-// Obtener referencias a los selects y botón
+  fetch('http://localhost:8080/categories')
+    .then(response => response.json())
+    .then(data => {
+      
+      categorias = data.allCategories;
+      categoriesSelect.innerHTML = '';
 
-const categorySelect = document.getElementById('categorySelect');
-const brandSelect = document.getElementById('brandSelect');
-const searchButton = document.getElementById('searchButton');
+      const defaultOption = document.createElement('option');
+      defaultOption.value = '';
+      defaultOption.textContent = 'Seleccionar categoría';
+      categoriesSelect.appendChild(defaultOption);
 
-// Función para llenar un select con opciones
-function populateSelect(selectElement, options) {
-  options.forEach(option => {
-    const optionElement = document.createElement('option');
-    optionElement.value = option;
-    optionElement.text = option;
-    selectElement.appendChild(optionElement);
-  });
+      categorias.forEach((category) => {
+        const option = document.createElement('option');
+        option.value = `${category.NombreCategoria}`;
+        option.textContent = `${category.NombreCategoria}`;
+        categoriesSelect.appendChild(option);
+      })
+  })
 }
 
-// Cargar categorías
-fetch('http://localhost:8080/categories/')
-  .then(response => response.json())
-  .then(data => {
-    console.log('Categorías recibidas:', data);
-    if (Array.isArray(data.allCategories)) {
-      console.log('Categorías válidas:', data.allCategories);
-      populateSelect(categorySelect, data.allCategories);
-    }
+const getMarks = () => {
+  const marksSelect = document.getElementById('marksSelect')
+
+  fetch('http://localhost:8080/marks')
+    .then(response => response.json())
+    .then(data => {
+
+      marcas = data.allMarks;
+      marksSelect.innerHTML = '';
+
+      const defaultOption = document.createElement('option');
+      defaultOption.value = '';
+      defaultOption.textContent = 'Seleccionar marca';
+      marksSelect.appendChild(defaultOption);
+
+      marcas.forEach((mark) => {
+        const option = document.createElement('option');
+        option.value = `${mark.NombreMarca}`;
+        option.textContent = `${mark.NombreMarca}`;
+        marksSelect.appendChild(option);
+      })
   })
-  .catch(error => {
-    console.error(error);
-  });
+}
+getcategories()
+getMarks()
 
-// Cargar marcas
-fetch('http://localhost:8080/marks/')
-  .then(response => response.json())
-  .then(data => {
-    console.log('Marcas recibidas:', data);
-    if (Array.isArray(data.allMarks)) {
-      console.log('Marcas válidas:', data.allMarks);
-      populateSelect(brandSelect, data.allMarks);
+const generatePaginationButtons = () => {
+  const paginationContainer = document.querySelector('.pagination');
+  paginationContainer.innerHTML = '';
+
+  // Función para crear un botón de paginación
+  const createPaginationButton = (text, isActive, onClick) => {
+    const button = document.createElement('button');
+    button.textContent = text;
+    button.style.fontSize = '15px';
+    button.style.backgroundColor = isActive ? '#DB2D2E' : '#EBEBEA';
+    button.style.color = isActive ? 'white' : 'black';
+    button.style.marginLeft = '4px';
+    button.classList.add('btn');
+    button.classList.add('pagination-link');
+    if (isActive) {
+      button.classList.add('active');
     }
-  })
-  .catch(error => {
-    console.error(error);
+    button.addEventListener('click', onClick);
+    return button;
+  };
+
+  const prevButton = createPaginationButton('Anterior', false, () => {
+    if (currentPage > 1) {
+      currentPage--;
+      listProducts();
+    }
   });
+  prevButton.style.backgroundColor = '#DB2D2E'; 
+  prevButton.style.color = 'white'; 
+  paginationContainer.appendChild(prevButton);
+  
+  // Botones de número de páginas
+  const maxVisiblePages = 5; 
+  const startPage = Math.max(1, currentPage - Math.floor(maxVisiblePages / 2));
+  const endPage = Math.min(totalPages, startPage + maxVisiblePages - 1);
 
-// Evento del botón de búsqueda
-searchButton.addEventListener('click', () => {
-  const selectedCategory = categorySelect.value;
-  const selectedBrand = brandSelect.value;
+  for (let i = startPage; i <= endPage; i++) {
+    const isActive = i === currentPage;
+    const pageButton = createPaginationButton(i.toString(), isActive, () => {
+      currentPage = i;
+      listProducts();
+    });
+    paginationContainer.appendChild(pageButton);
+  }
 
-  // Lógica para realizar la búsqueda y mostrar resultados
-  // Puedes mostrar los resultados en una lista o cualquier otro elemento del DOM
-  // Aquí solo un ejemplo genérico
-  alert(`Categoría seleccionada: ${selectedCategory}\nMarca seleccionada: ${selectedBrand}`);
-});
+  const nextButton = createPaginationButton('Siguiente', false, () => {
+    if (currentPage < totalPages) {
+      currentPage++;
+      listProducts();
+    }
+  });
+  nextButton.style.backgroundColor = '#DB2D2E'; 
+  nextButton.style.color = 'white'; 
+  paginationContainer.appendChild(nextButton);
+};
+
+  if (totalPages <= 3) {
+    for (let i = 1; i <= totalPages; i++) {
+      const link = createPageButton(i);
+      paginationContainer.appendChild(link);
+    }
+  } else {
+  
+if (totalPages <= 3) {
+  for (let i = 1; i <= totalPages; i++) {
+    const link = createPageButton(i);
+    paginationContainer.appendChild(link);
+  }
+} else {
+  if (currentPage <= 2) {
+    for (let i = 1; i <= 3; i++) {
+      const link = createPageButton(i);
+      paginationContainer.appendChild(link);
+    }
+    const dots = document.createElement('span');
+    dots.textContent = '...';
+    dots.classList.add('pagination-dots');
+    paginationContainer.appendChild(dots);
+  } else if (currentPage >= totalPages - 1) {
+    paginationContainer.appendChild(createPageButton(1));
+    const dots = document.createElement('span');
+    dots.textContent = '...';
+    dots.classList.add('pagination-dots');
+    paginationContainer.appendChild(dots);
+    for (let i = totalPages - 2; i <= totalPages; i++) {
+      const link = createPageButton(i);
+      paginationContainer.appendChild(link);
+    }
+  } else {
+    paginationContainer.appendChild(createPageButton(1));
+    const dotsStart = document.createElement('span');
+    dotsStart.textContent = '...';
+    dotsStart.classList.add('pagination-dots');
+    paginationContainer.appendChild(dotsStart);
+    for (let i = currentPage - 1; i <= currentPage + 1; i++) {
+      const link = createPageButton(i);
+      paginationContainer.appendChild(link);
+    }
+    const dotsEnd = document.createElement('span');
+    dotsEnd.textContent = '...';
+    dotsEnd.classList.add('pagination-dots');
+    paginationContainer.appendChild(dotsEnd);
+    paginationContainer.appendChild(createPageButton(totalPages));
+  }
+}
+  }
+
+  paginationContainer.appendChild(nextButton);
+
+
+const createPageButton = (pageNumber) => {
+  const link = document.createElement('button');
+  link.textContent = pageNumber;
+  link.style.fontSize = '15px';
+  link.style.backgroundColor = '#EBEBEA';
+  link.style.marginLeft = '4px';
+  link.classList.add('btn');
+  link.classList.add('pagination-link');
+  if (pageNumber === currentPage) {
+    link.classList.add('active');
+  }
+  link.addEventListener('click', () => {
+    currentPage = pageNumber;
+    listProducts();
+  });
+  return link;
+};
