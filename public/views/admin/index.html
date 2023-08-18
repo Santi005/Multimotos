@@ -212,6 +212,7 @@
                           <h6 class="text-muted font-semibold">
                             Total ventas
                           </h6>
+                          <h6 class="font-extrabold mb-0" id="totalVentas"></h6>
                           <p id="noVentas" style="display: none;">No hay ventas registradas.</p>
                         </div>
                       </div>
@@ -368,7 +369,7 @@
       const noProductosElement = document.getElementById('noProductos');
       
       if (data.totalProductos > 0) {
-        totalUsuariosElement.textContent = data.totalProductos;
+        totalProductosElement.textContent = data.totalProductos;
       } else {
         noProductosElement.style.display = 'block';
       }
@@ -385,6 +386,8 @@
     .then((data) => {
       const totalVentasElement = document.getElementById('totalVentas');
       const noVentasElement = document.getElementById('noVentas');
+
+      console.log(data.totalVentas)
       
       if (data.totalVentas > 0) {
         totalVentasElement.textContent = data.totalVentas;
