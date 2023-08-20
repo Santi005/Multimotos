@@ -64,6 +64,10 @@ const listUsers = () => {
     });
 };
 
+
+
+//Agregar
+
 $(document).ready(function() {
   const $InputAgregarDocumento = $('#InputAgregarDocumento');
   const $InputAgregarNombre = $('#InputAgregarNombre');
@@ -278,13 +282,18 @@ $(document).ready(function() {
 
 
 
-
-
-//EDITARTTT
-  
+//EDITAR
+  // Variables para almacenar el documento y el correo actuales
+let currentDocumento = "";
+let currentCorreo = "";
 // Función para abrir el modal de edición de usuario con los valores actuales
 function EditUser(id, documento, nombre, apellidos, celular, correo, direccion, rol, estado) {
   console.log("EditUser - ID:", id);
+  currentDocumento = documento;
+  currentCorreo = correo;
+  console.log("currentCorreo:", currentCorreo);
+  console.log("currentDocumento:", currentDocumento);
+
   $('#EditarUsuario').modal('show');
   $('#IdEditarUsuario').val(id);
   $('#InputEditarDocumento').val(documento);
@@ -305,24 +314,33 @@ function EditUser(id, documento, nombre, apellidos, celular, correo, direccion, 
   $('#InputEditarDireccion').on('input', validarDireccionEditar);
 }
 
-// Evento click del botón de confirmar edición
+// Evento Click del Botón de Confirmación
 $('#BtnConfirmarEdit').on('click', () => {
-  console.log('Botón "Guardar" de editar presionado.');
+  validarCamposEditar();
   
-  validarCamposEditar(); // Validar campos antes de confirmar la edición
-  // Llamar a la función para editar el usuario solo si no hay errores de validación
+  const newDocumento = $('#InputEditarDocumento').val();
+  const newCorreo = $('#InputEditarCorreo').val();
+
   if (
     !$('#InputEditarDocumento').hasClass("is-invalid") &&
     !$('#InputEditarNombre').hasClass("is-invalid") &&
     !$('#InputEditarApellidos').hasClass("is-invalid") &&
     !$('#InputEditarCelular').hasClass("is-invalid") &&
-    !$('#InputEditarCorreo').hasClass("is-invalid") &&
     !$('#InputEditarDireccion').hasClass("is-invalid")
   ) {
-    // Función para editar el usuario
-    editarUsuario();
+    if (newDocumento === currentDocumento) {
+      // No se han realizado cambios en el documento, validar solo el correo si es necesario
+      validarCorreoIfNecessary(newCorreo);
+    } else {
+      validarDocumentoExistente(newDocumento, (documentoValido) => {
+        if (documentoValido) {
+          validarCorreoIfNecessary(newCorreo);
+        }
+      });
+    }
   }
 });
+
 
 // Función de validación para el campo de Documento en el formulario de edición
 function validarDocumentoEditar() {
@@ -400,6 +418,107 @@ function validarDocumentoEditar() {
     }
   }
 
+// Función para validar los cambios editados (documento y correo)
+function validarCambiosEditados() {
+  const newDocumento = $('#InputEditarDocumento').val();
+  const newCorreo = $('#InputEditarCorreo').val();
+
+  validarDocumentoExistente(newDocumento, (documentoValido) => {
+    if (documentoValido) {
+      validarCorreoIfNecessary(newCorreo);
+    }
+  });
+}
+
+function validarCorreoIfNecessary(newCorreo) {
+  const currentCorreo = $('#InputEditarCorreo').val();
+
+  if (newCorreo !== currentCorreo) {
+    validarCorreoExistente(newCorreo, (correoValido) => {
+      if (correoValido) {
+        editarUsuario();
+      }
+    });
+  } else {
+    editarUsuario();
+  }
+}
+
+function validarCorreoIfNecessary(newCorreo) {
+  if (newCorreo !== currentCorreo) {
+    validarCorreoExistente(newCorreo, (correoValido) => {
+      if (correoValido) {
+        editarUsuario();
+      }
+    });
+  } else {
+    editarUsuario();
+  }
+}
+
+
+  function validarDocumentoExistente(documento, callback) {
+    // Hacer una solicitud fetch al backend para verificar si el documento está registrado
+    fetch(`http://localhost:8080/users/check-documento/${documento}`)
+      .then(response => response.json())
+      .then(data => {
+        if (data.exists) {
+          mostrarErrorDocumentoExistente();
+          callback(false);
+        } else {
+          ocultarErrorDocumentoExistente();
+          callback(true);
+        }
+      })
+      .catch(error => {
+        console.error("Error al verificar documento:", error);
+        callback(false);
+      });
+  }
+  
+
+  // Función para validar si el nuevo correo ya está registrado
+  function validarCorreoExistente(correo, callback) {
+    // Hacer una solicitud fetch al backend para verificar si el documento está registrado
+    fetch(`http://localhost:8080/users/check-email/${correo}`)
+      .then(response => response.json())
+      .then(data => {
+        if (data.exists) {
+          mostrarErrorCorreoExistente();
+          callback(false);
+        } else {
+          ocultarErrorCorreoExistente();
+          callback(true);
+        }
+      })
+      .catch(error => {
+        console.error("Error al verificar correo:", error);
+        callback(false);
+      });
+    }
+
+  // Funciones para mostrar y ocultar mensajes de error en documento o correo existentes
+  function mostrarErrorDocumentoExistente() {
+    $('#errorEditarDocumento').text('El documento ya está registrado en otro usuario.').removeClass('d-none');
+    $('#InputEditarDocumento').addClass('is-invalid');
+  }
+
+  function ocultarErrorDocumentoExistente() {
+    $('#errorEditarDocumento').text('').addClass('d-none');
+    $('#InputEditarDocumento').removeClass('is-invalid');
+  }
+
+  function mostrarErrorCorreoExistente() {
+    $('#errorEditarCorreo').text('El correo ya está registrado en otro usuario.').removeClass('d-none');
+    $('#InputEditarCorreo').addClass('is-invalid');
+  }
+
+  function ocultarErrorCorreoExistente() {
+    $('#errorEditarCorreo').text('').addClass('d-none');
+    $('#InputEditarCorreo').removeClass('is-invalid');
+  }
+
+
 
 // Función para validar el formulario de edición en tiempo real
 function validarCamposEditar() {
@@ -414,7 +533,6 @@ function validarCamposEditar() {
 // Función para editar un usuario
 function editarUsuario() {
   const id = $('#IdEditarUsuario').val();
-  console.log('ID en editarUsuario:', id);
   const userData = {
     Documento: $('#InputEditarDocumento').val(),
     Nombre: $('#InputEditarNombre').val(),
@@ -425,9 +543,6 @@ function editarUsuario() {
     Rol: $('#InputEditarRol').val(),
     Estado: $('#InputEditarEstado').val()
   };
-
-  console.log('EditarUsuario - ID:', id);
-  console.log('EditarUsuario - UserData:', userData);
 
   fetch(`http://localhost:8080/users/${id}`, {
     method: 'PUT',
@@ -441,7 +556,7 @@ function editarUsuario() {
     console.log('Usuario editado:', data);
 
     $('#EditarUsuario').modal('hide');
-    location.reload();
+    location.reload(); // Recargar la página después de la edición
   })
   .catch(error => {
     console.error(error);

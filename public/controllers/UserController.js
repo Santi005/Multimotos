@@ -3,10 +3,10 @@ const Role = require("../models/RoleModel");
 const jwt = require('jsonwebtoken');
 const bcrypt = require('bcrypt');
 
-const checkExistingCorreo = async (correo) => {
+const checkExistingCorreo = async (correo, userId) => {
   try {
     console.log("Verificando correo:", correo);
-    const user = await User.findOne({ Correo: correo });
+    const user = await User.findOne({ Correo: correo, _id: { $ne: userId } });
     console.log("Resultado:", user !== null);
     return user !== null; // Devuelve true si el correo existe, false si no existe
   } catch (error) {
@@ -15,10 +15,10 @@ const checkExistingCorreo = async (correo) => {
   }
 };
 
-const checkExistingDocumento = async (documento) => {
+const checkExistingDocumento = async (documento, userId) => {
   try {
     console.log("Verificando documento:", documento);
-    const user = await User.findOne({ Documento: documento });
+    const user = await User.findOne({ Documento: documento, _id: { $ne: userId } });
     console.log("Resultado:", user !== null);
     return user !== null; // Devuelve true si el documento existe, false si no existe
   } catch (error) {
@@ -77,23 +77,33 @@ const postUser = async (req, res) => {
 
 const putUser = async (req, res) => {
   const userId = req.params.id;
-  const { Documento, Nombre, Apellidos, Celular, Correo, Direccion, Rol, Estado, Contrasena } = req.body;
+  const { Documento, Correo } = req.body;
 
-  const userUpdate = await User.findByIdAndUpdate(userId, {
-    Documento,
-    Nombre,
-    Apellidos,
-    Celular,
-    Correo,
-    Direccion,
-    Rol,
-    Estado,
-    Contrasena
-  });
+  // Verifica si el nuevo correo ya está registrado en la base de datos
+  const isCorreoRegistered = await checkExistingCorreo(Correo, userId);
+  if (isCorreoRegistered) {
+    return res.status(400).json({
+      ok: 400,
+      mensaje: "El correo electrónico ya está registrado."
+    });
+  }
+
+  // Verifica si el nuevo documento ya está registrado en la base de datos
+  const isDocumentoRegistered = await checkExistingDocumento(Documento, userId);
+  if (isDocumentoRegistered) {
+    return res.status(400).json({
+      ok: 400,
+      mensaje: "El número de documento ya está registrado."
+    });
+  }
+
+  // Realiza la actualización en la base de datos
+  const updatedUser = await User.findByIdAndUpdate(userId, req.body, { new: true });
 
   res.json({
     ok: 200,
-    mensaje: "Usuario actualizado correctamente."
+    mensaje: "Usuario actualizado correctamente.",
+    user: updatedUser
   });
 };
 
@@ -146,7 +156,7 @@ const getTotalUsuarios = async (req, res) => {
 // Función para obtener la cantidad total de usuarios con el rol "Cliente"
 const getTotalClientes = async (req, res) => {
   try {
-    const rolClienteObjectId = "64db84338ef9480385345a8a"; 
+    const rolClienteObjectId = "64defa9c74fb54f6dfe372e9"; 
     const totalClientes = await User.countDocuments({ Rol: rolClienteObjectId });
     res.json({ totalClientes });
   } catch (error) {
