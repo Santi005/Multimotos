@@ -79,6 +79,10 @@ $(document).ready(function() {
       $inputAgregarNombreRol.addClass('is-invalid').removeClass('is-valid');
       $errorAdd.text('El campo no puede estar vacío.').removeClass('d-none');
       return false;
+    } else if (roleName.length > 25) {
+      $inputAgregarNombreRol.addClass('is-invalid').removeClass('is-valid');
+      $errorAdd.text("El nombre del rol puede tener más de 25 caracteres.").removeClass("d-none");
+      return false;
     } else if (!alphanumericRegex.test(roleName)) {
       $inputAgregarNombreRol.addClass('is-invalid').removeClass('is-valid');
       $errorAdd.text('No se permiten caracteres especiales ni números.').removeClass('d-none');
@@ -174,6 +178,10 @@ function validarEdicionRol() {
   if (roleName === '') {
     $('#InputNombreRol').addClass('is-invalid').removeClass('is-valid');
     $('#errorEdit').text('El campo no puede estar vacío.').removeClass('d-none');
+    return false;
+  } else if (roleName.length > 25) {
+    $('#InputNombreRol').addClass('is-invalid').removeClass('is-valid');
+    $('#errorEdit').text('El nombre del rol puede tener más de 25 caracteres.').removeClass('d-none');
     return false;
   }
 

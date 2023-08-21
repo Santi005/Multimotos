@@ -111,6 +111,9 @@ $(document).ready(function() {
     if (nombre === "" || !alphanumericRegex.test(nombre)) {
       $errorNombre.text("Nombre inválido. Solo se permiten letras y espacios.").removeClass("d-none");
       $InputAgregarNombre.addClass("is-invalid");
+    } else if (nombre.length > 25) {
+    $errorNombre.text("El nombre no puede tener más de 25 caracteres.").removeClass("d-none");
+    $InputAgregarNombre.addClass("is-invalid");
     } else {
       $errorNombre.text("").addClass("d-none");
       $InputAgregarNombre.removeClass("is-invalid");
@@ -124,6 +127,9 @@ $(document).ready(function() {
     if (apellidos === "" || !alphanumericRegex.test(apellidos)) {
       $errorApellidos.text("Apellidos inválidos. Solo se permiten letras y espacios.").removeClass("d-none");
       $InputAgregarApellidos.addClass("is-invalid");
+    } else if (apellidos.length > 25) {
+    $errorApellidos.text("Los apellidos no pueden tener más de 25 caracteres.").removeClass("d-none");
+    $InputAgregarApellidos.addClass("is-invalid");
     } else {
       $errorApellidos.text("").addClass("d-none");
       $InputAgregarApellidos.removeClass("is-invalid");
@@ -150,6 +156,9 @@ $(document).ready(function() {
     if (correo === "" || !emailRegex.test(correo)) {
       $errorCorreo.text("Correo inválido. Formato válido: ejemplo@ejemplo.com.").removeClass("d-none");
       $InputAgregarCorreo.addClass("is-invalid");
+    } else if (correo.length > 250) {
+    $errorCorreo.text("El correo no puede tener más de 250 caracteres.").removeClass("d-none");
+    $InputAgregarCorreo.addClass("is-invalid");
     } else {
       $errorCorreo.text("").addClass("d-none");
       $InputAgregarCorreo.removeClass("is-invalid");
@@ -169,7 +178,10 @@ $(document).ready(function() {
     if (direccion === "") {
       $errorDireccion.text("El campo de dirección no puede estar vacío.").removeClass("d-none");
       $InputAgregarDireccion.addClass("is-invalid");
-    } else {
+    } else if (direccion.length > 150) {
+    $errorDireccion.text("El correo no puede tener más de 150 caracteres.").removeClass("d-none");
+    $InputAgregarDireccion.addClass("is-invalid");
+  } else {
       $errorDireccion.text("").addClass("d-none");
       $InputAgregarDireccion.removeClass("is-invalid");
     }
@@ -355,17 +367,21 @@ function validarDocumentoEditar() {
 }
 
       // Función de validación para el campo de Nombre
-  function validarNombreEditar() {
-    const nombre = $('#InputEditarNombre').val().trim();
-    const alphanumericRegex = /^[a-zA-Z\s]*$/;
-      if (nombre === "" || !alphanumericRegex.test(nombre)) {
-      $('#errorEditarNombre').text("Nombre inválido. Solo se permiten letras y espacios.").removeClass("d-none");
-      $('#InputEditarNombre').addClass("is-invalid");
-    } else {
-      $('#errorEditarNombre').text("").addClass("d-none");
-      $('#InputEditarNombre').removeClass("is-invalid");
-    }
+function validarNombreEditar() {
+  const nombre = $('#InputEditarNombre').val().trim();
+  const alphanumericRegex = /^[a-zA-Z\s]*$/;
+  
+  if (nombre === "" || !alphanumericRegex.test(nombre)) {
+    $('#errorEditarNombre').text("Nombre inválido. Solo se permiten letras y espacios.").removeClass("d-none");
+    $('#InputEditarNombre').addClass("is-invalid");
+  } else if (nombre.length > 25) {
+    $('#errorEditarNombre').text("El nombre no puede tener más de 25 caracteres.").removeClass("d-none");
+    $('#InputEditarNombre').addClass("is-invalid");
+  } else {
+    $('#errorEditarNombre').text("").addClass("d-none");
+    $('#InputEditarNombre').removeClass("is-invalid");
   }
+}
 
   // Función de validación para el campo de Apellidos
   function validarApellidosEditar() {
@@ -374,6 +390,9 @@ function validarDocumentoEditar() {
       if (apellidos === "" || !alphanumericRegex.test(apellidos)) {
       $('#errorEditarApellidos').text("Apellidos inválidos. Solo se permiten letras y espacios").removeClass("d-none");
       $('#InputEditarApellidos').addClass("is-invalid");
+    } else if (apellidos.length > 25) {
+    $('#errorEditarApellidos').text("Los apellidos no pueden tener más de 25 caracteres.").removeClass("d-none");
+    $('#InputEditarApellidos').addClass("is-invalid");
     } else {
       $('#errorEditarApellidos').text("").addClass("d-none");
       $('#InputEditarApellidos').removeClass("is-invalid");
@@ -400,6 +419,9 @@ function validarDocumentoEditar() {
     if (correo === "" || !emailRegex.test(correo)) {
       $('#errorEditarCorreo').text("Correo inválido. Formato válido: ejemplo@ejemplo.com.").removeClass("d-none");
       $('#InputEditarCorreo').addClass("is-invalid");
+    } else if (correo.length > 250) {
+    $('#errorEditarCorreo').text("El correo no puede tener más de 250 caracteres.").removeClass("d-none");
+    $('#InputEditarCorreo').addClass("is-invalid");
     } else {
       $('#errorEditarCorreo').text("").addClass("d-none");
       $('#InputEditarCorreo').removeClass("is-invalid");
@@ -412,6 +434,9 @@ function validarDocumentoEditar() {
     if (direccion === "") {
       $('#errorEditarDireccion').text("El campo de dirección no puede estar vacío.").removeClass("d-none");
       $('#InputEditarDireccion').addClass("is-invalid");
+    } else if (direccion.length > 150) {
+    $('#errorEditarDireccion').text("La direccion no puede tener más de 150 caracteres.").removeClass("d-none");
+    $('#InputEditarDireccion').addClass("is-invalid");
     } else {
       $('#errorEditarDireccion').text("").addClass("d-none");
       $('#InputEditarDireccion').removeClass("is-invalid");
@@ -648,3 +673,4 @@ function resetForm(modalType) {
   error.addClass('d-none');
   InputDocumento.removeClass('is-invalid');
 }
+
