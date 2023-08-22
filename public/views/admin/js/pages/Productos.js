@@ -30,21 +30,15 @@ function listProducts(){
                             <td>${product.Marca.NombreMarca}</td>
                             <td>${product.Precio.toLocaleString('es-CO', { style: 'currency', currency: 'COP' })}</td>
                             <td>${product.Estado}</td>
-                            <td><button type="button" class="btn btn-danger" data-bs-toggle="modal" data-bs-target="#VerImagenes" id="Carrusel">
-                            Ver imagenes
-                            </button>
-                            </td>
                             <td style="text-align:center;">
                             <div class="d-flex justify-content-center">
-                           
-                                <i onclick="EditProduct('${product._id}', '${product.NombreProducto}', '${product.Descripcion}', '${product.Categoria}', '${product.Marca}', '${product.Precio}', '${product.Imagenes}')" class="bi bi-pencil-square productos" style="color:#f62d51; font-size: 1.3em; cursor: pointer;"></i>
+                                <i data-bs-toggle="tooltip" data-bs-placement="top" data-bs-class="btn" title="Editar" onclick="EditProduct('${product._id}', '${product.NombreProducto}', '${product.Descripcion}', '${product.Categoria}', '${product.Marca}', '${product.Precio}', '${product.Imagenes}')" class="bi bi-pencil-square productos" style="color:#f62d51; font-size: 1.3em; cursor: pointer;"></i>
                                 &nbsp;&nbsp;&nbsp;
-                                <i onclick="DeleteProduct('${product._id}')" class="bi bi-trash3 productos" style="color:#f62d51; font-size: 1.3em; cursor: pointer;"></i>
+                                <i data-bs-toggle="tooltip" data-bs-placement="top" title="Eliminar" onclick="DeleteProduct('${product._id}')" class="bi bi-trash3 productos" style="color:#f62d51; font-size: 1.3em; cursor: pointer;"></i>
                                 &nbsp;&nbsp;&nbsp;
-                                <i onclick="incrementarStock('${product._id}', '${amount}')" class="bi bi-box-seam productos" style="color:#f62d51; font-size: 1.3em; cursor: pointer;"></i>
+                                <i data-bs-toggle="tooltip" data-bs-placement="top" title="Agregar stock" onclick="incrementarStock('${product._id}', '${amount}')" class="bi bi-box-seam productos" style="color:#f62d51; font-size: 1.3em; cursor: pointer;"></i>
                                 &nbsp;&nbsp;&nbsp;
-                                <a href="DetalleProducto.html?id=${product._id}"><i class="bi bi-eye" style="color: #f62d51; font-size: 1.3em;"></i></a>&nbsp;&nbsp;&nbsp;
-                                
+                                <a data-bs-toggle="tooltip" data-bs-placement="top" title="Ver detalles" class="productos" data-bs-toggle="modal" data-bs-target="#VerImagenes" id="Carrusel"><i class="bi bi-eye" style="color: #f62d51; font-size: 1.3em;"></i></a>&nbsp;&nbsp;&nbsp;
                                 </div>
                                 </td>
                         </tr>
@@ -71,47 +65,59 @@ function listProducts(){
     })
 }
 
-// Agregar imágenes al carrusel
-function mostrarImagenesEnCarrusel(imagenes) {
-    const carouselIndicators = $("#carouselIndicators");
-    carouselIndicators.empty();
 
-    const imagenCarrusel = $("#imagenCarrusel");
-    imagenCarrusel.empty();
-
-    imagenes.forEach((imagen, index) => {
-        const indicatorClass = index === 0 ? "active" : "";
-
-        const indicator = `
-            <button type="button" data-bs-target="#carouselExampleIndicators" data-bs-slide-to="${index}" class="${indicatorClass}" aria-label="Slide ${index}"></button>
-        `;
-        carouselIndicators.append(indicator);
-
-        const imageTag = `
-            <div class="carousel-item ${indicatorClass}">
-                <img src="${window.location.origin}/public/uploads/${imagen}" class="d-block " style="width:500px; height:350px" alt="Imagen ${index}">
-            </div>
-        `;
-        imagenCarrusel.append(imageTag);
-    });
-
-    // Inicializar el carrusel
-    $("#carouselExampleIndicators").carousel();
-}
 
 $(document).on('click', '#Carrusel', function () {
     const idProducto = $(this).closest('tr').attr('id');
 
     if (productosConImagenes[idProducto]) {
+        const product = productsData.find(p => p._id === idProducto);
         const imagenes = productosConImagenes[idProducto];
-        mostrarImagenesEnCarrusel(imagenes);
+        mostrarInformacionYImagenes(product, imagenes);
     }
 });
 
+function mostrarInformacionYImagenes(product, imagenes) {
+
+
+    // Actualiza la información del producto en el modal
+    document.getElementById('productoNombre').textContent = product.NombreProducto;
+    document.getElementById('productoDescripcion').textContent = product.Descripcion;
+    document.getElementById('productoCategoria').textContent = product.Categoria.NombreCategoria;
+    document.getElementById('productoMarca').textContent = product.Marca.NombreMarca;
+    document.getElementById('productoPrecio').textContent = product.Precio.toLocaleString('es-CO', { style: 'currency', currency: 'COP' });
+    document.getElementById('productoCantidad').textContent = product.Stock;
+    document.getElementById('productoEstado').textContent = product.Estado;
 
 
 
+    const carouselIndicators = $('#carouselIndicators');
+    carouselIndicators.empty();
 
+    const imagenCarrusel = $('#imagenCarrusel');
+    imagenCarrusel.empty();
+
+    imagenes.forEach((imagen, index) => {
+        const indicatorClass = index === 0 ? 'active' : '';
+    
+        const indicator = `
+            <button type="button" data-bs-target="#carouselExampleIndicators" data-bs-slide-to="${index}" class="${indicatorClass}" aria-label="Slide ${index}"></button>
+        `;
+        carouselIndicators.append(indicator);
+    
+        const imageTag = `
+            <div class="carousel-item ${indicatorClass}">
+                <img src="${window.location.origin}/public/uploads/${imagen}"  class="d-block" alt="Imagen ${index}">
+            </div>
+        `;
+        imagenCarrusel.append(imageTag);
+    });
+    
+    
+
+    const modal = new bootstrap.Modal(document.getElementById('VerImagenes'));
+    modal.show();
+}
 
 //AGREGAR
 $('#AgregarProducto').on('hidden.bs.modal', () => {
@@ -137,6 +143,9 @@ $('#AgregarProducto').on('hidden.bs.modal', () => {
     $('#formFileAdd').removeClass('is-invalid');
     $('#errorAddFile').addClass('d-none');
 });
+
+
+
 
 
 $(document).ready(() => {
@@ -225,7 +234,7 @@ $('#BtnConfirmarAdd').on('click', () => {
             $('#formFileAdd').removeClass('is-invalid');
         }
         
-        
+        return
     }
 
     for (const producto of productsData) {
@@ -236,6 +245,7 @@ $('#BtnConfirmarAdd').on('click', () => {
             return false;
         }
     }
+    
 
     
     // Si la validación pasa, proceder a crear FormData y enviar la solicitud
@@ -632,26 +642,3 @@ function convertirYActualizar(inputElement) {
     inputElement.value = valorNumerico;
 }
 
-
-const fileInput = document.getElementById('formFileAdd');
-
-fileInput.addEventListener('change', () => {
-    const imagenesMaximas = 5;
-    if (fileInput.files.length > imagenesMaximas) {
-        const Toast = Swal.mixin({
-            toast: true,
-            position: 'top-end',
-            showConfirmButton: false,
-            timer: 1500,
-            didOpen: (toast) => {
-              toast.addEventListener('mouseleave', Swal.resumeTimer)
-            }
-          })
-          
-          Toast.fire({
-            icon: 'error',
-            title: `Sólo se permiten ${imagenesMaximas} imagenes.`
-          });
-        fileInput.value = '';
-    }
-});
