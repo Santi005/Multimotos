@@ -642,26 +642,3 @@ function convertirYActualizar(inputElement) {
     inputElement.value = valorNumerico;
 }
 
-
-const fileInput = document.getElementById('formFileAdd');
-
-fileInput.addEventListener('change', () => {
-    const imagenesMaximas = 5;
-    if (fileInput.files.length > imagenesMaximas) {
-        const Toast = Swal.mixin({
-            toast: true,
-            position: 'top-end',
-            showConfirmButton: false,
-            timer: 1500,
-            didOpen: (toast) => {
-              toast.addEventListener('mouseleave', Swal.resumeTimer)
-            }
-          })
-          
-          Toast.fire({
-            icon: 'error',
-            title: `Sólo se permiten ${imagenesMaximas} imagenes.`
-          });
-        fileInput.value = '';
-    }
-});
