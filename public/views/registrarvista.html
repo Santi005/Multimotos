@@ -1,14 +1,185 @@
 <!DOCTYPE html>
-<html>
+<html lang="zxx">
+
 <head>
     <meta charset="UTF-8">
-    <title>Registro</title>
-    <link rel="stylesheet" href="css/estilosloginyregistro.css">
+    <meta name="description" content="Tienda virtual de multimotos">
+    <meta name="keywords" content="multimotos, MULTIMOTOS, Multimotos">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
     <link rel="shortcut icon" href="img/logoMultimotos.png" type="image/x-icon">
-    <link rel="shortcut icon" href="img/logoMultimotos.png" type="image/x-icon">
+    <title>Multimotos</title>
+
+    <!-- Google Font -->
+    <link href="https://fonts.googleapis.com/css2?family=Lato:wght@300;400;700;900&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.2/css/all.min.css" integrity="sha512-z3gLpd7yknf1YoNbCzqRKc4qyor8gaKU1qmn+CShxbuBusANI9QpRohGBreCFkKxLhei6S9CQXFEbbKuqLg0DA==" crossorigin="anonymous" referrerpolicy="no-referrer" />
+
+    <!-- Css Styles -->
+    <link rel="stylesheet" href="css/bootstrap.min.css" type="text/css">
+    <!-- <link rel="stylesheet" href="css/font-awesome.min.css" type="text/css"> -->
+    <link rel="stylesheet" href="css/elegant-icons.css" type="text/css">
+    <link rel="stylesheet" href="css/magnific-popup.css" type="text/css">
+    <link rel="stylesheet" href="css/jquery-ui.min.css" type="text/css">
+    <link rel="stylesheet" href="css/estilos.css" type="text/css">
+    <link rel="stylesheet" href="css/registrarse.css">
 </head>
 <body>
-    <button class="home-button" onclick="window.location.href = 'index.html'">
+
+    <div class="container-login">
+        <div class="forms-container">
+            <div class="signin-signup">
+               <form id="registrationForm" class="sign-in-form needs-validation" novalidate>
+                    <h2 class="title"> Registrarse </h2>
+
+                    <div class="row">
+                        <div class="col-md-6">
+                            <div class="input-field">
+                                <i class="fas fa-id-card"></i>
+                                <input type="text" class="form-control" placeholder="Documento" id="InputDocumento" required>
+                            </div>
+                            <div id="documentoError" class="error-message"></div>
+
+                        </div>
+                        <div class="col-md-6">
+                            <div class="input-field">
+                                <i class="fas fa-envelope"></i>
+                                <input type="text" class="form-control" placeholder="Correo" id="InputCorreo" required>
+                            </div>
+                            <div id="correoError" class="error-message"></div>
+                        </div>
+                    </div>
+
+                    <div class="row">
+                        <div class="col-md-6">
+                            <div class="input-field">
+                                <i class="fas fa-user"></i>
+                                <input type="text" placeholder="Nombre" class="form-control" id="InputNombre" required>
+                            </div>
+                        </div>
+                        <div class="col-md-6">
+                            <div class="input-field">
+                                <i class="fas fa-user"></i>
+                                <input type="text" placeholder="Apellidos" class="form-control" id="InputApellidos" required>
+                            </div>
+                        </div>
+                    </div>
+    
+                    <div class="row">
+                        <div class="col-md-4">
+                            <div class="input-field">
+                                <i class="fas fa-home"></i>
+                                <select id="citySelect" class="form-control" style="width: 160px;">
+                                    <option value="Medellin">Medellín</option>
+                                    <option value="Bello">Bello</option>
+                                </select>
+                            </div>
+                        </div>
+                        <div class="col-md-3">
+                            <div class="input-field">
+                                <select id="addressTypeSelect" class="form-control" style="width: 140px;">
+                                    <option value="Cr.">Cr.</option>
+                                    <option value="Av.">Av.</option>
+                                    <option value="Cll.">Cll.</option>
+                                    <option value="Diag.">Diag.</option>
+                                    <!-- Agrega otras opciones según sea necesario -->
+                                </select>
+                            </div>
+                        </div>
+                        <div class="col-md-3">
+                            <div class="input-field">
+                                <span style="margin-right: 10px;"># </span>
+                                <input type="number" class="form-control" id="addressNumber1" min="1" required style="width: 80px;" inputmode="numeric">
+                                <span style="margin-right: 5px; margin-left: 5px;">- </span>
+                                <input type="number" class="form-control" id="addressNumber2" min="1" required style="width: 80px;" inputmode="numeric">
+                            </div>
+                        </div>
+                        
+                    </div>
+
+                    <!-- <div class="row">
+                        <div class="col-md-1">
+                            <div class="input-field">
+                                <i class="fas fa-home"></i>
+                                <span>#</span>
+                            </div>
+                        </div>
+                        <div class="col-md-5">
+                            <div class="input-field">
+                                <input type="number" class="form-control" id="addressNumber1" min="1" required>
+                            </div>
+                        </div> -->
+                        <!-- <div class="col-md-2">
+                            <div class="input-field">
+                                <span>-</span>
+                            </div>
+                        </div>
+                        <div class="col-md-2">
+                            <div class="input-field">
+                                <input type="number" class="form-control" id="addressNumber2" min="1" required style="width: 100px;">
+                            </div>
+                        </div> -->
+                    <!-- </div> -->
+    
+                    <div class="row">
+                        <div class="col-md-6">
+                            <div class="input-field">
+                                <i class="fas fa-home"></i>
+                                <textarea placeholder="Detalles, ejemplo: Apartamento 213" class="form-control" id="InputDetalles" required rows="2" style="resize: none;"></textarea>
+                            </div>
+                        </div>
+                        <div class="col-md-6">
+                            <div class="input-field">
+                                <i class="fas fa-phone"></i>
+                                <input type="text" placeholder="Teléfono" class="form-control" id="InputCelular" required>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="row">
+                        <div class="col-md-6">
+                            <div class="input-field">
+                                <i class="fas fa-lock"></i>
+                                <input type="password" placeholder="Contraseña" class="form-control" id="InputContrasena" required>
+                                <i class="toggle-password fas fa-eye" onclick="togglePasswordVisibility('InputContrasena')"></i>
+                            </div>
+                        </div>
+                        <div class="col-md-6">
+                            <div class="input-field">
+                                <i class="fas fa-lock"></i>
+                                <input type="password" class="form-control" placeholder="Confirmar contraseña" id="InputConfirmarContrasena" required>
+                                <i class="toggle-password fas fa-eye" onclick="togglePasswordVisibility('InputConfirmarContrasena')"></i>
+                            </div>
+                        </div>
+                    </div>
+
+                    <input type="submit" value="Registrarse" class="btn solid" id="BtnRegistrarCliente">
+
+                    <a href="loginvista.html" class="social-text">¿Ya tienes una cuenta?</a>
+               </form>
+            </div>
+        </div>
+
+    </div>
+
+    <div class="panels-container">
+        <!-- <div class="panel left-panel"></div> -->
+        <div class="panel left-panel">
+            <div class="content">
+                <h3>¿Te perdiste?</h3>
+                <p>Haz click en el botón de abajo para regresar al inicio.</p>
+                <button class="btn transparent" onclick="window.location.href = 'index.html'">Regresar</button>
+            </div>
+
+            <img src="img/undraw_unlock_re_a558.svg" class="image" alt="">
+
+        </div>
+    </div>
+
+
+
+
+
+    <!-- <button class="home-button" onclick="window.location.href = 'index.html'">
         <i class="fas fa-home"></i>
     </button>
     <div class="container center">
@@ -63,12 +234,18 @@
             </div>
         </form>
     </div>
-    
+     -->
     <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.5.0/js/bootstrap.min.js"></script>
-    <script src="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.3/js/all.min.js"></script>
     <script src="https://code.jquery.com/jquery-3.5.1.min.js"></script>
     <script src="js/verificartoken.js"></script>
     <script src="js/iconeye.js"></script>
+    <script src="js/bootstrap.min.js"></script>
+    <script src="js/jquery-ui.min.js"></script>
+    <script src="js/jquery.magnific-popup.min.js"></script>
+    <script src="js/mixitup.min.js"></script>
+    <script src="js/jquery.slicknav.js"></script>
+    <script src="js/owl.carousel.min.js"></script>
+    <!-- <script src="js/main.js"></script> -->
 
     <script>
         $(document).ready(() => {
@@ -102,7 +279,7 @@
                                         Correo: correo,
                                         Direccion: $('#InputDireccion').val(),
                                         //Id del rol 'Cliente'
-                                        Rol: '64defa9c74fb54f6dfe372e9',
+                                        Rol: '649d952d652816c809c8e99c',
                                         Contrasena: $('#InputContrasena').val(),
                                         Estado: 'Activo',
                                     };
@@ -157,10 +334,11 @@
             function validateDocumento() {
                 const documento = $('#InputDocumento').val();
                 if (!documento.match(/^\d+$/)) {
-                    $('#documentoError').text('Documento inválido.');
+                    // $('#documentoError').text('Documento inválido.');
+                    // documento.style.color = 'red'
                     return false;
                 } else {
-                    $('#documentoError').text('');
+                    // $('#documentoError').text('');
                     return true;
                 }
             }
@@ -169,10 +347,10 @@
             function validateNombre() {
                 const nombre = $('#InputNombre').val();
                 if (!nombre.match(/^[a-zA-Z\s]+$/)) {
-                    $('#nombreError').text('El nombre solo puede contener letras.');
+                    // $('#nombreError').text('El nombre solo puede contener letras.');
                     return false;
                 } else {
-                    $('#nombreError').text('');
+                    // $('#nombreError').text('');
                     return true;
                 }
             }
@@ -181,10 +359,10 @@
             function validateApellidos() {
                 const apellidos = $('#InputApellidos').val();
                 if (!apellidos.match(/^[a-zA-Z\s]+$/)) {
-                    $('#apellidosError').text('Los apellidos solo pueden contener letras.');
+                    // $('#apellidosError').text('Los apellidos solo pueden contener letras.');
                     return false;
                 } else {
-                    $('#apellidosError').text('');
+                    // $('#apellidosError').text('');
                     return true;
                 }
             }
@@ -193,10 +371,10 @@
             function validateCelular() {
                 const celular = $('#InputCelular').val();
                 if (!celular.match(/^\d{10}$/)) {
-                    $('#celularError').text('El número de celular debe tener 10 dígitos.');
+                    // $('#celularError').text('El número de celular debe tener 10 dígitos.');
                     return false;
                 } else {
-                    $('#celularError').text('');
+                    // $('#celularError').text('');
                     return true;
                 }
             }
@@ -205,10 +383,10 @@
             function validateCorreo() {
                 const correo = $('#InputCorreo').val();
                 if (!correo.match(/^\w+([\.-]?\w+)*@\w+([\.-]?\w+)*(\.\w{2,3})+$/)) {
-                    $('#correoError').text('Ingrese un correo electrónico válido.');
+                    // $('#correoError').text('Ingrese un correo electrónico válido.');
                     return false;
                 } else {
-                    $('#correoError').text('');
+                    // $('#correoError').text('');
                     return true;
                 }
             }
@@ -217,13 +395,13 @@
             function validateDireccion() {
                 const direccion = $('#InputDireccion').val();
                 if (direccion.trim().length === 0) {
-                    $('#direccionError').text('La dirección no puede estar vacía.');
+                    // $('#direccionError').text('La dirección no puede estar vacía.');
                     return false;
                 } else if (direccion.length > 40) {
-                    $('#direccionError').text('La dirección no puede tener más de 40 caracteres.');
+                    // $('#direccionError').text('La dirección no puede tener más de 40 caracteres.');
                     return false;
                 } else {
-                    $('#direccionError').text('');
+                    // $('#direccionError').text('');
                     return true;
                 }
             }
@@ -232,10 +410,10 @@
             function validateContrasena() {
                 const contrasena = $('#InputContrasena').val();
                 if (contrasena.trim().length === 0) {
-                    $('#contrasenaError').text('La contraseña no puede estar vacía.');
+                    // $('#contrasenaError').text('La contraseña no puede estar vacía.');
                     return false;
                 } else {
-                    $('#contrasenaError').text('');
+                    // $('#contrasenaError').text('');
                     return true;
                 }
             }
@@ -250,7 +428,7 @@
                 } else {
                     $('#confirmarContrasenaError').text('');
                     return true;
-                }
+                }   
             }
     
             // Función para verificar si el correo ya está registrado
@@ -280,6 +458,24 @@
                         });
                 });
             }
+
+            (function() {
+            'use strict';
+            window.addEventListener('load', function() {
+                // Fetch all the forms we want to apply custom Bootstrap validation styles to
+                var forms = document.getElementsByClassName('needs-validation');
+                // Loop over them and prevent submission
+                var validation = Array.prototype.filter.call(forms, function(form) {
+                form.addEventListener('submit', function(event) {
+                    if (form.checkValidity() === false) {
+                    event.preventDefault();
+                    event.stopPropagation();
+                    }
+                    form.classList.add('was-validated');
+                }, false);
+                });
+            }, false);
+            })();
         });
     </script>
     

@@ -54,7 +54,7 @@ const createOrder = async (req, res) => {
             failure: 'http://localhost:8080/payment/failure',
             pending: 'http://localhost:8080/payment/pending',
         },
-        notification_url: 'https://0d9d-2800-e2-9680-1d2f-9c8e-8ea7-f363-e135.ngrok.io/payment/webhook',
+        notification_url: 'https://6318-190-7-115-99.ngrok.io/payment/webhook',
     });
 
     console.log(result);
