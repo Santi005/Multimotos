@@ -10,6 +10,7 @@
     <link rel="stylesheet" href="./assets/compiled/css/app.css" />
     <link rel="stylesheet" href="./assets/compiled/css/app-dark.css" />
     <link rel="stylesheet" href="./assets/compiled/css/iconly.css" />
+    <script src="https://cdn.jsdelivr.net/momentjs/latest/moment.min.js"></script>
   </head>
 
   <body>
@@ -286,7 +287,18 @@
                 <div class="col-12">
                   <div class="card">
                     <div class="card-header">
-                      <h4>Ventas Anuales</h4>
+                      <h4>Ventas</h4>
+                      <div>
+                        <label for="filterType" class="font-extrabold mb-0">Filtrar por:</label>
+                        <select id="filterType" style="border: none; outline: none;">
+                          <option value="year">Año</option>
+                          <option value="month">Mes</option>
+                        </select>
+                      </div>
+                      <div id="filterContainer" class="d-none">
+                        <label for="filterValue" class="font-extrabold mb-0">Seleccionar:</label>
+                        <select id="filterValue" style="border: none; outline: none;"></select>
+                      </div>
                     </div>
                     <div class="card-body">
                       <div id="chart-profile-visit"></div>
@@ -294,6 +306,7 @@
                   </div>
                 </div>
               </div>
+              
 
           </section>
         </div>
@@ -312,6 +325,8 @@
 
     <script src="assets/compiled/js/app.js"></script>
 
+
+    
     <!-- Need: Apexcharts -->
     <script src="assets/extensions/apexcharts/apexcharts.min.js"></script>
     <script src="assets/static/js/pages/dashboard.js"></script>
@@ -387,7 +402,6 @@
       const totalVentasElement = document.getElementById('totalVentas');
       const noVentasElement = document.getElementById('noVentas');
 
-      console.log(data.totalVentas)
       
       if (data.totalVentas > 0) {
         totalVentasElement.textContent = data.totalVentas;
