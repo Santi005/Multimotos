@@ -20,10 +20,10 @@ const listMarks = () => {
                             <td>${mark.NombreMarca}</td>
                             <td>${imageTags}</td>
                             <td>
-                                <i onclick ="EditMark('${mark._id}', '${mark.NombreMarca}', '${mark.Imagenes}')" 
+                                <i data-bs-toggle="tooltip" data-bs-placement="top" title="Editar" onclick ="EditMark('${mark._id}', '${mark.NombreMarca}', '${mark.Imagenes}')" 
                                 class="bi bi-pencil-square marcas" style="color:#f62d51; font-size: 1.3em; cursor: pointer;" ></i>
                                 &nbsp;&nbsp;&nbsp;
-                                <i onclick ="DeleteMark('${mark._id}')" 
+                                <i data-bs-toggle="tooltip" data-bs-placement="top" title="Eliminar" onclick ="DeleteMark('${mark._id}')" 
                                 class="bi bi-trash3  marcas"  style="color:#f62d51; font-size: 1.3em; cursor: pointer;" ></i>
                             </td>
                         </tr>

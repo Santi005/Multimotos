@@ -10,6 +10,7 @@
         <link rel="stylesheet" href="./assets/compiled/css/app.css" />
         <link rel="stylesheet" href="./assets/compiled/css/app-dark.css" />
         <link rel="stylesheet" href="./assets/compiled/css/iconly.css" />
+        <link rel="stylesheet" href="./assets/compiled/css/estilos.css">
 
     </head>
 
@@ -169,7 +170,6 @@
                                         <th class="border-top-0">Marca</th>
                                         <th class="border-top-0">Precio</th>
                                         <th class="border-top-0">Estado</th>
-                                        <th class="border-top-0">Imagenes</th>
                                         <th class="border-top-0" style="text-align: center;">Opciones</th>
                                     </tr>
                                 </thead>
@@ -272,8 +272,8 @@
                             <div class="mb-3">
                                 <input class="form-control " type="file" id="formFileAdd" accept=".png, .jpg, .jpeg"  multiple required>
                                 <small class="form-text text-danger d-none" id="errorAddFile"></small>
-
                             </div>
+
                             </div>
                             <div class="modal-footer">
                                 <button type="button" class="btn btn-secondary" data-bs-dismiss="modal" style="color: #ffff;">Cancelar</button>
@@ -298,7 +298,8 @@
                             <small class="form-text text-danger d-none" id="errorEditNombre"></small>
                             <br>
                             <label for="EditDescripcionProducto" style="text-align: left;">Descripción</label>
-                            <input type="text" id="EditDescripcionProducto" class="form-control" style="  resize: none;" >
+                            <textarea id="EditDescripcionProducto" cols="30" rows="5" class="form-control" style=" resize: none; "
+                            required></textarea>
                             <small class="form-text text-danger d-none" id="errorEditDescripcion"></small>
                             <br>
                             <br>
@@ -385,6 +386,7 @@
                                 <small class="form-text text-danger d-none" id="errorEditFileLength"></small>
 
                             </div>
+
                             </div>
                             <div class="modal-footer">
                                 <button type="button" class="btn btn-secondary" data-bs-dismiss="modal" style="color: #ffff;">Cancelar</button>
@@ -395,39 +397,53 @@
         </div>
 
 
-        <div class="modal fade" id="VerImagenes" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
+        <div class="modal fade modal-xl" id="VerImagenes" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
             <div class="modal-dialog">
-              <div class="modal-content">
-                <div class="modal-header">
-                  <h5 class="modal-title" id="exampleModalLabel">Imágenes del Producto</h5>
-                  <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
-                </div>
-                <div class="modal-body">
-                  <div id="carouselExampleIndicators" class="carousel slide" data-bs-ride="carousel">
-                    <div class="carousel-indicators" id="carouselIndicators">
-                      <!-- Los botones de indicadores se generarán automáticamente en JavaScript -->
+                <div class="modal-content">
+                    <div class="modal-header">
+                        <h5 class="modal-title" id="exampleModalLabel">Detalles</h5>
+                        <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
                     </div>
-                    <div class="carousel-inner" id="imagenCarrusel">
-                      <!-- Las imágenes se agregarán dinámicamente en JavaScript -->
+                    <div class="modal-body" style="display: flex; justify-content: space-around;">
+                        <div id="carouselExampleIndicators" class="carousel slide col-6 " data-bs-ride="carousel" >
+                            <div class="carousel-indicators" id="carouselIndicators">
+                                <!-- Los botones de indicadores se generarán automáticamente en JavaScript -->
+                            </div>
+                            <div class="carousel-inner" id="imagenCarrusel">
+                                <!-- Las imágenes se agregarán dinámicamente en JavaScript -->
+                            </div>
+                            <button class="carousel-control-prev" type="button" data-bs-target="#carouselExampleIndicators" data-bs-slide="prev">
+                                <span class="carousel-control-prev-icon" aria-hidden="true" style="background-color: #f62d51; height: 40px; border-radius: 3px;"></span>
+                                <span class="visually-hidden">Previous</span>
+                            </button>
+                            <button class="carousel-control-next" type="button" data-bs-target="#carouselExampleIndicators" data-bs-slide="next">
+                                <span class="carousel-control-next-icon" aria-hidden="true" style="background-color: #f62d51; height: 40px; border-radius: 3px;"></span>
+                                <span class="visually-hidden">Next</span>
+                            </button>
+                        </div>
+                        <!-- Aquí se muestra la información del producto -->
+                        <div class="col-5">
+                            <br>
+                            <h4><span id="productoNombre"></span></h4>
+                            <p><strong>Descripción:</strong></p>
+                            <div style="max-width: 500px; word-wrap: break-word;" id="productoDescripcion"></div>
+                            <p><strong>Categoría:</strong> <span id="productoCategoria"></span></p>                       
+                            <p><strong>Marca:</strong> <span id="productoMarca"></span></p>
+                            <p><strong>Precio:</strong> <span id="productoPrecio"></span></p>
+                            <p><strong>Cantidad:</strong> <span id="productoCantidad"></span></p>
+                            <p><strong>Estado:</strong> <span id="productoEstado"></span></p>
+
+
+                            <!-- Agrega más detalles si es necesario -->
+                        </div>
                     </div>
-                    <button class="carousel-control-prev" type="button" data-bs-target="#carouselExampleIndicators" data-bs-slide="prev" >
-                      <span class="carousel-control-prev-icon" aria-hidden="true" style="background-color: #f62d51; height: 40px; border-radius: 3px;"></span>
-                      <span class="visually-hidden">Previous</span>
-                    </button>
-                    <button class="carousel-control-next" type="button" data-bs-target="#carouselExampleIndicators" data-bs-slide="next">
-                      <span class="carousel-control-next-icon" aria-hidden="true"  style="background-color: #f62d51; height: 40px; border-radius: 3px;"></span>
-                      <span class="visually-hidden">Next</span>
-                    </button>
-                  </div>
+                    <div class="modal-footer">
+                        <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cerrar</button>
+                    </div>
                 </div>
-                <div class="modal-footer">
-                  <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cerrar</button>
-                </div>
-              </div>
             </div>
-          </div>
-          
-          
+        </div>
+        
 
 
 
