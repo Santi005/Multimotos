@@ -41,11 +41,15 @@ const putRole = async (req, res) => {
     const roleId = req.params.id;
     const { nombre, estado, permisos } = req.body;
 
-    // Obtener el rol antes de la actualización
-    const role = await Role.findById(roleId);
+    // Verificar si el nuevo nombre de rol ya está en uso por otro rol
+    const existingRole = await Role.findOne({ nombre });
+    if (existingRole && existingRole._id.toString() !== roleId) {
+      return res.status(409).json({ message: 'El nombre de rol ya está en uso' });
+    }
 
     // Verificar si el estado del rol cambió a "inactivo"
-    if (estado === "Inactivo" && role.estado !== "Inactivo") {
+    const normalizedEstado = estado.toLowerCase(); // Convertir el estado a minúsculas para normalizar
+    if (normalizedEstado === "inactivo") {
       // Cambiar el estado de los usuarios asociados al rol a "inactivo"
       await User.updateMany({ Rol: roleId }, { Estado: "Inactivo" });
     }
@@ -70,6 +74,7 @@ const putRole = async (req, res) => {
     });
   }
 };
+
 
 
 const deleteRole = async (req, res) => {

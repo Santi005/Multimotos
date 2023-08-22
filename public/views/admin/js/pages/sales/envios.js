@@ -75,10 +75,10 @@ const listSales = () => {
                     btnNewButtons.on('click', () => openModalRazon(sale.Razon));
                 } else if (estadoActual === "Cancelado") {
                     // Proximamente...
-                } else {
+                } else {    
                     btnChangeStatus.hide();
                 }
-            } else if (userData.Rol._id == '649d9526652816c809c8e998') {
+            } else if (userData.Rol._id == '64defa9074fb54f6dfe372e5') {
                 let row = `
                 <tr id='${sale._id}' ${sale.Estado ? "" : "class='venta-desactivada' style='color: #8b8a8a'"}>
                     <td class="text-center">${index + 1}</td>
@@ -327,7 +327,7 @@ const showEmployees = async () => {
         .then(response => response.json())
         .then(data => {
 
-            empleados = data.allUsers.filter((user) => user.Rol === '649ee49fa571b81a623f5772');
+            empleados = data.allUsers.filter((user) => user.Rol === '64defecb848fc301b1eaf925');
 
             employeesSelect.innerHTML = '';
 

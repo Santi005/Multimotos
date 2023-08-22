@@ -1,5 +1,4 @@
 // User.routes.js
-
 const { Router } = require("express");
 const { check } = require("express-validator");
 const {
@@ -15,6 +14,8 @@ const {
   getRoles,
   checkExistingCorreo, 
   checkExistingDocumento,
+  getTotalUsuarios,
+  getTotalClientes
 } = require("../controllers/UserController");
 
 
@@ -65,6 +66,11 @@ route.delete("/:id", deleteUser);
 
 route.get("/roles", getRoles);
 
+route.get('/usuarios/count', getTotalUsuarios);
+
+route.get('/clientes/count', getTotalClientes);
+
+
 route.get("/check-email/:correo", async (req, res) => {
   const { correo } = req.params;
   try {
@@ -86,6 +92,7 @@ route.get("/check-documento/:documento", async (req, res) => {
     res.status(500).json({ error: "Error al verificar el número de documento." });
   }
 });
+
 
 
 module.exports = route;

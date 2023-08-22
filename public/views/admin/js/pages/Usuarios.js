@@ -1,3 +1,5 @@
+let usersData = []; 
+
 const listUsers = () => {
   // Obtener los datos de roles
   fetch('http://localhost:8080/roles/')
@@ -14,6 +16,7 @@ const listUsers = () => {
         .then(response => response.json())
         .then(data => {
           if (Array.isArray(data.allUsers)) {
+            usersData = data.allUsers;
             const tableBody = $("#UsersTable tbody");
             tableBody.empty();
 
@@ -61,170 +64,248 @@ const listUsers = () => {
     });
 };
 
+
+
+//Agregar
+
 $(document).ready(function() {
-  $("#BtnConfirmarAdd").on("click", function(event) {
-    event.preventDefault();
-    event.stopPropagation();
+  const $InputAgregarDocumento = $('#InputAgregarDocumento');
+  const $InputAgregarNombre = $('#InputAgregarNombre');
+  const $InputAgregarApellidos = $('#InputAgregarApellidos');
+  const $InputAgregarCelular = $('#InputAgregarCelular');
+  const $InputAgregarCorreo = $('#InputAgregarCorreo');
+  const $InputAgregarDireccion = $('#InputAgregarDireccion');
+  const $errorDocumento = $('#errorDocumento');
+  const $errorNombre = $('#errorNombre');
+  const $errorApellidos = $('#errorApellidos');
+  const $errorCelular = $('#errorCelular');
+  const $errorCorreo = $('#errorCorreo');
+  const $errorDireccion = $('#errorDireccion');
+  const $errorAdd = $('#errorAdd');
+  const $modalAgregarUsuario = $('#AgregarUsuario');
+  const $btnConfirmarAgregar = $('#BtnConfirmarAdd');
 
-    var inputAgregarDocumento = $("#InputAgregarDocumento");
-    var inputAgregarNombre = $("#InputAgregarNombre");
-    var inputAgregarApellidos = $("#InputAgregarApellidos");
-    var inputAgregarCelular = $("#InputAgregarCelular");
-    var inputAgregarCorreo = $("#InputAgregarCorreo");
-    var inputAgregarDireccion = $("#InputAgregarDireccion");
-    var errorDocumento = $("#errorDocumento");
-    var errorNombre = $("#errorNombre");
-    var errorApellidos = $("#errorApellidos");
-    var errorCelular = $("#errorCelular");
-    var errorCorreo = $("#errorCorreo");
-    var errorDireccion = $("#errorDireccion");
-    var errorAdd = $("#errorAdd");
-
-    var documento = inputAgregarDocumento.val().trim();
-    var nombre = inputAgregarNombre.val().trim();
-    var apellidos = inputAgregarApellidos.val().trim();
-    var celular = inputAgregarCelular.val().trim();
-    var correo = inputAgregarCorreo.val().trim();
-    var direccion = inputAgregarDireccion.val().trim();
-    var alphanumericRegex = /^[a-zA-Z\s]*$/;
-    var emailRegex = /^\w+([\.-]?\w+)*@\w+([\.-]?\w+)*(\.\w{2,3})+$/;
-    var celularRegex = /^\d{10}$/;
-
-    if (documento === "") {
-      errorDocumento.text("El campo no puede estar vacío.").removeClass("d-none");
-      inputAgregarDocumento.addClass("is-invalid");
-      return;
-    } else if (documento < 0 || !/^\d{8,11}$/.test(documento)) {
-      errorDocumento.text("Documento invalido.").removeClass("d-none");
-      inputAgregarDocumento.addClass("is-invalid");
-      return;
-    } else {
-      errorDocumento.text("").addClass("d-none");
-      inputAgregarDocumento.removeClass("is-invalid");
-    }
-    
-
-    if (nombre === "") {
-      errorNombre.text("El campo no puede estar vacío.").removeClass("d-none");
-      inputAgregarNombre.addClass("is-invalid");
-      return;
-    } else if (!alphanumericRegex.test(nombre)) {
-      errorNombre.text("No se permiten caracteres especiales ni números.").removeClass("d-none");
-      inputAgregarNombre.addClass("is-invalid");
-      return;
-    } else {
-      errorNombre.text("").addClass("d-none");
-      inputAgregarNombre.removeClass("is-invalid");
+    // Función de validación para el campo de Documento
+    function validarDocumento() {
+      const documento = $InputAgregarDocumento.val().trim();
+      if (documento === "" || !/^\d{8,11}$/.test(documento)) {
+        $errorDocumento.text("Documento inválido.").removeClass("d-none");
+        $InputAgregarDocumento.addClass("is-invalid");
+      } else {
+        $errorDocumento.text("").addClass("d-none");
+        $InputAgregarDocumento.removeClass("is-invalid");
+      }
+      for (const user of usersData) {
+        if (user.Documento === documento) { 
+          $errorDocumento.text('El documento ya está en uso').removeClass('d-none');
+          $InputAgregarDocumento.addClass('is-invalid').removeClass('is-valid');
+          return false;
+        }
+      }
     }
 
-    if (apellidos === "") {
-      errorApellidos.text("El campo no puede estar vacío.").removeClass("d-none");
-      inputAgregarApellidos.addClass("is-invalid");
-      return;
-    } else if (!alphanumericRegex.test(apellidos)) {
-      errorApellidos.text("No se permiten caracteres especiales ni números.").removeClass("d-none");
-      inputAgregarApellidos.addClass("is-invalid");
-      return;
+      // Función de validación para el campo de Nombre
+  function validarNombre() {
+    const nombre = $InputAgregarNombre.val().trim();
+    const alphanumericRegex = /^[a-zA-Z\s]*$/;
+    if (nombre === "" || !alphanumericRegex.test(nombre)) {
+      $errorNombre.text("Nombre inválido. Solo se permiten letras y espacios.").removeClass("d-none");
+      $InputAgregarNombre.addClass("is-invalid");
+    } else if (nombre.length > 25) {
+    $errorNombre.text("El nombre no puede tener más de 25 caracteres.").removeClass("d-none");
+    $InputAgregarNombre.addClass("is-invalid");
     } else {
-      errorApellidos.text("").addClass("d-none");
-      inputAgregarApellidos.removeClass("is-invalid");
+      $errorNombre.text("").addClass("d-none");
+      $InputAgregarNombre.removeClass("is-invalid");
     }
+  }
 
-    if (celular === "") {
-      errorCelular.text("El campo no puede estar vacío.").removeClass("d-none");
-      inputAgregarCelular.addClass("is-invalid");
-      return;
-    } else if (!celularRegex.test(celular)) {
-      errorCelular.text("El número de celular debe tener 10 dígitos.").removeClass("d-none");
-      inputAgregarCelular.addClass("is-invalid");
-      return;
+  // Función de validación para el campo de Apellidos
+  function validarApellidos() {
+    const apellidos = $InputAgregarApellidos.val().trim();
+    const alphanumericRegex = /^[a-zA-Z\s]*$/;
+    if (apellidos === "" || !alphanumericRegex.test(apellidos)) {
+      $errorApellidos.text("Apellidos inválidos. Solo se permiten letras y espacios.").removeClass("d-none");
+      $InputAgregarApellidos.addClass("is-invalid");
+    } else if (apellidos.length > 25) {
+    $errorApellidos.text("Los apellidos no pueden tener más de 25 caracteres.").removeClass("d-none");
+    $InputAgregarApellidos.addClass("is-invalid");
     } else {
-      errorCelular.text("").addClass("d-none");
-      inputAgregarCelular.removeClass("is-invalid");
+      $errorApellidos.text("").addClass("d-none");
+      $InputAgregarApellidos.removeClass("is-invalid");
     }
+  }
 
-    if (correo === "") {
-      errorCorreo.text("El campo no puede estar vacío.").removeClass("d-none");
-      inputAgregarCorreo.addClass("is-invalid");
-      return;
-    } else if (!emailRegex.test(correo)) {
-      errorCorreo.text("El correo debe tener un formato válido (ejemplo@gmail.com).").removeClass("d-none");
-      inputAgregarCorreo.addClass("is-invalid");
-      return;
+  // Función de validación para el campo de Celular
+  function validarCelular() {
+    const celular = $InputAgregarCelular.val().trim();
+    const celularRegex = /^\d{10}$/;
+    if (celular === "" || !celularRegex.test(celular)) {
+      $errorCelular.text("Celular inválido. Debe tener 10 dígitos.").removeClass("d-none");
+      $InputAgregarCelular.addClass("is-invalid");
     } else {
-      errorCorreo.text("").addClass("d-none");
-      inputAgregarCorreo.removeClass("is-invalid");
+      $errorCelular.text("").addClass("d-none");
+      $InputAgregarCelular.removeClass("is-invalid");
     }
+  }
 
+  // Función de validación para el campo de Correo
+  function validarCorreo() {
+    const correo = $InputAgregarCorreo.val().trim();
+    const emailRegex = /^\w+([\.-]?\w+)*@\w+([\.-]?\w+)*(\.\w{2,3})+$/;
+    if (correo === "" || !emailRegex.test(correo)) {
+      $errorCorreo.text("Correo inválido. Formato válido: ejemplo@ejemplo.com.").removeClass("d-none");
+      $InputAgregarCorreo.addClass("is-invalid");
+    } else if (correo.length > 250) {
+    $errorCorreo.text("El correo no puede tener más de 250 caracteres.").removeClass("d-none");
+    $InputAgregarCorreo.addClass("is-invalid");
+    } else {
+      $errorCorreo.text("").addClass("d-none");
+      $InputAgregarCorreo.removeClass("is-invalid");
+    }
+    for (const user of usersData) {
+      if (user.Correo === correo) { 
+        $errorCorreo.text('El correo ya está en uso').removeClass('d-none');
+        $InputAgregarCorreo.addClass('is-invalid').removeClass('is-valid');
+        return false;
+      }
+    }
+  }
+
+  // Función de validación para el campo de Dirección
+  function validarDireccion() {
+    const direccion = $InputAgregarDireccion.val().trim();
     if (direccion === "") {
-      errorDireccion.text("El campo no puede estar vacío.").removeClass("d-none");
-      inputAgregarDireccion.addClass("is-invalid");
-      return;
-    } else if (direccion.length > 40) {
-      errorDireccion.text("La dirección no puede exceder los 40 caracteres.").removeClass("d-none");
-      inputAgregarDireccion.addClass("is-invalid");
-      return;
-    } else {
-      errorDireccion.text("").addClass("d-none");
-      inputAgregarDireccion.removeClass("is-invalid");
+      $errorDireccion.text("El campo de dirección no puede estar vacío.").removeClass("d-none");
+      $InputAgregarDireccion.addClass("is-invalid");
+    } else if (direccion.length > 150) {
+    $errorDireccion.text("El correo no puede tener más de 150 caracteres.").removeClass("d-none");
+    $InputAgregarDireccion.addClass("is-invalid");
+  } else {
+      $errorDireccion.text("").addClass("d-none");
+      $InputAgregarDireccion.removeClass("is-invalid");
     }
+  }
 
-    // Todas las validaciones pasaron, proceder con el envío de datos
+    $InputAgregarDocumento.on('input', validarDocumento);
+    $InputAgregarNombre.on('input', validarNombre);
+    $InputAgregarApellidos.on('input', validarApellidos);
+    $InputAgregarCelular.on('input', validarCelular);
+    $InputAgregarCorreo.on('input', validarCorreo);
+    $InputAgregarDireccion.on('input', validarDireccion);
 
-    var userData = {
+
+  // Función para validar todos los campos
+  function validarCampos() {
+    validarDocumento();
+    validarNombre();
+    validarApellidos();
+    validarCelular();
+    validarCorreo();
+    validarDireccion();
+  }
+
+  // Función para agregar un usuario
+  function agregarUsuario() {
+    // Obtener los valores de los campos
+    const documento = $InputAgregarDocumento.val().trim();
+    const nombre = $InputAgregarNombre.val().trim();
+    const apellidos = $InputAgregarApellidos.val().trim();
+    const celular = $InputAgregarCelular.val().trim();
+    const correo = $InputAgregarCorreo.val().trim();
+    const direccion = $InputAgregarDireccion.val().trim();
+    const rol = $('#InputAgregarRol').val();
+    const estado = $('#InputAgregarEstado').val();
+
+    // Objeto de datos del usuario
+    const userData = {
       Documento: documento,
       Nombre: nombre,
       Apellidos: apellidos,
       Celular: celular,
       Correo: correo,
       Direccion: direccion,
-      Rol: $("#InputAgregarRol").val(),
-      Estado: $("#InputAgregarEstado").val(),
+      Rol: rol,
+      Estado: estado,
       Contrasena: "123"
     };
 
-    console.log(userData);
-
-    fetch("http://localhost:8080/users/", {
-      method: "POST",
+    // Realizar la solicitud POST para agregar el usuario
+    fetch('http://localhost:8080/users/', {
+      method: 'POST',
       body: JSON.stringify(userData),
       headers: {
-        "Content-type": "application/json; charset=UTF-8"
-      }
+        'Content-type': 'application/json; charset=UTF-8',
+      },
     })
-      .then(response => {
-        if (response.ok) {
-          return response.json();
-        } else if (response.status === 400) {
-          return response.json().then(data => {
-            if (data.errors && data.errors.Documento) {
-              // Mostrar mensaje de error al usuario
-              const errorMessage = data.errors.Documento.msg;
-              alert(errorMessage);
-            } else {
-              throw new Error("Error de validación en el servidor");
-            }
-          });
-        } else {
-          throw new Error("Error en el servidor");
-        }
-      })
-      .then(json => {
-        $("#AgregarUsuario").modal("hide");
+      .then((response) => response.json())
+      .then((json) => {
+        // Cerrar el modal y recargar la página
+        $modalAgregarUsuario.modal('hide');
         location.reload();
       })
-      .catch(error => {
-        console.error(error);
+      .catch((error) => {
+        console.error('Error al agregar el usuario:', error);
       });
+  }
+
+  // Reinicializar la validación al cerrar el modal
+  $modalAgregarUsuario.on('hidden.bs.modal', function () {
+    // Restablecer valores y estilos de los campos
+    $InputAgregarDocumento.val('');
+    $InputAgregarNombre.val('');
+    $InputAgregarApellidos.val('');
+    $InputAgregarCelular.val('');
+    $InputAgregarCorreo.val('');
+    $InputAgregarDireccion.val('');
+    $InputAgregarDocumento.removeClass('is-invalid is-valid');
+    $InputAgregarNombre.removeClass('is-invalid is-valid');
+    $InputAgregarApellidos.removeClass('is-invalid is-valid');
+    $InputAgregarCelular.removeClass('is-invalid is-valid');
+    $InputAgregarCorreo.removeClass('is-invalid is-valid');
+    $InputAgregarDireccion.removeClass('is-invalid is-valid');
+    $errorDocumento.addClass('d-none');
+    $errorNombre.addClass('d-none');
+    $errorApellidos.addClass('d-none');
+    $errorCelular.addClass('d-none');
+    $errorCorreo.addClass('d-none');
+    $errorDireccion.addClass('d-none');
+    $errorAdd.addClass('d-none');
+  });
+
+  // Evento de clic en el botón de confirmar
+  $btnConfirmarAgregar.on('click', () => {
+    validarCampos(); // Validar campos antes de agregar
+    // Llamar a la función para agregar el usuario solo si no hay errores de validación
+    if (
+      !$InputAgregarDocumento.hasClass("is-invalid") &&
+      !$InputAgregarNombre.hasClass("is-invalid") &&
+      !$InputAgregarApellidos.hasClass("is-invalid") &&
+      !$InputAgregarCelular.hasClass("is-invalid") &&
+      !$InputAgregarCorreo.hasClass("is-invalid") &&
+      !$InputAgregarDireccion.hasClass("is-invalid")
+    ) {
+      // Función para agregar un usuario
+      agregarUsuario();
+    }
   });
 });
 
 
 
-  
 
+//EDITAR
+  // Variables para almacenar el documento y el correo actuales
+let currentDocumento = "";
+let currentCorreo = "";
 // Función para abrir el modal de edición de usuario con los valores actuales
 function EditUser(id, documento, nombre, apellidos, celular, correo, direccion, rol, estado) {
+  console.log("EditUser - ID:", id);
+  currentDocumento = documento;
+  currentCorreo = correo;
+  console.log("currentCorreo:", currentCorreo);
+  console.log("currentDocumento:", currentDocumento);
+
   $('#EditarUsuario').modal('show');
   $('#IdEditarUsuario').val(id);
   $('#InputEditarDocumento').val(documento);
@@ -235,10 +316,247 @@ function EditUser(id, documento, nombre, apellidos, celular, correo, direccion, 
   $('#InputEditarDireccion').val(direccion);
   $('#InputEditarRol').val(rol);
   $('#InputEditarEstado').val(estado);
+
+  // Agregar eventos 'input' para validación en tiempo real
+  $('#InputEditarDocumento').on('input', validarDocumentoEditar);
+  $('#InputEditarNombre').on('input', validarNombreEditar);
+  $('#InputEditarApellidos').on('input', validarApellidosEditar);
+  $('#InputEditarCelular').on('input', validarCelularEditar);
+  $('#InputEditarCorreo').on('input', validarCorreoEditar);
+  $('#InputEditarDireccion').on('input', validarDireccionEditar);
 }
 
-// Evento click del botón de confirmar edición
+// Evento Click del Botón de Confirmación
 $('#BtnConfirmarEdit').on('click', () => {
+  validarCamposEditar();
+  
+  const newDocumento = $('#InputEditarDocumento').val();
+  const newCorreo = $('#InputEditarCorreo').val();
+
+  if (
+    !$('#InputEditarDocumento').hasClass("is-invalid") &&
+    !$('#InputEditarNombre').hasClass("is-invalid") &&
+    !$('#InputEditarApellidos').hasClass("is-invalid") &&
+    !$('#InputEditarCelular').hasClass("is-invalid") &&
+    !$('#InputEditarDireccion').hasClass("is-invalid")
+  ) {
+    if (newDocumento === currentDocumento) {
+      // No se han realizado cambios en el documento, validar solo el correo si es necesario
+      validarCorreoIfNecessary(newCorreo);
+    } else {
+      validarDocumentoExistente(newDocumento, (documentoValido) => {
+        if (documentoValido) {
+          validarCorreoIfNecessary(newCorreo);
+        }
+      });
+    }
+  }
+});
+
+
+// Función de validación para el campo de Documento en el formulario de edición
+function validarDocumentoEditar() {
+  const documento = $('#InputEditarDocumento').val().trim();
+  if (documento === "" || !/^\d{8,11}$/.test(documento)) {
+    $('#errorEditarDocumento').text("Documento inválido.").removeClass("d-none");
+    $('#InputEditarDocumento').addClass("is-invalid");
+  } else {
+    $('#errorEditarDocumento').text("").addClass("d-none");
+    $('#InputEditarDocumento').removeClass("is-invalid");
+  }
+}
+
+      // Función de validación para el campo de Nombre
+function validarNombreEditar() {
+  const nombre = $('#InputEditarNombre').val().trim();
+  const alphanumericRegex = /^[a-zA-Z\s]*$/;
+  
+  if (nombre === "" || !alphanumericRegex.test(nombre)) {
+    $('#errorEditarNombre').text("Nombre inválido. Solo se permiten letras y espacios.").removeClass("d-none");
+    $('#InputEditarNombre').addClass("is-invalid");
+  } else if (nombre.length > 25) {
+    $('#errorEditarNombre').text("El nombre no puede tener más de 25 caracteres.").removeClass("d-none");
+    $('#InputEditarNombre').addClass("is-invalid");
+  } else {
+    $('#errorEditarNombre').text("").addClass("d-none");
+    $('#InputEditarNombre').removeClass("is-invalid");
+  }
+}
+
+  // Función de validación para el campo de Apellidos
+  function validarApellidosEditar() {
+    const apellidos = $('#InputEditarApellidos').val().trim();
+    const alphanumericRegex = /^[a-zA-Z\s]*$/;
+      if (apellidos === "" || !alphanumericRegex.test(apellidos)) {
+      $('#errorEditarApellidos').text("Apellidos inválidos. Solo se permiten letras y espacios").removeClass("d-none");
+      $('#InputEditarApellidos').addClass("is-invalid");
+    } else if (apellidos.length > 25) {
+    $('#errorEditarApellidos').text("Los apellidos no pueden tener más de 25 caracteres.").removeClass("d-none");
+    $('#InputEditarApellidos').addClass("is-invalid");
+    } else {
+      $('#errorEditarApellidos').text("").addClass("d-none");
+      $('#InputEditarApellidos').removeClass("is-invalid");
+    }
+  }
+
+  // Función de validación para el campo de Celular
+  function validarCelularEditar() {
+    const celular = $('#InputEditarCelular').val().trim();
+    const celularRegex = /^\d{10}$/;
+    if (celular === "" || !celularRegex.test(celular)) {
+      $('#errorEditarCelular').text("Celular inválido. Debe tener 10 dígitos.").removeClass("d-none");
+      $('#InputEditarCelular').addClass("is-invalid");
+    } else {
+      $('#errorEditarCelular').text("").addClass("d-none");
+      $('#InputEditarCelular').removeClass("is-invalid");
+    }
+  }
+
+  // Función de validación para el campo de Correo
+  function validarCorreoEditar() {
+    const correo = $('#InputEditarCorreo').val().trim();
+    const emailRegex = /^\w+([\.-]?\w+)*@\w+([\.-]?\w+)*(\.\w{2,3})+$/;
+    if (correo === "" || !emailRegex.test(correo)) {
+      $('#errorEditarCorreo').text("Correo inválido. Formato válido: ejemplo@ejemplo.com.").removeClass("d-none");
+      $('#InputEditarCorreo').addClass("is-invalid");
+    } else if (correo.length > 250) {
+    $('#errorEditarCorreo').text("El correo no puede tener más de 250 caracteres.").removeClass("d-none");
+    $('#InputEditarCorreo').addClass("is-invalid");
+    } else {
+      $('#errorEditarCorreo').text("").addClass("d-none");
+      $('#InputEditarCorreo').removeClass("is-invalid");
+    }
+  }
+
+  // Función de validación para el campo de Dirección
+  function validarDireccionEditar() {
+    const direccion = $('#InputEditarDireccion').val().trim();
+    if (direccion === "") {
+      $('#errorEditarDireccion').text("El campo de dirección no puede estar vacío.").removeClass("d-none");
+      $('#InputEditarDireccion').addClass("is-invalid");
+    } else if (direccion.length > 150) {
+    $('#errorEditarDireccion').text("La direccion no puede tener más de 150 caracteres.").removeClass("d-none");
+    $('#InputEditarDireccion').addClass("is-invalid");
+    } else {
+      $('#errorEditarDireccion').text("").addClass("d-none");
+      $('#InputEditarDireccion').removeClass("is-invalid");
+    }
+  }
+
+// Función para validar los cambios editados (documento y correo)
+function validarCambiosEditados() {
+  const newDocumento = $('#InputEditarDocumento').val();
+  const newCorreo = $('#InputEditarCorreo').val();
+
+  validarDocumentoExistente(newDocumento, (documentoValido) => {
+    if (documentoValido) {
+      validarCorreoIfNecessary(newCorreo);
+    }
+  });
+}
+
+function validarCorreoIfNecessary(newCorreo) {
+  const currentCorreo = $('#InputEditarCorreo').val();
+
+  if (newCorreo !== currentCorreo) {
+    validarCorreoExistente(newCorreo, (correoValido) => {
+      if (correoValido) {
+        editarUsuario();
+      }
+    });
+  } else {
+    editarUsuario();
+  }
+}
+
+function validarCorreoIfNecessary(newCorreo) {
+  if (newCorreo !== currentCorreo) {
+    validarCorreoExistente(newCorreo, (correoValido) => {
+      if (correoValido) {
+        editarUsuario();
+      }
+    });
+  } else {
+    editarUsuario();
+  }
+}
+
+
+  function validarDocumentoExistente(documento, callback) {
+    // Hacer una solicitud fetch al backend para verificar si el documento está registrado
+    fetch(`http://localhost:8080/users/check-documento/${documento}`)
+      .then(response => response.json())
+      .then(data => {
+        if (data.exists) {
+          mostrarErrorDocumentoExistente();
+          callback(false);
+        } else {
+          ocultarErrorDocumentoExistente();
+          callback(true);
+        }
+      })
+      .catch(error => {
+        console.error("Error al verificar documento:", error);
+        callback(false);
+      });
+  }
+  
+
+  // Función para validar si el nuevo correo ya está registrado
+  function validarCorreoExistente(correo, callback) {
+    // Hacer una solicitud fetch al backend para verificar si el documento está registrado
+    fetch(`http://localhost:8080/users/check-email/${correo}`)
+      .then(response => response.json())
+      .then(data => {
+        if (data.exists) {
+          mostrarErrorCorreoExistente();
+          callback(false);
+        } else {
+          ocultarErrorCorreoExistente();
+          callback(true);
+        }
+      })
+      .catch(error => {
+        console.error("Error al verificar correo:", error);
+        callback(false);
+      });
+    }
+
+  // Funciones para mostrar y ocultar mensajes de error en documento o correo existentes
+  function mostrarErrorDocumentoExistente() {
+    $('#errorEditarDocumento').text('El documento ya está registrado en otro usuario.').removeClass('d-none');
+    $('#InputEditarDocumento').addClass('is-invalid');
+  }
+
+  function ocultarErrorDocumentoExistente() {
+    $('#errorEditarDocumento').text('').addClass('d-none');
+    $('#InputEditarDocumento').removeClass('is-invalid');
+  }
+
+  function mostrarErrorCorreoExistente() {
+    $('#errorEditarCorreo').text('El correo ya está registrado en otro usuario.').removeClass('d-none');
+    $('#InputEditarCorreo').addClass('is-invalid');
+  }
+
+  function ocultarErrorCorreoExistente() {
+    $('#errorEditarCorreo').text('').addClass('d-none');
+    $('#InputEditarCorreo').removeClass('is-invalid');
+  }
+
+
+
+// Función para validar el formulario de edición en tiempo real
+function validarCamposEditar() {
+  validarDocumentoEditar();
+  validarNombreEditar();
+  validarApellidosEditar();
+  validarCelularEditar();
+  validarCorreoEditar();
+  validarDireccionEditar();
+}
+
+// Función para editar un usuario
+function editarUsuario() {
   const id = $('#IdEditarUsuario').val();
   const userData = {
     Documento: $('#InputEditarDocumento').val(),
@@ -251,29 +569,28 @@ $('#BtnConfirmarEdit').on('click', () => {
     Estado: $('#InputEditarEstado').val()
   };
 
-  if (userData.Documento !== '') {
-    fetch(`http://localhost:8080/users/${id}`, {
-        method: 'PUT',
-        headers: {
-          'Content-Type': 'application/json'
-        },
-        body: JSON.stringify(userData)
-      })
-      .then(response => response.json())
-      .then(data => {
-        console.log('Usuario editado:', data);
+  fetch(`http://localhost:8080/users/${id}`, {
+    method: 'PUT',
+    headers: {
+      'Content-Type': 'application/json'
+    },
+    body: JSON.stringify(userData)
+  })
+  .then(response => response.json())
+  .then(data => {
+    console.log('Usuario editado:', data);
 
-        $('#EditarUsuario').modal('hide');
-        location.reload();
-      })
-      .catch(error => {
-        console.error(error);
-      });
-  } else {
-    ValidateForm();
-  }
-});
+    $('#EditarUsuario').modal('hide');
+    location.reload(); // Recargar la página después de la edición
+  })
+  .catch(error => {
+    console.error(error);
+  });
+}
 
+
+
+// ELIMINAR --------
 
 $('#BtnConfirmarDelete').on('click', () => {
   const id = $('#IdEliminarUsuario').val();
@@ -291,6 +608,9 @@ $('#BtnConfirmarDelete').on('click', () => {
       console.error(error);
   });
 });
+
+
+
 
 function DeleteUser(id) {
   $('#EliminarUsuario').modal('show');
@@ -353,3 +673,4 @@ function resetForm(modalType) {
   error.addClass('d-none');
   InputDocumento.removeClass('is-invalid');
 }
+

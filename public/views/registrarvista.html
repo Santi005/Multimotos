@@ -63,18 +63,74 @@
                             </div>
                         </div>
                     </div>
+    
+                    <div class="row">
+                        <div class="col-md-4">
+                            <div class="input-field">
+                                <i class="fas fa-home"></i>
+                                <select id="citySelect" class="form-control" style="width: 160px;">
+                                    <option value="Medellin">Medellín</option>
+                                    <option value="Bello">Bello</option>
+                                </select>
+                            </div>
+                        </div>
+                        <div class="col-md-3">
+                            <div class="input-field">
+                                <select id="addressTypeSelect" class="form-control" style="width: 140px;">
+                                    <option value="Cr.">Cr.</option>
+                                    <option value="Av.">Av.</option>
+                                    <option value="Cll.">Cll.</option>
+                                    <option value="Diag.">Diag.</option>
+                                    <!-- Agrega otras opciones según sea necesario -->
+                                </select>
+                            </div>
+                        </div>
+                        <div class="col-md-3">
+                            <div class="input-field">
+                                <span style="margin-right: 10px;"># </span>
+                                <input type="number" class="form-control" id="addressNumber1" min="1" required style="width: 80px;" inputmode="numeric">
+                                <span style="margin-right: 5px; margin-left: 5px;">- </span>
+                                <input type="number" class="form-control" id="addressNumber2" min="1" required style="width: 80px;" inputmode="numeric">
+                            </div>
+                        </div>
+                        
+                    </div>
 
+                    <!-- <div class="row">
+                        <div class="col-md-1">
+                            <div class="input-field">
+                                <i class="fas fa-home"></i>
+                                <span>#</span>
+                            </div>
+                        </div>
+                        <div class="col-md-5">
+                            <div class="input-field">
+                                <input type="number" class="form-control" id="addressNumber1" min="1" required>
+                            </div>
+                        </div> -->
+                        <!-- <div class="col-md-2">
+                            <div class="input-field">
+                                <span>-</span>
+                            </div>
+                        </div>
+                        <div class="col-md-2">
+                            <div class="input-field">
+                                <input type="number" class="form-control" id="addressNumber2" min="1" required style="width: 100px;">
+                            </div>
+                        </div> -->
+                    <!-- </div> -->
+    
                     <div class="row">
                         <div class="col-md-6">
                             <div class="input-field">
-                                <i class="fas fa-phone"></i>
-                                <input type="text" placeholder="Teléfono" class="form-control" id="InputCelular" required>
+                                <i class="fas fa-home"></i>
+                                <textarea placeholder="Detalles, ejemplo: Apartamento 213" class="form-control" id="InputDetalles" required rows="2" style="resize: none;"></textarea>
                             </div>
                         </div>
                         <div class="col-md-6">
                             <div class="input-field">
-                                <i class="fas fa-home"></i>
-                                <input type="text" placeholder="Dirección" class="form-control" id="InputDireccion" required>
+                                <i class="fas fa-phone"></i>
+                                <input type="text" placeholder="Teléfono" class="form-control" id="InputCelular" required>
                             </div>
                         </div>
                     </div>
@@ -87,9 +143,6 @@
                                 <i class="toggle-password fas fa-eye" onclick="togglePasswordVisibility('InputContrasena')"></i>
                             </div>
                         </div>
-                        <!-- <div class="icon-container">
-                            <i class="toggle-password fas fa-eye" onclick="togglePasswordVisibility('InputContrasena')"></i>
-                        </div> -->
                         <div class="col-md-6">
                             <div class="input-field">
                                 <i class="fas fa-lock"></i>
@@ -97,9 +150,6 @@
                                 <i class="toggle-password fas fa-eye" onclick="togglePasswordVisibility('InputConfirmarContrasena')"></i>
                             </div>
                         </div>
-                        <!-- <div class="icon-container">
-                            <i class="toggle-password fas fa-eye" onclick="togglePasswordVisibility('InputConfirmarContrasena')"></i>
-                        </div> -->
                     </div>
 
                     <input type="submit" value="Registrarse" class="btn solid" id="BtnRegistrarCliente">
@@ -199,215 +249,215 @@
 
     <script>
         $(document).ready(() => {
-            // $('#BtnRegistrarCliente').on('click', () => {
-            //     if (validateForm()) {
-            //         const correo = $('#InputCorreo').val();
-            //         const documento = $('#InputDocumento').val();
+            $('#BtnRegistrarCliente').on('click', () => {
+                if (validateForm()) {
+                    const correo = $('#InputCorreo').val();
+                    const documento = $('#InputDocumento').val();
     
-            //         // Validar si el correo ya está registrado
-            //         checkEmailExists(correo)
-            //             .then((emailExists) => {
-            //                 if (emailExists) {
-            //                     $('#correoError').text('El correo ya está registrado.');
-            //                     return;
-            //                 }
+                    // Validar si el correo ya está registrado
+                    checkEmailExists(correo)
+                        .then((emailExists) => {
+                            if (emailExists) {
+                                $('#correoError').text('El correo ya está registrado.');
+                                return;
+                            }
     
-            //                 // Validar si el documento ya está registrado
-            //                 checkDocumentoExists(documento)
-            //                     .then((documentoExists) => {
-            //                         if (documentoExists) {
-            //                             $('#documentoError').text('El número de documento ya está registrado.');
-            //                             return;
-            //                         }
+                            // Validar si el documento ya está registrado
+                            checkDocumentoExists(documento)
+                                .then((documentoExists) => {
+                                    if (documentoExists) {
+                                        $('#documentoError').text('El número de documento ya está registrado.');
+                                        return;
+                                    }
     
-            //                         // Si todo está validado, realizar el registro
-            //                         let userData = {
-            //                             Documento: documento,
-            //                             Nombre: $('#InputNombre').val(),
-            //                             Apellidos: $('#InputApellidos').val(),
-            //                             Celular: $('#InputCelular').val(),
-            //                             Correo: correo,
-            //                             Direccion: $('#InputDireccion').val(),
-            //                             //Id del rol 'Cliente'
-            //                             Rol: '649d952d652816c809c8e99c',
-            //                             Contrasena: $('#InputContrasena').val(),
-            //                             Estado: 'Activo',
-            //                         };
+                                    // Si todo está validado, realizar el registro
+                                    let userData = {
+                                        Documento: documento,
+                                        Nombre: $('#InputNombre').val(),
+                                        Apellidos: $('#InputApellidos').val(),
+                                        Celular: $('#InputCelular').val(),
+                                        Correo: correo,
+                                        Direccion: $('#InputDireccion').val(),
+                                        //Id del rol 'Cliente'
+                                        Rol: '649d952d652816c809c8e99c',
+                                        Contrasena: $('#InputContrasena').val(),
+                                        Estado: 'Activo',
+                                    };
     
-            //                         fetch('http://localhost:8080/users/', {
-            //                             method: 'POST',
-            //                             body: JSON.stringify(userData),
-            //                             headers: {
-            //                                 'Content-type': 'application/json; charset=UTF-8'
-            //                             }
-            //                         })
-            //                         .then(response => response.json())
-            //                         .then(json => {
-            //                             alert('Registrado exitosamente');
-            //                             location.reload();
-            //                             // Realizar las acciones necesarias después de registrar el usuario
-            //                         })
-            //                         .catch(error => {
-            //                             alert('Ha ocurrido un error al registrar el usuario.');
-            //                             console.error(error);
-            //                         });
-            //                     })
-            //                     .catch(error => {
-            //                         alert('Ha ocurrido un error al verificar el número de documento.');
-            //                         console.error(error);
-            //                     });
-            //             })
-            //             .catch(error => {
-            //                 alert('Ha ocurrido un error al verificar el correo electrónico.');
-            //                 console.error(error);
-            //             });
-            //     }
-            // });
+                                    fetch('http://localhost:8080/users/', {
+                                        method: 'POST',
+                                        body: JSON.stringify(userData),
+                                        headers: {
+                                            'Content-type': 'application/json; charset=UTF-8'
+                                        }
+                                    })
+                                    .then(response => response.json())
+                                    .then(json => {
+                                        alert('Registrado exitosamente');
+                                        location.reload();
+                                        // Realizar las acciones necesarias después de registrar el usuario
+                                    })
+                                    .catch(error => {
+                                        alert('Ha ocurrido un error al registrar el usuario.');
+                                        console.error(error);
+                                    });
+                                })
+                                .catch(error => {
+                                    alert('Ha ocurrido un error al verificar el número de documento.');
+                                    console.error(error);
+                                });
+                        })
+                        .catch(error => {
+                            alert('Ha ocurrido un error al verificar el correo electrónico.');
+                            console.error(error);
+                        });
+                }
+            });
     
-            // function validateForm() {
-            //     let isValid = true;
-            //     // Llamamos a los validadores individuales de cada campo
-            //     isValid = isValid && validateDocumento();
-            //     isValid = isValid && validateNombre();
-            //     isValid = isValid && validateApellidos();
-            //     isValid = isValid && validateCelular();
-            //     isValid = isValid && validateCorreo();
-            //     isValid = isValid && validateDireccion();
-            //     isValid = isValid && validateContrasena();
-            //     isValid = isValid && validateConfirmarContrasena();
-            //     // Agregue aquí más validadores si hay más campos
+            function validateForm() {
+                let isValid = true;
+                // Llamamos a los validadores individuales de cada campo
+                isValid = isValid && validateDocumento();
+                isValid = isValid && validateNombre();
+                isValid = isValid && validateApellidos();
+                isValid = isValid && validateCelular();
+                isValid = isValid && validateCorreo();
+                isValid = isValid && validateDireccion();
+                isValid = isValid && validateContrasena();
+                isValid = isValid && validateConfirmarContrasena();
+                // Agregue aquí más validadores si hay más campos
     
-            //     return isValid;
-            // }
+                return isValid;
+            }
     
-            // // Validar Documento
-            // function validateDocumento() {
-            //     const documento = $('#InputDocumento').val();
-            //     if (!documento.match(/^\d+$/)) {
-            //         $('#documentoError').text('Documento inválido.');
-            //         documento.style.color = 'red'
-            //         return false;
-            //     } else {
-            //         $('#documentoError').text('');
-            //         return true;
-            //     }
-            // }
+            // Validar Documento
+            function validateDocumento() {
+                const documento = $('#InputDocumento').val();
+                if (!documento.match(/^\d+$/)) {
+                    // $('#documentoError').text('Documento inválido.');
+                    // documento.style.color = 'red'
+                    return false;
+                } else {
+                    // $('#documentoError').text('');
+                    return true;
+                }
+            }
     
-            // // Validar Nombre
-            // function validateNombre() {
-            //     const nombre = $('#InputNombre').val();
-            //     if (!nombre.match(/^[a-zA-Z\s]+$/)) {
-            //         $('#nombreError').text('El nombre solo puede contener letras.');
-            //         return false;
-            //     } else {
-            //         $('#nombreError').text('');
-            //         return true;
-            //     }
-            // }
+            // Validar Nombre
+            function validateNombre() {
+                const nombre = $('#InputNombre').val();
+                if (!nombre.match(/^[a-zA-Z\s]+$/)) {
+                    // $('#nombreError').text('El nombre solo puede contener letras.');
+                    return false;
+                } else {
+                    // $('#nombreError').text('');
+                    return true;
+                }
+            }
     
-            // // Validar Apellidos
-            // function validateApellidos() {
-            //     const apellidos = $('#InputApellidos').val();
-            //     if (!apellidos.match(/^[a-zA-Z\s]+$/)) {
-            //         $('#apellidosError').text('Los apellidos solo pueden contener letras.');
-            //         return false;
-            //     } else {
-            //         $('#apellidosError').text('');
-            //         return true;
-            //     }
-            // }
+            // Validar Apellidos
+            function validateApellidos() {
+                const apellidos = $('#InputApellidos').val();
+                if (!apellidos.match(/^[a-zA-Z\s]+$/)) {
+                    // $('#apellidosError').text('Los apellidos solo pueden contener letras.');
+                    return false;
+                } else {
+                    // $('#apellidosError').text('');
+                    return true;
+                }
+            }
     
-            // // Validar Celular
-            // function validateCelular() {
-            //     const celular = $('#InputCelular').val();
-            //     if (!celular.match(/^\d{10}$/)) {
-            //         $('#celularError').text('El número de celular debe tener 10 dígitos.');
-            //         return false;
-            //     } else {
-            //         $('#celularError').text('');
-            //         return true;
-            //     }
-            // }
+            // Validar Celular
+            function validateCelular() {
+                const celular = $('#InputCelular').val();
+                if (!celular.match(/^\d{10}$/)) {
+                    // $('#celularError').text('El número de celular debe tener 10 dígitos.');
+                    return false;
+                } else {
+                    // $('#celularError').text('');
+                    return true;
+                }
+            }
     
-            // // Validar Correo
-            // function validateCorreo() {
-            //     const correo = $('#InputCorreo').val();
-            //     if (!correo.match(/^\w+([\.-]?\w+)*@\w+([\.-]?\w+)*(\.\w{2,3})+$/)) {
-            //         $('#correoError').text('Ingrese un correo electrónico válido.');
-            //         return false;
-            //     } else {
-            //         $('#correoError').text('');
-            //         return true;
-            //     }
-            // }
+            // Validar Correo
+            function validateCorreo() {
+                const correo = $('#InputCorreo').val();
+                if (!correo.match(/^\w+([\.-]?\w+)*@\w+([\.-]?\w+)*(\.\w{2,3})+$/)) {
+                    // $('#correoError').text('Ingrese un correo electrónico válido.');
+                    return false;
+                } else {
+                    // $('#correoError').text('');
+                    return true;
+                }
+            }
     
-            // // Validar Dirección
-            // function validateDireccion() {
-            //     const direccion = $('#InputDireccion').val();
-            //     if (direccion.trim().length === 0) {
-            //         $('#direccionError').text('La dirección no puede estar vacía.');
-            //         return false;
-            //     } else if (direccion.length > 40) {
-            //         $('#direccionError').text('La dirección no puede tener más de 40 caracteres.');
-            //         return false;
-            //     } else {
-            //         $('#direccionError').text('');
-            //         return true;
-            //     }
-            // }
+            // Validar Dirección
+            function validateDireccion() {
+                const direccion = $('#InputDireccion').val();
+                if (direccion.trim().length === 0) {
+                    // $('#direccionError').text('La dirección no puede estar vacía.');
+                    return false;
+                } else if (direccion.length > 40) {
+                    // $('#direccionError').text('La dirección no puede tener más de 40 caracteres.');
+                    return false;
+                } else {
+                    // $('#direccionError').text('');
+                    return true;
+                }
+            }
     
-            // // Validar Contraseña
-            // function validateContrasena() {
-            //     const contrasena = $('#InputContrasena').val();
-            //     if (contrasena.trim().length === 0) {
-            //         $('#contrasenaError').text('La contraseña no puede estar vacía.');
-            //         return false;
-            //     } else {
-            //         $('#contrasenaError').text('');
-            //         return true;
-            //     }
-            // }
+            // Validar Contraseña
+            function validateContrasena() {
+                const contrasena = $('#InputContrasena').val();
+                if (contrasena.trim().length === 0) {
+                    // $('#contrasenaError').text('La contraseña no puede estar vacía.');
+                    return false;
+                } else {
+                    // $('#contrasenaError').text('');
+                    return true;
+                }
+            }
     
-            // // Validar Confirmar Contraseña
-            // function validateConfirmarContrasena() {
-            //     const contrasena = $('#InputContrasena').val();
-            //     const confirmarContrasena = $('#InputConfirmarContrasena').val();
-            //     if (contrasena !== confirmarContrasena) {
-            //         $('#confirmarContrasenaError').text('Las contraseñas no coinciden.');
-            //         return false;
-            //     } else {
-            //         $('#confirmarContrasenaError').text('');
-            //         return true;
-            //     }
-            // }
+            // Validar Confirmar Contraseña
+            function validateConfirmarContrasena() {
+                const contrasena = $('#InputContrasena').val();
+                const confirmarContrasena = $('#InputConfirmarContrasena').val();
+                if (contrasena !== confirmarContrasena) {
+                    $('#confirmarContrasenaError').text('Las contraseñas no coinciden.');
+                    return false;
+                } else {
+                    $('#confirmarContrasenaError').text('');
+                    return true;
+                }   
+            }
     
-            // // Función para verificar si el correo ya está registrado
-            // function checkEmailExists(correo) {
-            //     return new Promise((resolve, reject) => {
-            //         fetch(`http://localhost:8080/users/check-email/${correo}`)
-            //             .then(response => response.json())
-            //             .then(json => {
-            //                 resolve(json.exists);
-            //             })
-            //             .catch(error => {
-            //                 reject(error);
-            //             });
-            //     });
-            // }
+            // Función para verificar si el correo ya está registrado
+            function checkEmailExists(correo) {
+                return new Promise((resolve, reject) => {
+                    fetch(`http://localhost:8080/users/check-email/${correo}`)
+                        .then(response => response.json())
+                        .then(json => {
+                            resolve(json.exists);
+                        })
+                        .catch(error => {
+                            reject(error);
+                        });
+                });
+            }
     
-            // // Función para verificar si el documento ya está registrado
-            // function checkDocumentoExists(documento) {
-            //     return new Promise((resolve, reject) => {
-            //         fetch(`http://localhost:8080/users/check-documento/${documento}`)
-            //             .then(response => response.json())
-            //             .then(json => {
-            //                 resolve(json.exists);
-            //             })
-            //             .catch(error => {
-            //                 reject(error);
-            //             });
-            //     });
-            // }
+            // Función para verificar si el documento ya está registrado
+            function checkDocumentoExists(documento) {
+                return new Promise((resolve, reject) => {
+                    fetch(`http://localhost:8080/users/check-documento/${documento}`)
+                        .then(response => response.json())
+                        .then(json => {
+                            resolve(json.exists);
+                        })
+                        .catch(error => {
+                            reject(error);
+                        });
+                });
+            }
 
             (function() {
             'use strict';
@@ -426,17 +476,6 @@
                 });
             }, false);
             })();
-
-            // function validate() {
-            //     let inputs = $('.input-field').val().trim();
-
-            //     if (inputs === '') {
-            //         $('.input-field').addClass('is-invalid').removeClass('is-valid');
-            //         return false;
-            //     }
-            // }
-
-            // validate();
         });
     </script>
     

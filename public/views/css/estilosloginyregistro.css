@@ -74,7 +74,7 @@ form {
 .input-field {
   max-width: 300px;
   width: 100%;
-  background-color: #edecec;
+  /* background-color: #edecec; */
   height: 55px;
   margin: 10px 0;
   border-radius: 2px;
@@ -93,7 +93,11 @@ form {
 .input-field input {
   background: none;
   outline: none;
-  border: none;
+  /* border: none; */
+  border-top: none;
+  border-left: none;
+  border-right: none;
+  border-bottom: 1px solid #a1a1a1;
   font-weight: 600;
   font-size: 1.1rem;
   color: #333;

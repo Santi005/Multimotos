@@ -16,31 +16,39 @@
         <tr>
           <td><label for="InputEditarDocumento">Documento:</label></td>
           <td><input type="text" id="InputEditarDocumento"></td>
+          <td><span class="error-message" id="ErrorDocumento"></span></td>
         </tr>
         <tr>
           <td><label for="InputEditarNombre">Nombre:</label></td>
           <td><input type="text" id="InputEditarNombre"></td>
+          <td><span class="error-message" id="ErrorNombre"></span></td>
         </tr>
         <tr>
           <td><label for="InputEditarApellidos">Apellidos:</label></td>
           <td><input type="text" id="InputEditarApellidos"></td>
+          <td><span class="error-message" id="ErrorApellidos"></span></td>
         </tr>
         <tr>
           <td><label for="InputEditarCelular">Celular:</label></td>
           <td><input type="text" id="InputEditarCelular"></td>
+          <td><span class="error-message" id="ErrorCelular"></span></td>
         </tr>
         <tr>
           <td><label for="InputEditarCorreo">Correo Electrónico:</label></td>
           <td><input type="text" id="InputEditarCorreo"></td>
+          <td><span class="error-message" id="ErrorCorreo"></span></td>
         </tr>
         <tr>
           <td><label for="InputEditarDireccion">Dirección:</label></td>
           <td><input type="text" id="InputEditarDireccion"></td>
+          <td><span class="error-message" id="ErrorDireccion"></span></td>
         </tr>
         <tr>
           <td><label for="InputEditarContrasena">Contraseña:</label></td>
           <td><input type="password" id="InputEditarContrasena"></td>
+          <td></td>
         </tr>
+
       </table>
 
       <div class="button-container">
@@ -52,7 +60,7 @@
   </div>
   <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
 
-  <script>
+<script>
 $(document).ready(function() {
   // Obtener el ID del usuario desde el LocalStorage
   const userData = JSON.parse(localStorage.getItem('userData'));
@@ -63,6 +71,7 @@ $(document).ready(function() {
     url: 'http://localhost:8080/users/' + userId,
     type: 'GET',
     success: function(response) {
+
       const data = response.data[0];
 
       $('#InputEditarDocumento').val(data.Documento);
@@ -82,36 +91,39 @@ $(document).ready(function() {
   });
 
   // Evento click del botón de guardar edición
-  $('#BtnGuardarEdicion').on('click', function() {
+  $('#BtnGuardarEdicion').on('click', async function() {
     // Reiniciar los mensajes de error
     $('.error-message').text('');
 
-    // Obtener los valores de los campos del formulario
-    var documento = $('#InputEditarDocumento').val();
-    var nombre = $('#InputEditarNombre').val();
-    var apellidos = $('#InputEditarApellidos').val();
-    var celular = $('#InputEditarCelular').val();
-    var correo = $('#InputEditarCorreo').val();
-    var direccion = $('#InputEditarDireccion').val();
-    var contrasena = $('#InputEditarContrasena').val();
+    try {
+      const response = await fetch(`http://localhost:8080/users/${userId}`);
+      const userDataFromDB = await response.json();
+      const user = userDataFromDB.data[0];
 
-    // Validar los campos
-    var isValid = true;
+      var documento = $('#InputEditarDocumento').val();
+      var nombre = $('#InputEditarNombre').val();
+      var apellidos = $('#InputEditarApellidos').val();
+      var celular = $('#InputEditarCelular').val();
+      var correo = $('#InputEditarCorreo').val();
+      var direccion = $('#InputEditarDireccion').val();
+      var contrasena = $('#InputEditarContrasena').val();
 
-    if (documento === '') {
-      $('#ErrorDocumento').text('El campo Documento es obligatorio');
-      isValid = false;
-    }
+      var isValid = true;
 
-    if (nombre === '') {
-      $('#ErrorNombre').text('El campo nombre es obligatorio');
-      isValid = false;
-    }
+      if (documento === '') {
+        $('#ErrorDocumento').text('El campo Documento es obligatorio');
+        isValid = false;
+      }
 
-    if (apellidos === '') {
-      $('#ErrorApellidos').text('Los apellidos son obligatorio');
-      isValid = false;
-    }
+      if (nombre === '') {
+        $('#ErrorNombre').text('El campo nombre es obligatorio');
+        isValid = false;
+      }
+
+      if (apellidos === '') {
+        $('#ErrorApellidos').text('Los apellidos son obligatorio');
+        isValid = false;
+      }
 
     if (isNaN(documento)) {
       $('#ErrorDocumento').text('Documento invalido');
@@ -128,28 +140,61 @@ $(document).ready(function() {
       isValid = false;
     }
 
-    if (isNaN(celular)) {
-      $('#ErrorCelular').text('Celular invalido');
-      isValid = false;
-    }
+    if (isNaN(documento)) {
+        $('#ErrorDocumento').text('Documento invalido');
+        isValid = false;
+      }
 
-    if (celular.length !== 10) {
-      $('#ErrorCelular').text('Celular invalido');
-      isValid = false;
-    }
+      if (documento.length < 8 || documento.length > 11) {
+        $('#ErrorDocumento').text('Documento invalido');
+        isValid = false;
+      }
 
-    if (correo === '') {
-      $('#ErrorCorreo').text('El campo direccion es obligatoria');
-      isValid = false;
-    }
+      if (celular === '') {
+        $('#ErrorCelular').text('El campo Celular es obligatorio');
+        isValid = false;
+      }
 
-    if (direccion === '') {
-      $('#ErrorDireccion').text('El campo direccion es obligatorio');
-      isValid = false;
-    } else if (!isValidEmail(correo)) {
-      $('#ErrorCorreo').text('El campo Correo Electrónico debe tener un formato válido (ejemplo@gmail.com)');
-      isValid = false;
-    }
+      if (isNaN(celular)) {
+        $('#ErrorCelular').text('Celular invalido');
+        isValid = false;
+      }
+
+      if (celular.length !== 10) {
+        $('#ErrorCelular').text('Celular invalido');
+        isValid = false;
+      }
+
+      if (correo === '') {
+        $('#ErrorCorreo').text('El campo direccion es obligatoria');
+        isValid = false;
+      }
+
+      if (direccion === '') {
+        $('#ErrorDireccion').text('El campo direccion es obligatorio');
+        isValid = false;
+      } else if (!isValidEmail(correo)) {
+        $('#ErrorCorreo').text('El campo Correo Electrónico debe tener un formato válido (ejemplo@gmail.com)');
+        isValid = false;
+      }
+
+            // Verificar si el documento ha cambiado y validar si es necesario
+      if (documento !== user.Documento) {
+        const documentoValido = await validarDocumentoExistente(documento);
+        if (!documentoValido) {
+          $('#ErrorDocumento').text('El documento ya está registrado');
+          return;
+        }
+      }
+
+      // Verificar si el correo ha cambiado y validar si es necesario
+      if (correo !== user.Correo) {
+        const correoValido = await validarCorreoExistente(correo);
+        if (!correoValido) {
+          $('#ErrorCorreo').text('El correo ya está registrado');
+          return;
+        }
+      }
 
 
     if (isValid) {
@@ -167,24 +212,23 @@ $(document).ready(function() {
       delete userDataUpdated.Contrasena;
       }
 
-      // Enviar los datos actualizados al servidor
       $.ajax({
-        url: 'http://localhost:8080/users/' + userId,
-        type: 'PUT',
-        contentType: 'application/json',
-        data: JSON.stringify(userDataUpdated),
-        success: function(response) {
-          console.log('Edición exitosa:', response);
-          // Mostrar la alerta de actualización exitosa
-          alert('Datos actualizados correctamente');
-
-          // Refrescar la página
-          location.reload();
-        },
-        error: function(xhr, status, error) {
-          console.log('Error al editar el usuario:', error);
-        }
-      });
+          url: 'http://localhost:8080/users/' + userId,
+          type: 'PUT',
+          contentType: 'application/json',
+          data: JSON.stringify(userDataUpdated),
+          success: function(response) {
+            console.log('Edición exitosa:', response);
+            alert('Datos actualizados correctamente');
+            location.reload();
+          },
+          error: function(xhr, status, error) {
+            console.log('Error al editar el usuario:', error);
+          }
+        });
+      }
+    } catch (error) {
+      console.error('Error al obtener los datos del usuario:', error);
     }
   });
 });
@@ -194,7 +238,30 @@ function isValidEmail(email) {
   return emailRegex.test(email);
 }
 
-  </script>
+// Función para validar si el nuevo documento ya está registrado
+async function validarDocumentoExistente(documento) {
+  try {
+    const response = await fetch(`http://localhost:8080/users/check-documento/${documento}`);
+    const data = await response.json();
+    return !data.exists;
+  } catch (error) {
+    console.error('Error al verificar documento:', error);
+    return false;
+  }
+}
+
+// Función para validar si el nuevo correo ya está registrado
+async function validarCorreoExistente(correo) {
+  try {
+    const response = await fetch(`http://localhost:8080/users/check-email/${correo}`);
+    const data = await response.json();
+    return !data.exists;
+  } catch (error) {
+    console.error('Error al verificar correo:', error);
+    return false;
+  }
+}
+</script>
 
 <script src="js/vallidarToken.js"></script>
 </body>

@@ -1,7 +1,7 @@
 const {Router} = require("express");
 const {check} = require("express-validator")
 const {ValidatorPath, ProductExisting} = require("../middlewares/ProductValidator");
-const {fileUpload, incrementStock, decrementarStock, getProduct, postProducts, putProduct, deleteProduct, searchProduct} = require("../controllers/ProductController");
+const {fileUpload, incrementStock, decrementarStock, getProduct, postProducts, putProduct, deleteProduct, searchProduct, getTotalProductos} = require("../controllers/ProductController");
 const {Product} = require("../models/ProductsModel");
 
 const route = Router();
@@ -9,6 +9,8 @@ const route = Router();
 route.get('/', getProduct);
 
 route.get('/:id', searchProduct);
+
+route.get('/productos/count', getTotalProductos);
 
 route.post('/',
 fileUpload,
