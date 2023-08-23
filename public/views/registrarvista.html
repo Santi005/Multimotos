@@ -28,42 +28,45 @@
     <div class="container-login">
         <div class="forms-container">
             <div class="signin-signup">
-               <form id="registrationForm" class="sign-in-form needs-validation" novalidate>
+                <form id="registrationForm">
                     <h2 class="title"> Registrarse </h2>
-
+    
                     <div class="row">
                         <div class="col-md-6">
                             <div class="input-field">
                                 <i class="fas fa-id-card"></i>
-                                <input type="text" class="form-control" placeholder="Documento" id="InputDocumento" required>
+                                <input type="number" class="form-control" placeholder="Documento" id="InputDocumento" required>
+                                <div id="documentoError" class="error-message"></div>
                             </div>
-                            <div id="documentoError" class="error-message"></div>
-
                         </div>
                         <div class="col-md-6">
                             <div class="input-field">
                                 <i class="fas fa-envelope"></i>
                                 <input type="text" class="form-control" placeholder="Correo" id="InputCorreo" required>
+                                <div id="correoError" class="error-message"></div>
                             </div>
-                            <div id="correoError" class="error-message"></div>
                         </div>
                     </div>
-
+    
                     <div class="row">
                         <div class="col-md-6">
                             <div class="input-field">
                                 <i class="fas fa-user"></i>
                                 <input type="text" placeholder="Nombre" class="form-control" id="InputNombre" required>
+                                <div id="nombreError" class="error-message"></div>
                             </div>
                         </div>
                         <div class="col-md-6">
                             <div class="input-field">
                                 <i class="fas fa-user"></i>
                                 <input type="text" placeholder="Apellidos" class="form-control" id="InputApellidos" required>
+                                <div id="apellidosError" class="error-message"></div>
                             </div>
                         </div>
                     </div>
     
+
+                    <!-- Direccion -->
                     <div class="row">
                         <div class="col-md-4">
                             <div class="input-field">
@@ -91,56 +94,34 @@
                                 <input type="number" class="form-control" id="addressNumber1" min="1" required style="width: 80px;" inputmode="numeric">
                                 <span style="margin-right: 5px; margin-left: 5px;">- </span>
                                 <input type="number" class="form-control" id="addressNumber2" min="1" required style="width: 80px;" inputmode="numeric">
+                                <div id="direccionNumberError" class="error-message"></div>
                             </div>
                         </div>
-                        
                     </div>
-
-                    <!-- <div class="row">
-                        <div class="col-md-1">
-                            <div class="input-field">
-                                <i class="fas fa-home"></i>
-                                <span>#</span>
-                            </div>
-                        </div>
-                        <div class="col-md-5">
-                            <div class="input-field">
-                                <input type="number" class="form-control" id="addressNumber1" min="1" required>
-                            </div>
-                        </div> -->
-                        <!-- <div class="col-md-2">
-                            <div class="input-field">
-                                <span>-</span>
-                            </div>
-                        </div>
-                        <div class="col-md-2">
-                            <div class="input-field">
-                                <input type="number" class="form-control" id="addressNumber2" min="1" required style="width: 100px;">
-                            </div>
-                        </div> -->
-                    <!-- </div> -->
     
                     <div class="row">
                         <div class="col-md-6">
                             <div class="input-field">
                                 <i class="fas fa-home"></i>
-                                <textarea placeholder="Detalles, ejemplo: Apartamento 213" class="form-control" id="InputDetalles" required rows="2" style="resize: none;"></textarea>
+                                <textarea placeholder="Detalles, ejemplo: Apartamento 213" class="form-control" id="InputDetalles" rows="2" style="resize: none;"></textarea>
                             </div>
                         </div>
                         <div class="col-md-6">
                             <div class="input-field">
                                 <i class="fas fa-phone"></i>
                                 <input type="text" placeholder="Teléfono" class="form-control" id="InputCelular" required>
+                                <div id="celularError" class="error-message"></div>
                             </div>
                         </div>
                     </div>
-
+    
                     <div class="row">
                         <div class="col-md-6">
                             <div class="input-field">
                                 <i class="fas fa-lock"></i>
                                 <input type="password" placeholder="Contraseña" class="form-control" id="InputContrasena" required>
                                 <i class="toggle-password fas fa-eye" onclick="togglePasswordVisibility('InputContrasena')"></i>
+                                <div id="contrasenaError" class="error-message"></div>
                             </div>
                         </div>
                         <div class="col-md-6">
@@ -148,18 +129,18 @@
                                 <i class="fas fa-lock"></i>
                                 <input type="password" class="form-control" placeholder="Confirmar contraseña" id="InputConfirmarContrasena" required>
                                 <i class="toggle-password fas fa-eye" onclick="togglePasswordVisibility('InputConfirmarContrasena')"></i>
+                                <div id="confirmarContrasenaError" class="error-message"></div>
                             </div>
                         </div>
                     </div>
-
-                    <input type="submit" value="Registrarse" class="btn solid" id="BtnRegistrarCliente">
-
+                    <input type="button" value="Registrarse" class="btn solid" id="BtnRegistrarCliente">
+    
                     <a href="loginvista.html" class="social-text">¿Ya tienes una cuenta?</a>
-               </form>
+                </form>
             </div>
         </div>
-
     </div>
+    
 
     <div class="panels-container">
         <!-- <div class="panel left-panel"></div> -->
@@ -175,66 +156,7 @@
         </div>
     </div>
 
-
-
-
-
-    <!-- <button class="home-button" onclick="window.location.href = 'index.html'">
-        <i class="fas fa-home"></i>
-    </button>
-    <div class="container center">
-        <h1>Registro</h1>
-        <form id="registrationForm">
-            <div class="input-field">
-                <input type="text" class="form-control" id="InputDocumento" required>
-                <label for="InputDocumento">Documento</label>
-                <div id="documentoError" class="error-message"></div>
-            </div>
-            <div class="input-field">
-                <input type="text" class="form-control" id="InputNombre" required>
-                <label for="InputNombre">Nombre</label>
-                <div id="nombreError" class="error-message"></div>
-            </div>
-            <div class="input-field">
-                <input type="text" class="form-control" id="InputApellidos" required>
-                <label for="InputApellidos">Apellidos</label>
-                <div id="apellidosError" class="error-message"></div>
-            </div>
-            <div class="input-field">
-                <input type="text" class="form-control" id="InputCelular" required>
-                <label for="InputCelular">Celular</label>
-                <div id="celularError" class="error-message"></div>
-            </div>
-            <div class="input-field">
-                <input type="email" class="form-control" id="InputCorreo" required>
-                <label for="InputCorreo">Correo electrónico</label>
-                <div id="correoError" class="error-message"></div>
-            </div>
-            <div class="input-field">
-                <input type="text" class="form-control" id="InputDireccion" required>
-                <label for="InputDireccion">Dirección</label>
-                <div id="direccionError" class="error-message"></div>
-            </div>
-            <div class="input-field">
-                <input type="password" class="form-control" id="InputContrasena" required>
-                <label for="InputContrasena">Contraseña</label>
-                <div id="contrasenaError" class="error-message"></div>
-                <i class="toggle-password fas fa-eye" onclick="togglePasswordVisibility('InputContrasena')"></i>
-            </div>
-
-            <div class="input-field confirmar-contra-container">
-                <input type="password" class="form-control" id="InputConfirmarContrasena" required>
-                <label for="InputConfirmarContrasena">Confirmar Contraseña</label>
-                <div id="confirmarContrasenaError" class="error-message"></div>
-                <i class="toggle-password fas fa-eye" onclick="togglePasswordVisibility('InputConfirmarContrasena')"></i>
-            </div>
-            <button type="button" id="BtnRegistrarCliente">Registrarse</button>
-            <div class="login_link">
-                ¿Ya tienes una cuenta? <a href="loginvista.html">Iniciar sesión</a>
-            </div>
-        </form>
-    </div>
-     -->
+    
     <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.5.0/js/bootstrap.min.js"></script>
     <script src="https://code.jquery.com/jquery-3.5.1.min.js"></script>
     <script src="js/verificartoken.js"></script>
@@ -247,224 +169,240 @@
     <script src="js/owl.carousel.min.js"></script>
     <!-- <script src="js/main.js"></script> -->
 
-    <script>
-        $(document).ready(() => {
-            $('#BtnRegistrarCliente').on('click', () => {
-                if (validateForm()) {
-                    const correo = $('#InputCorreo').val();
-                    const documento = $('#InputDocumento').val();
-    
-                    // Validar si el correo ya está registrado
-                    checkEmailExists(correo)
-                        .then((emailExists) => {
-                            if (emailExists) {
-                                $('#correoError').text('El correo ya está registrado.');
-                                return;
-                            }
-    
-                            // Validar si el documento ya está registrado
-                            checkDocumentoExists(documento)
-                                .then((documentoExists) => {
-                                    if (documentoExists) {
-                                        $('#documentoError').text('El número de documento ya está registrado.');
-                                        return;
+<script>
+    $(document).ready(() => {
+        $('#BtnRegistrarCliente').on('click', () => {
+            if (validateForm()) {
+                const correo = $('#InputCorreo').val();
+                const documento = $('#InputDocumento').val();
+
+                // Validar si el correo ya está registrado
+                checkEmailExists(correo)
+                    .then((emailExists) => {
+                        if (emailExists) {
+                            $('#correoError').text('El correo ya está registrado.');
+                            return;
+                        }
+
+                        // Validar si el documento ya está registrado
+                        checkDocumentoExists(documento)
+                            .then((documentoExists) => {
+                                if (documentoExists) {
+                                    $('#documentoError').text('El número de documento ya está registrado.');
+                                    return;
+                                }
+
+                                // Si todo está validado, realizar el registro
+                                let userData = {
+                                    Documento: documento,
+                                    Nombre: $('#InputNombre').val(),
+                                    Apellidos: $('#InputApellidos').val(),
+                                    Celular: $('#InputCelular').val(),
+                                    Correo: correo,
+                                    Direccion: getFullAddress(),
+                                    //Id del rol 'Cliente'
+                                    Rol: '64defa9c74fb54f6dfe372e9',
+                                    Contrasena: $('#InputContrasena').val(),
+                                    Estado: 'Activo',
+                                };
+
+                                fetch('http://localhost:8080/users/', {
+                                    method: 'POST',
+                                    body: JSON.stringify(userData),
+                                    headers: {
+                                        'Content-type': 'application/json; charset=UTF-8'
                                     }
-    
-                                    // Si todo está validado, realizar el registro
-                                    let userData = {
-                                        Documento: documento,
-                                        Nombre: $('#InputNombre').val(),
-                                        Apellidos: $('#InputApellidos').val(),
-                                        Celular: $('#InputCelular').val(),
-                                        Correo: correo,
-                                        Direccion: $('#InputDireccion').val(),
-                                        //Id del rol 'Cliente'
-                                        Rol: '649d952d652816c809c8e99c',
-                                        Contrasena: $('#InputContrasena').val(),
-                                        Estado: 'Activo',
-                                    };
-    
-                                    fetch('http://localhost:8080/users/', {
-                                        method: 'POST',
-                                        body: JSON.stringify(userData),
-                                        headers: {
-                                            'Content-type': 'application/json; charset=UTF-8'
-                                        }
-                                    })
-                                    .then(response => response.json())
-                                    .then(json => {
-                                        alert('Registrado exitosamente');
-                                        location.reload();
-                                        // Realizar las acciones necesarias después de registrar el usuario
-                                    })
-                                    .catch(error => {
-                                        alert('Ha ocurrido un error al registrar el usuario.');
-                                        console.error(error);
-                                    });
+                                })
+                                .then(response => response.json())
+                                .then(json => {
+                                    alert('Registrado exitosamente');
+                                    location.reload();
+                                    // Realizar las acciones necesarias después de registrar el usuario
                                 })
                                 .catch(error => {
-                                    alert('Ha ocurrido un error al verificar el número de documento.');
+                                    alert('Ha ocurrido un error al registrar el usuario.');
                                     console.error(error);
                                 });
-                        })
-                        .catch(error => {
-                            alert('Ha ocurrido un error al verificar el correo electrónico.');
-                            console.error(error);
-                        });
-                }
-            });
-    
-            function validateForm() {
-                let isValid = true;
-                // Llamamos a los validadores individuales de cada campo
-                isValid = isValid && validateDocumento();
-                isValid = isValid && validateNombre();
-                isValid = isValid && validateApellidos();
-                isValid = isValid && validateCelular();
-                isValid = isValid && validateCorreo();
-                isValid = isValid && validateDireccion();
-                isValid = isValid && validateContrasena();
-                isValid = isValid && validateConfirmarContrasena();
-                // Agregue aquí más validadores si hay más campos
-    
-                return isValid;
+                            })
+                            .catch(error => {
+                                alert('Ha ocurrido un error al verificar el número de documento.');
+                                console.error(error);
+                            });
+                    })
+                    .catch(error => {
+                        alert('Ha ocurrido un error al verificar el correo electrónico.');
+                        console.error(error);
+                    });
             }
-    
-            // Validar Documento
-            function validateDocumento() {
-                const documento = $('#InputDocumento').val();
-                if (!documento.match(/^\d+$/)) {
-                    // $('#documentoError').text('Documento inválido.');
-                    // documento.style.color = 'red'
-                    return false;
-                } else {
-                    // $('#documentoError').text('');
-                    return true;
-                }
-            }
-    
-            // Validar Nombre
-            function validateNombre() {
-                const nombre = $('#InputNombre').val();
-                if (!nombre.match(/^[a-zA-Z\s]+$/)) {
-                    // $('#nombreError').text('El nombre solo puede contener letras.');
-                    return false;
-                } else {
-                    // $('#nombreError').text('');
-                    return true;
-                }
-            }
-    
-            // Validar Apellidos
-            function validateApellidos() {
-                const apellidos = $('#InputApellidos').val();
-                if (!apellidos.match(/^[a-zA-Z\s]+$/)) {
-                    // $('#apellidosError').text('Los apellidos solo pueden contener letras.');
-                    return false;
-                } else {
-                    // $('#apellidosError').text('');
-                    return true;
-                }
-            }
-    
-            // Validar Celular
-            function validateCelular() {
-                const celular = $('#InputCelular').val();
-                if (!celular.match(/^\d{10}$/)) {
-                    // $('#celularError').text('El número de celular debe tener 10 dígitos.');
-                    return false;
-                } else {
-                    // $('#celularError').text('');
-                    return true;
-                }
-            }
-    
-            // Validar Correo
-            function validateCorreo() {
-                const correo = $('#InputCorreo').val();
-                if (!correo.match(/^\w+([\.-]?\w+)*@\w+([\.-]?\w+)*(\.\w{2,3})+$/)) {
-                    // $('#correoError').text('Ingrese un correo electrónico válido.');
-                    return false;
-                } else {
-                    // $('#correoError').text('');
-                    return true;
-                }
-            }
-    
-            // Validar Dirección
-            function validateDireccion() {
-                const direccion = $('#InputDireccion').val();
-                if (direccion.trim().length === 0) {
-                    // $('#direccionError').text('La dirección no puede estar vacía.');
-                    return false;
-                } else if (direccion.length > 40) {
-                    // $('#direccionError').text('La dirección no puede tener más de 40 caracteres.');
-                    return false;
-                } else {
-                    // $('#direccionError').text('');
-                    return true;
-                }
-            }
-    
-            // Validar Contraseña
-            function validateContrasena() {
-                const contrasena = $('#InputContrasena').val();
-                if (contrasena.trim().length === 0) {
-                    // $('#contrasenaError').text('La contraseña no puede estar vacía.');
-                    return false;
-                } else {
-                    // $('#contrasenaError').text('');
-                    return true;
-                }
-            }
-    
-            // Validar Confirmar Contraseña
-            function validateConfirmarContrasena() {
-                const contrasena = $('#InputContrasena').val();
-                const confirmarContrasena = $('#InputConfirmarContrasena').val();
-                if (contrasena !== confirmarContrasena) {
-                    $('#confirmarContrasenaError').text('Las contraseñas no coinciden.');
-                    return false;
-                } else {
-                    $('#confirmarContrasenaError').text('');
-                    return true;
-                }   
-            }
-    
-            // Función para verificar si el correo ya está registrado
-            function checkEmailExists(correo) {
-                return new Promise((resolve, reject) => {
-                    fetch(`http://localhost:8080/users/check-email/${correo}`)
-                        .then(response => response.json())
-                        .then(json => {
-                            resolve(json.exists);
-                        })
-                        .catch(error => {
-                            reject(error);
-                        });
-                });
-            }
-    
-            // Función para verificar si el documento ya está registrado
-            function checkDocumentoExists(documento) {
-                return new Promise((resolve, reject) => {
-                    fetch(`http://localhost:8080/users/check-documento/${documento}`)
-                        .then(response => response.json())
-                        .then(json => {
-                            resolve(json.exists);
-                        })
-                        .catch(error => {
-                            reject(error);
-                        });
-                });
-            }
+        });
 
-            (function() {
+        function validateForm() {
+            let isValid = true;
+            // Llamamos a los validadores individuales de cada campo
+            isValid = isValid && validateDocumento();
+            isValid = isValid && validateNombre();
+            isValid = isValid && validateApellidos();
+            isValid = isValid && validateCelular();
+            isValid = isValid && validateCorreo();
+            isValid = isValid && validateAddressNumbers();
+            isValid = isValid && validateContrasena();
+            isValid = isValid && validateConfirmarContrasena();
+            // Agregue aquí más validadores si hay más campos
+
+            return isValid;
+        }
+
+        // Validar Documento
+        function validateDocumento() {
+            const documento = $('#InputDocumento').val();
+            if (!documento.match(/^\d+$/)) {
+                // $('#documentoError').text('Documento inválido.');
+                // documento.style.color = 'red'
+                return false;
+            } else {
+                // $('#documentoError').text('');
+                return true;
+            }
+        }
+
+        // Validar Nombre
+        function validateNombre() {
+            const nombre = $('#InputNombre').val();
+            if (!nombre.match(/^[a-zA-Z\s]+$/)) {
+                // $('#nombreError').text('El nombre solo puede contener letras.');
+                return false;
+            } else {
+                // $('#nombreError').text('');
+                return true;
+            }
+        }
+
+        // Validar Apellidos
+        function validateApellidos() {
+            const apellidos = $('#InputApellidos').val();
+            if (!apellidos.match(/^[a-zA-Z\s]+$/)) {
+                // $('#apellidosError').text('Los apellidos solo pueden contener letras.');
+                return false;
+            } else {
+                // $('#apellidosError').text('');
+                return true;
+            }
+        }
+
+        // Validar Celular
+        function validateCelular() {
+            const celular = $('#InputCelular').val();
+            if (!celular.match(/^\d{10}$/)) {
+                // $('#celularError').text('El número de celular debe tener 10 dígitos.');
+                return false;
+            } else {
+                // $('#celularError').text('');
+                return true;
+            }
+        }
+
+        // Validar Correo
+        function validateCorreo() {
+            const correo = $('#InputCorreo').val();
+            if (!correo.match(/^\w+([\.-]?\w+)*@\w+([\.-]?\w+)*(\.\w{2,3})+$/)) {
+                // $('#correoError').text('Ingrese un correo electrónico válido.');
+                return false;
+            } else {
+                // $('#correoError').text('');
+                return true;
+            }
+        }
+
+        // Validar Direccion
+        function validateAddressNumbers() {
+            const addressNumber1 = $('#addressNumber1').val();
+            const addressNumber2 = $('#addressNumber2').val();
+            const maxDigits = 3; // Máximo de 3 dígitos
+
+            if (!addressNumber1 || !addressNumber2) {
+                $('#direccionNumberError').text('Ambos números de dirección son obligatorios.');
+                return false;
+            } else if (addressNumber1.length > maxDigits || addressNumber2.length > maxDigits) {
+                $('#direccionNumberError').text('Cada número de dirección no puede tener más de 3 dígitos.');
+                return false;
+            } else {
+                $('#direccionNumberError').text('');
+                return true;
+            }
+        }
+
+
+
+        // Validar Contraseña
+        function validateContrasena() { 
+            const contrasena = $('#InputContrasena').val();
+            if (contrasena.trim().length === 0) {
+                // $('#contrasenaError').text('La contraseña no puede estar vacía.');
+                return false;
+            } else {
+                // $('#contrasenaError').text('');
+                return true;
+            }
+        }
+
+        // Validar Confirmar Contraseña
+        function validateConfirmarContrasena() {
+            const contrasena = $('#InputContrasena').val();
+            const confirmarContrasena = $('#InputConfirmarContrasena').val();
+            if (contrasena !== confirmarContrasena) {
+                $('#confirmarContrasenaError').text('Las contraseñas no coinciden.');
+                return false;
+            } else {
+                $('#confirmarContrasenaError').text('');
+                return true;
+            }   
+        }
+
+        // Función para verificar si el correo ya está registrado
+        function checkEmailExists(correo) {
+            return new Promise((resolve, reject) => {
+                fetch(`http://localhost:8080/users/check-email/${correo}`)
+                    .then(response => response.json())
+                    .then(json => {
+                        resolve(json.exists);
+                    })
+                    .catch(error => {
+                        reject(error);
+                    });
+            });
+        }
+
+        // Función para verificar si el documento ya está registrado
+        function checkDocumentoExists(documento) {
+            return new Promise((resolve, reject) => {
+                fetch(`http://localhost:8080/users/check-documento/${documento}`)
+                    .then(response => response.json())
+                    .then(json => {
+                        resolve(json.exists);
+                    })
+                    .catch(error => {
+                        reject(error);
+                    });
+            });
+        }
+
+
+        // Función para obtener la dirección completa
+        function getFullAddress() {
+            const city = $('#citySelect').val();
+            const addressType = $('#addressTypeSelect').val();
+            const addressNumber1 = $('#addressNumber1').val();
+            const addressNumber2 = $('#addressNumber2').val();
+            const detalles = $('#InputDetalles').val();
+
+            return `${addressType} ${addressNumber1}-${addressNumber2}, ${detalles}, ${city}`;
+        }
+
+        // Validación de formulario con Bootstrap
+        (function() {
             'use strict';
             window.addEventListener('load', function() {
-                // Fetch all the forms we want to apply custom Bootstrap validation styles to
                 var forms = document.getElementsByClassName('needs-validation');
-                // Loop over them and prevent submission
                 var validation = Array.prototype.filter.call(forms, function(form) {
                 form.addEventListener('submit', function(event) {
                     if (form.checkValidity() === false) {
@@ -475,11 +413,21 @@
                 }, false);
                 });
             }, false);
-            })();
-        });
-    </script>
+        })();
+    });
+</script>
+
     
     
     
 </body>
 </html>
+
+
+
+
+
+
+
+
+
