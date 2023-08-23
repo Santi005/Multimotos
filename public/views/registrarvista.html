@@ -20,10 +20,14 @@
     <link rel="stylesheet" href="css/elegant-icons.css" type="text/css">
     <link rel="stylesheet" href="css/magnific-popup.css" type="text/css">
     <link rel="stylesheet" href="css/jquery-ui.min.css" type="text/css">
-    <link rel="stylesheet" href="css/estilos.css" type="text/css">
+    <!-- <link rel="stylesheet" href="css/estilos.css" type="text/css"> -->
     <link rel="stylesheet" href="css/registrarse.css">
+    <link rel="stylesheet" href="css/esti.css">
+    <link rel="stylesheet" href="css/mensajeError.css">
 </head>
 <body>
+
+
 
     <div class="container-login">
         <div class="forms-container">
@@ -36,15 +40,15 @@
                             <div class="input-field">
                                 <i class="fas fa-id-card"></i>
                                 <input type="number" class="form-control" placeholder="Documento" id="InputDocumento" required>
-                                <div id="documentoError" class="error-message"></div>
                             </div>
+                            <div id="documentoError" class="error-message"></div>
                         </div>
                         <div class="col-md-6">
                             <div class="input-field">
                                 <i class="fas fa-envelope"></i>
                                 <input type="text" class="form-control" placeholder="Correo" id="InputCorreo" required>
-                                <div id="correoError" class="error-message"></div>
                             </div>
+                            <div id="correoError" class="error-message"></div>
                         </div>
                     </div>
     
@@ -53,15 +57,15 @@
                             <div class="input-field">
                                 <i class="fas fa-user"></i>
                                 <input type="text" placeholder="Nombre" class="form-control" id="InputNombre" required>
-                                <div id="nombreError" class="error-message"></div>
                             </div>
+                            <div id="nombreError" class="error-message"></div>
                         </div>
                         <div class="col-md-6">
                             <div class="input-field">
                                 <i class="fas fa-user"></i>
                                 <input type="text" placeholder="Apellidos" class="form-control" id="InputApellidos" required>
-                                <div id="apellidosError" class="error-message"></div>
                             </div>
+                            <div id="apellidosError" class="error-message"></div>
                         </div>
                     </div>
     
@@ -94,8 +98,8 @@
                                 <input type="number" class="form-control" id="addressNumber1" min="1" required style="width: 80px;" inputmode="numeric">
                                 <span style="margin-right: 5px; margin-left: 5px;">- </span>
                                 <input type="number" class="form-control" id="addressNumber2" min="1" required style="width: 80px;" inputmode="numeric">
-                                <div id="direccionNumberError" class="error-message"></div>
                             </div>
+                            <div id="direccionNumberError" class="error-message"></div>
                         </div>
                     </div>
     
@@ -109,9 +113,9 @@
                         <div class="col-md-6">
                             <div class="input-field">
                                 <i class="fas fa-phone"></i>
-                                <input type="text" placeholder="Teléfono" class="form-control" id="InputCelular" required>
-                                <div id="celularError" class="error-message"></div>
+                                <input type="number" placeholder="Teléfono" class="form-control" id="InputCelular" required>
                             </div>
+                            <div id="celularError" class="error-message"></div>
                         </div>
                     </div>
     
@@ -121,16 +125,16 @@
                                 <i class="fas fa-lock"></i>
                                 <input type="password" placeholder="Contraseña" class="form-control" id="InputContrasena" required>
                                 <i class="toggle-password fas fa-eye" onclick="togglePasswordVisibility('InputContrasena')"></i>
-                                <div id="contrasenaError" class="error-message"></div>
                             </div>
+                            <div id="contrasenaError" class="error-message"></div>
                         </div>
                         <div class="col-md-6">
                             <div class="input-field">
                                 <i class="fas fa-lock"></i>
                                 <input type="password" class="form-control" placeholder="Confirmar contraseña" id="InputConfirmarContrasena" required>
                                 <i class="toggle-password fas fa-eye" onclick="togglePasswordVisibility('InputConfirmarContrasena')"></i>
-                                <div id="confirmarContrasenaError" class="error-message"></div>
                             </div>
+                            <div id="confirmarContrasenaError" class="error-message"></div>
                         </div>
                     </div>
                     <input type="button" value="Registrarse" class="btn solid" id="BtnRegistrarCliente">
@@ -256,11 +260,11 @@
         function validateDocumento() {
             const documento = $('#InputDocumento').val();
             if (!documento.match(/^\d+$/)) {
-                // $('#documentoError').text('Documento inválido.');
-                // documento.style.color = 'red'
+                $('#documentoError').text('Documento inválido.');
+                documento.style.color = 'red'
                 return false;
             } else {
-                // $('#documentoError').text('');
+                $('#documentoError').text('');
                 return true;
             }
         }
@@ -268,11 +272,14 @@
         // Validar Nombre
         function validateNombre() {
             const nombre = $('#InputNombre').val();
-            if (!nombre.match(/^[a-zA-Z\s]+$/)) {
-                // $('#nombreError').text('El nombre solo puede contener letras.');
+            if (nombre === "" || !nombre.match(/^[a-zA-Z\s]+$/)) {
+                $('#nombreError').text('Nombre inválido. Solo se permiten letras y espacios.');
+                return false;
+            } else if (nombre.length > 25) {
+                $('#nombreError').text("El nombre no puede tener más de 25 caracteres.").removeClass("d-none");
                 return false;
             } else {
-                // $('#nombreError').text('');
+                $('#nombreError').text('');
                 return true;
             }
         }
@@ -280,11 +287,14 @@
         // Validar Apellidos
         function validateApellidos() {
             const apellidos = $('#InputApellidos').val();
-            if (!apellidos.match(/^[a-zA-Z\s]+$/)) {
-                // $('#apellidosError').text('Los apellidos solo pueden contener letras.');
+            if (apellidos === "" || !apellidos.match(/^[a-zA-Z\s]+$/)) {
+                $('#apellidosError').text('Los apellidos solo pueden contener letras.');
                 return false;
-            } else {
-                // $('#apellidosError').text('');
+            } else if (apellidos.length > 25) {
+                $('#apellidosError').text("Los apellidos no pueden tener más de 25 caracteres.").removeClass("d-none");
+                return false;
+            }else {
+                $('#apellidosError').text('');
                 return true;
             }
         }
@@ -292,11 +302,11 @@
         // Validar Celular
         function validateCelular() {
             const celular = $('#InputCelular').val();
-            if (!celular.match(/^\d{10}$/)) {
-                // $('#celularError').text('El número de celular debe tener 10 dígitos.');
+            if (celular === "" || !celular.match(/^\d{10}$/)) {
+                $('#celularError').text('El número de celular debe tener 10 dígitos.');
                 return false;
             } else {
-                // $('#celularError').text('');
+                $('#celularError').text('');
                 return true;
             }
         }
@@ -304,11 +314,11 @@
         // Validar Correo
         function validateCorreo() {
             const correo = $('#InputCorreo').val();
-            if (!correo.match(/^\w+([\.-]?\w+)*@\w+([\.-]?\w+)*(\.\w{2,3})+$/)) {
-                // $('#correoError').text('Ingrese un correo electrónico válido.');
+            if (correo > 255 || correo === "" || !correo.match(/^\w+([\.-]?\w+)*@\w+([\.-]?\w+)*(\.\w{2,3})+$/)) {
+                $('#correoError').text('Ingrese un correo electrónico válido.');
                 return false;
             } else {
-                // $('#correoError').text('');
+                $('#correoError').text('');
                 return true;
             }
         }
@@ -337,10 +347,10 @@
         function validateContrasena() { 
             const contrasena = $('#InputContrasena').val();
             if (contrasena.trim().length === 0) {
-                // $('#contrasenaError').text('La contraseña no puede estar vacía.');
+                $('#contrasenaError').text('La contraseña no puede estar vacía.');
                 return false;
             } else {
-                // $('#contrasenaError').text('');
+                $('#contrasenaError').text('');
                 return true;
             }
         }
