@@ -141,13 +141,18 @@ $(document).ready(function() {
 //-----------------------------------------------------------
 
 //Método editar y validación de campo vacio -------------------------------------------
+let originalName = '';
+let newName = '';
+
 function EditMark(id, name, image) {
     $('#EditarMarca').modal('show');
     $('#IdEditarMarca').val(id);
     $('#InputEditarNombreMarca').val(name);
-    
-    // Almacena la imagen original al mostrar el modal de edición
+
+    // Almacena la imagen original y el valor del nombre al mostrar el modal de edición
     $('#formFileEdit').data('original-image', image);
+    originalName = name;
+    newName = '';
 }
 
 function isNameUnique(nameMark) {
@@ -160,10 +165,30 @@ function isNameUnique(nameMark) {
     }
     return true;
 }
+
 $('#EditarMarca').on('hide.bs.modal', function () {
     // Restablecer clases y mensajes de error
     $('#InputEditarNombreMarca').removeClass('is-invalid is-valid');
     $('#errorEdit').addClass('d-none').text('');
+});
+
+$('#InputEditarNombreMarca').on('input', function () {
+    newName = $(this).val().trim();
+    const $errorEdit = $('#errorEdit');
+
+    if (newName === originalName) {
+        $(this).removeClass('is-invalid is-valid');
+        $errorEdit.addClass('d-none').text('');
+    } else if (newName === '') {
+        $(this).addClass('is-invalid').removeClass('is-valid');
+        $errorEdit.text('Ingrese un nombre para la marca').removeClass('d-none');
+    } else if (!isNameUnique(newName)) {
+        $(this).addClass('is-invalid').removeClass('is-valid');
+        $errorEdit.text('El nombre de categoría ya está en uso.').removeClass('d-none');
+    } else {
+        $(this).removeClass('is-invalid').addClass('is-valid');
+        $errorEdit.addClass('d-none').text('');
+    }
 });
 
 $('#BtnConfirmarEdit').on('click', function () {
@@ -179,11 +204,13 @@ $('#BtnConfirmarEdit').on('click', function () {
         return false;
     }
 
+   
     if (!isNameUnique(nameMark)) {
         $('#InputEditarNombreMarca').addClass('is-invalid').removeClass('is-valid');
         $errorEdit.text('El nombre de categoría ya está en uso.').removeClass('d-none');
         return false;
     }
+
 
     const formData = new FormData();
     formData.append('NombreMarca', nameMark);
