@@ -17,6 +17,8 @@ function viewDetail(id) {
         
         // Asignación de detalle venta que devuelve el Json.
         const detalleVenta = data.data[0];
+        const multIva = detalleVenta.Iva * 100;
+        ivaPorcentajeFormateado = multIva.toFixed(0) + '%';
 
         // Asignación de valores hacia los input que ya existen.
         $('#documentoInput').val(detalleVenta.Cliente[0]);
@@ -27,7 +29,7 @@ function viewDetail(id) {
         $('#emailInput').val(detalleVenta.Cliente[3])
         $('#fechaInput').val(new Date(detalleVenta.Fecha).toLocaleString('es-CO'))
         $('#totalEnvioInput').val(detalleVenta.Envio.toLocaleString('es-CO', { style: 'currency', currency: 'COP' }))
-        $('#totalIvaInput').val(detalleVenta.Iva.toLocaleString('es-CO', { style: 'currency', currency: 'COP' }))
+        $('#totalIvaInput').val(ivaPorcentajeFormateado)
         $('#totalCompraInput').val(detalleVenta.Total.toLocaleString('es-CO', { style: 'currency', currency: 'COP' }))
 
         // Recorrido para llenar la tabla de productos.

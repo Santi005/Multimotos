@@ -252,5 +252,14 @@ a.profile-pic {
   transition: top 0.3s ease;
 }
 
+.direccion-number {
+  text-align: center;
+}
 
+.direccion-number::placeholder {
+  color: #aaa;
+}
 
+.input-pedido::placeholder {
+  color: #aaa;
+}

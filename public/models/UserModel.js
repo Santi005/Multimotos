@@ -24,7 +24,7 @@ const UserModel = new Schema({
     required: ["El correo electrónico es obligatorio."]
   },
   Direccion: {
-    type: String,
+    type: [String],
     required: ["La dirección es obligatoria."]
   },
   Rol: {

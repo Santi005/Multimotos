@@ -143,6 +143,14 @@ form.sign-up-form {
     color: #aaa;
     font-weight: 500;
 }
+
+.direccion-number {
+    text-align: center;
+}
+
+.direccion-number::placeholder {
+    text-align: center;
+}
   
 .btn {
     width: 150px;

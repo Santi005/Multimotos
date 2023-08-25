@@ -352,7 +352,7 @@ const showEmployees = async () => {
 
 const openModalRazon = (razonDevolution) => {
     $("#modalReturnRazon").modal("show");
-    $('#razonDevolutionText').val(razonDevolution);
+    $('#razonDevolutionText').text(razonDevolution);
 }
 
 const getStatusClass = (estado) => {

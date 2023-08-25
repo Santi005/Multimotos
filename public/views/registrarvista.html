@@ -20,10 +20,14 @@
     <link rel="stylesheet" href="css/elegant-icons.css" type="text/css">
     <link rel="stylesheet" href="css/magnific-popup.css" type="text/css">
     <link rel="stylesheet" href="css/jquery-ui.min.css" type="text/css">
-    <link rel="stylesheet" href="css/estilos.css" type="text/css">
+    <!-- <link rel="stylesheet" href="css/estilos.css" type="text/css"> -->
     <link rel="stylesheet" href="css/registrarse.css">
+    <link rel="stylesheet" href="css/esti.css">
+    <link rel="stylesheet" href="css/mensajeError.css">
 </head>
 <body>
+
+
 
     <div class="container-login">
         <div class="forms-container">
@@ -36,15 +40,15 @@
                             <div class="input-field">
                                 <i class="fas fa-id-card"></i>
                                 <input type="number" class="form-control" placeholder="Documento" id="InputDocumento" required>
-                                <div id="documentoError" class="error-message"></div>
                             </div>
+                            <div id="documentoError" class="error-message"></div>
                         </div>
                         <div class="col-md-6">
                             <div class="input-field">
-                                <i class="fas fa-envelope"></i>
-                                <input type="text" class="form-control" placeholder="Correo" id="InputCorreo" required>
-                                <div id="correoError" class="error-message"></div>
+                                <i class="fas fa-user"></i>
+                                <input type="text" placeholder="Nombre" class="form-control" id="InputNombre" required>
                             </div>
+                            <div id="nombreError" class="error-message"></div>
                         </div>
                     </div>
     
@@ -52,66 +56,76 @@
                         <div class="col-md-6">
                             <div class="input-field">
                                 <i class="fas fa-user"></i>
-                                <input type="text" placeholder="Nombre" class="form-control" id="InputNombre" required>
-                                <div id="nombreError" class="error-message"></div>
+                                <input type="text" placeholder="Apellidos" class="form-control" id="InputApellidos" required>
                             </div>
+                            <div id="apellidosError" class="error-message"></div>
                         </div>
                         <div class="col-md-6">
                             <div class="input-field">
-                                <i class="fas fa-user"></i>
-                                <input type="text" placeholder="Apellidos" class="form-control" id="InputApellidos" required>
-                                <div id="apellidosError" class="error-message"></div>
+                                <i class="fas fa-phone"></i>
+                                <input type="number" placeholder="Teléfono" class="form-control" id="InputCelular" required>
                             </div>
+                            <div id="celularError" class="error-message"></div>
                         </div>
                     </div>
     
 
                     <!-- Direccion -->
                     <div class="row">
-                        <div class="col-md-4">
+                        <div class="col-md-6">
                             <div class="input-field">
-                                <i class="fas fa-home"></i>
-                                <select id="citySelect" class="form-control" style="width: 160px;">
+                                <i class="fas fa-city"></i>
+                                <select id="citySelect" class="form-control">
                                     <option value="Medellin">Medellín</option>
                                     <option value="Bello">Bello</option>
                                 </select>
                             </div>
                         </div>
-                        <div class="col-md-3">
+                        <div class="col-md-6">
                             <div class="input-field">
-                                <select id="addressTypeSelect" class="form-control" style="width: 140px;">
-                                    <option value="Cr.">Cr.</option>
-                                    <option value="Av.">Av.</option>
-                                    <option value="Cll.">Cll.</option>
-                                    <option value="Diag.">Diag.</option>
-                                    <!-- Agrega otras opciones según sea necesario -->
+                                <i class="fas fa-road"></i>
+                                <select id="addressTypeSelect" class="form-control">
+                                    <option value="Call.">Calle</option>
+                                    <option value="Cra.">Carrera</option>
+                                    <option value="Av.">Avenida</option>
+                                    <option value="Diag.">Diagonal</option>
+                                    <option value="Tr.">Transversal</option>
                                 </select>
+                            </div>  
+                        </div>
+                    </div>
+
+                    <div class="row">
+                        <div class="col-md-6">
+                            <div class="input-field">
+                                <i class="fas fa-home"></i>
+                                <input type="text" id="adressRoad" class="form-control direccion-number"  placeholder="00">
                             </div>
                         </div>
-                        <div class="col-md-3">
+                        <div class="col-md-6">
                             <div class="input-field">
                                 <span style="margin-right: 10px;"># </span>
-                                <input type="number" class="form-control" id="addressNumber1" min="1" required style="width: 80px;" inputmode="numeric">
+                                <input type="text" class="form-control direccion-number" id="addressNumber1" min="1" required  inputmode="numeric" placeholder="00">
                                 <span style="margin-right: 5px; margin-left: 5px;">- </span>
-                                <input type="number" class="form-control" id="addressNumber2" min="1" required style="width: 80px;" inputmode="numeric">
-                                <div id="direccionNumberError" class="error-message"></div>
+                                <input type="text" class="form-control direccion-number" id="addressNumber2" min="1" required  inputmode="numeric" placeholder="00">
                             </div>
+                            <div id="direccionNumberError" class="error-message"></div>
                         </div>
                     </div>
     
                     <div class="row">
                         <div class="col-md-6">
                             <div class="input-field">
-                                <i class="fas fa-home"></i>
-                                <textarea placeholder="Detalles, ejemplo: Apartamento 213" class="form-control" id="InputDetalles" rows="2" style="resize: none;"></textarea>
+                                <i class="fas fa-building"></i>
+                                <input type="text" placeholder="Detalles: (Barrio, apartamento)" class="form-control" id="InputDetalles">
                             </div>
                         </div>
                         <div class="col-md-6">
                             <div class="input-field">
-                                <i class="fas fa-phone"></i>
-                                <input type="text" placeholder="Teléfono" class="form-control" id="InputCelular" required>
-                                <div id="celularError" class="error-message"></div>
+                                <i class="fas fa-envelope"></i>
+                                <input type="text" class="form-control" placeholder="Correo" id="InputCorreo" required>
                             </div>
+                            <div id="correoError" class="error-message"></div>
                         </div>
                     </div>
     
@@ -120,17 +134,17 @@
                             <div class="input-field">
                                 <i class="fas fa-lock"></i>
                                 <input type="password" placeholder="Contraseña" class="form-control" id="InputContrasena" required>
-                                <i class="toggle-password fas fa-eye" onclick="togglePasswordVisibility('InputContrasena')"></i>
-                                <div id="contrasenaError" class="error-message"></div>
+                                <i class="toggle-password fas fa-eye" onclick="togglePasswordVisibility('InputContrasena')" style="position: absolute; margin-left: 225px;"></i>
                             </div>
+                            <div id="contrasenaError" class="error-message" style="position: absolute;"></div>
                         </div>
                         <div class="col-md-6">
                             <div class="input-field">
                                 <i class="fas fa-lock"></i>
                                 <input type="password" class="form-control" placeholder="Confirmar contraseña" id="InputConfirmarContrasena" required>
-                                <i class="toggle-password fas fa-eye" onclick="togglePasswordVisibility('InputConfirmarContrasena')"></i>
-                                <div id="confirmarContrasenaError" class="error-message"></div>
+                                <i class="toggle-password fas fa-eye" onclick="togglePasswordVisibility('InputConfirmarContrasena')" style="position: absolute; margin-left: 225px;"></i>
                             </div>
+                            <div id="confirmarContrasenaError" class="error-message"></div>
                         </div>
                     </div>
                     <input type="button" value="Registrarse" class="btn solid" id="BtnRegistrarCliente">
@@ -216,7 +230,7 @@
                                 .then(response => response.json())
                                 .then(json => {
                                     alert('Registrado exitosamente');
-                                    location.reload();
+                                    window.location.href = 'loginvista.html';
                                     // Realizar las acciones necesarias después de registrar el usuario
                                 })
                                 .catch(error => {
@@ -256,11 +270,11 @@
         function validateDocumento() {
             const documento = $('#InputDocumento').val();
             if (!documento.match(/^\d+$/)) {
-                // $('#documentoError').text('Documento inválido.');
-                // documento.style.color = 'red'
+                $('#documentoError').text('Documento inválido.');
+                documento.style.color = 'red'
                 return false;
             } else {
-                // $('#documentoError').text('');
+                $('#documentoError').text('');
                 return true;
             }
         }
@@ -268,11 +282,14 @@
         // Validar Nombre
         function validateNombre() {
             const nombre = $('#InputNombre').val();
-            if (!nombre.match(/^[a-zA-Z\s]+$/)) {
-                // $('#nombreError').text('El nombre solo puede contener letras.');
+            if (nombre === "" || !nombre.match(/^[a-zA-Z\s]+$/)) {
+                $('#nombreError').text('Nombre inválido. Solo se permiten letras y espacios.');
+                return false;
+            } else if (nombre.length > 25) {
+                $('#nombreError').text("El nombre no puede tener más de 25 caracteres.").removeClass("d-none");
                 return false;
             } else {
-                // $('#nombreError').text('');
+                $('#nombreError').text('');
                 return true;
             }
         }
@@ -280,11 +297,14 @@
         // Validar Apellidos
         function validateApellidos() {
             const apellidos = $('#InputApellidos').val();
-            if (!apellidos.match(/^[a-zA-Z\s]+$/)) {
-                // $('#apellidosError').text('Los apellidos solo pueden contener letras.');
+            if (apellidos === "" || !apellidos.match(/^[a-zA-Z\s]+$/)) {
+                $('#apellidosError').text('Los apellidos solo pueden contener letras.');
                 return false;
-            } else {
-                // $('#apellidosError').text('');
+            } else if (apellidos.length > 25) {
+                $('#apellidosError').text("Los apellidos no pueden tener más de 25 caracteres.").removeClass("d-none");
+                return false;
+            }else {
+                $('#apellidosError').text('');
                 return true;
             }
         }
@@ -292,11 +312,11 @@
         // Validar Celular
         function validateCelular() {
             const celular = $('#InputCelular').val();
-            if (!celular.match(/^\d{10}$/)) {
-                // $('#celularError').text('El número de celular debe tener 10 dígitos.');
+            if (celular === "" || !celular.match(/^\d{10}$/)) {
+                $('#celularError').text('El número de celular debe tener 10 dígitos.');
                 return false;
             } else {
-                // $('#celularError').text('');
+                $('#celularError').text('');
                 return true;
             }
         }
@@ -304,11 +324,11 @@
         // Validar Correo
         function validateCorreo() {
             const correo = $('#InputCorreo').val();
-            if (!correo.match(/^\w+([\.-]?\w+)*@\w+([\.-]?\w+)*(\.\w{2,3})+$/)) {
-                // $('#correoError').text('Ingrese un correo electrónico válido.');
+            if (correo > 255 || correo === "" || !correo.match(/^\w+([\.-]?\w+)*@\w+([\.-]?\w+)*(\.\w{2,3})+$/)) {
+                $('#correoError').text('Ingrese un correo electrónico válido.');
                 return false;
             } else {
-                // $('#correoError').text('');
+                $('#correoError').text('');
                 return true;
             }
         }
@@ -337,10 +357,10 @@
         function validateContrasena() { 
             const contrasena = $('#InputContrasena').val();
             if (contrasena.trim().length === 0) {
-                // $('#contrasenaError').text('La contraseña no puede estar vacía.');
+                $('#contrasenaError').text('La contraseña no puede estar vacía.');
                 return false;
             } else {
-                // $('#contrasenaError').text('');
+                $('#contrasenaError').text('');
                 return true;
             }
         }
@@ -386,16 +406,20 @@
             });
         }
 
-
         // Función para obtener la dirección completa
         function getFullAddress() {
+            let direccionCompleta = [];
+
             const city = $('#citySelect').val();
             const addressType = $('#addressTypeSelect').val();
+            const adressTypeNumber = $('#adressRoad').val();
             const addressNumber1 = $('#addressNumber1').val();
             const addressNumber2 = $('#addressNumber2').val();
             const detalles = $('#InputDetalles').val();
 
-            return `${addressType} ${addressNumber1}-${addressNumber2}, ${detalles}, ${city}`;
+            direccionCompleta.push(city, addressType, adressTypeNumber, addressNumber1, addressNumber2, detalles);
+
+            return direccionCompleta;
         }
 
         // Validación de formulario con Bootstrap

@@ -202,50 +202,93 @@
               <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
             </div>
             <div class="modal-body">
-              <div class="form-group">
-                <label for="InputAgregarDocumento">Documento</label>
-                <input type="number" id="InputAgregarDocumento" class="form-control" required>
-                <div class="invalid-feedback" id="errorDocumento"></div>
-              </div>
-              <div class="form-group">
-                <label for="InputAgregarNombre">Nombre</label>
-                <input type="text" id="InputAgregarNombre" class="form-control" required>
-                <div class="invalid-feedback" id="errorNombre"></div>
-              </div>
-              <div class="form-group">
-                <label for="InputAgregarApellidos">Apellidos</label>
-                <input type="text" id="InputAgregarApellidos" class="form-control" required>
-                <div class="invalid-feedback" id="errorApellidos"></div>
-              </div>
-              <div class="form-group">
-                <label for="InputAgregarCelular">Celular</label>
-                <input type="number" id="InputAgregarCelular" class="form-control" required>
-                <div class="invalid-feedback" id="errorCelular"></div>
-              </div>
-              <div class="form-group">
-                <label for="InputAgregarCorreo">Correo</label>
-                <input type="email" id="InputAgregarCorreo" class="form-control" required>
-                <div class="invalid-feedback" id="errorCorreo"></div>
-              </div>
-              <div class="form-group">
-                <label for="InputAgregarDireccion">Dirección</label>
-                <input type="text" id="InputAgregarDireccion" class="form-control" required>
-                <div class="invalid-feedback" id="errorDireccion"></div>
-              </div>
-              <div class="form-group">
-                <label for="InputAgregarRol">Rol</label>
-                <select id="InputAgregarRol" class="form-control" required>
-                  <!-- Las opciones se generarán dinámicamente utilizando JavaScript -->
-                </select>
-              </div>
-              <div class="form-group">
-                <label for="InputAgregarEstado">Estado</label>
-                <select id="InputAgregarEstado" class="form-control" disabled>
-                  <option value="Activo" selected>Activo</option>
-                  <option value="Inactivo">Inactivo</option>
-                </select>
-              </div>
-              <div class="invalid-feedback" id="errorAdd"></div>
+              <form class="needs-validation">
+                <div class="row mb-3">
+                  <div class="col-md-6">
+                    <label for="InputAgregarDocumento" class="form-label">Documento</label>
+                    <input type="number" class="form-control" id="InputAgregarDocumento" placeholder="Documento" maxlength="10" inputmode="numeric" required>
+                    <div class="invalid-feedback" id="errorEditarDocumento"></div>
+                  </div>
+                  <div class="col-md-6">
+                    <label for="InputAgregarNombre" class="form-label">Nombre</label>
+                    <input type="text" class="form-control" id="InputAgregarNombre" placeholder="Nombre" max="25" required>
+                    <div class="invalid-feedback" id="errorEditarNombre"></div>
+                  </div>
+                </div>
+                <div class="row mb-3">
+                  <div class="col-md-6">
+                    <label for="InputAgregarApellidos" class="form-label">Apellidos</label>
+                    <input type="text" class="form-control" id="InputAgregarApellidos" placeholder="Apellidos" maxlength="40" required>
+                    <div class="invalid-feedback" id="errorEditarApellidos"></div>
+                  </div>
+                  <div class="col-md-6">
+                    <label for="InputAgregarCelular" class="form-label">Teléfono</label>
+                    <input type="number" class="form-control" id="InputAgregarCelular" placeholder="Teléfono" maxlength="10" inputmode="numeric" required>
+                    <div class="invalid-feedback" id="errorEditarCelular"></div>
+                  </div>
+                </div>
+                <div class="row mb-3">
+                  <div class="col-md-6">
+                    <label for="city" class="form-label">Ciudad</label>
+                    <select class="form-control" id="city" required>
+                      <option value="Medellin">Medellín</option>
+                      <option value="Bello">Bello</option>
+                    </select>
+                  </div>
+                  <div class="col-md-6">
+                    <label for="addressTypeSelect" class="form-label">Tipo de dirección</label>
+                    <select class="form-control" id="addressTypeSelect" required>
+                      <option value="Call.">Calle</option>
+                      <option value="Cra.">Carrera</option>
+                      <option value="Av.">Avenida</option>
+                      <option value="Diag.">Diagonal</option>
+                      <option value="Tr.">Transversal</option>
+                    </select>
+                  </div>
+                </div>
+                <div class="row mb-3">
+                  <div class="col-md-6">
+                    <input type="text" class="form-control direccion-number" id="adressRoad" placeholder="00" maxlength="4" required>
+                  </div>
+                  <div class="col-md-6">
+                    <div class="input-group">
+                      <span style="margin-right: 10px;">#</span>
+                      <input type="text" class="form-control direccion-number" id="addressNumber1" min="1" required maxlength="2" inputmode="numeric" placeholder="00">
+                      <span style="margin-right: 10px; margin-left: 10px;">-</span>
+                      <input type="text" class="form-control direccion-number" id="addressNumber2" min="1" required maxlength="2" inputmode="numeric" placeholder="00">
+                    </div>
+                  </div>
+                </div>
+                <div class="row mb-3">
+                  <div class="col-md-12">
+                    <label for="detalles" class="form-label">Detalles de dirección</label>
+                    <input type="text" class="form-control" id="detalles" placeholder="Barrio, apartamento, etc." maxlength="40">
+                  </div>
+                </div>
+                <div class="row mb-3">
+                  <div class="col-md-12">
+                    <label for="InputAgregarCorreo" class="form-label">Correo</label>
+                    <input type="email" class="form-control" id="InputAgregarCorreo" placeholder="Correo" maxlength="50" required>
+                    <div class="invalid-feedback" id="errorEditarCorreo"></div>
+                  </div>
+                </div>
+                <div class="row mb-3">
+                  <div class="col-md-6">
+                      <label for="InputAgregarRol" class="form-label">Rol</label>
+                      <select class="form-control" id="InputAgregarRol" required>
+
+                      </select>
+                  </div>
+                  <div class="col-md-6">
+                      <label for="InputAgregarEstado" class="form-label">Estado</label>
+                      <select id="InputAgregarEstado" class="form-control" disabled>
+                        <option value="Activo" selected>Activo</option>
+                        <option value="Inactivo">Inactivo</option>
+                    </select>
+                  </div>
+                </div>
+                <div class="invalid-feedback" id="errorEdit"></div>
+              </form>
             </div>
             <div class="modal-footer">
               <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cancelar</button>
@@ -258,66 +301,106 @@
     <!-- MODAL EDITAR -->
     <div class="modal fade" id="EditarUsuario" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
       <div class="modal-dialog">
-          <div class="modal-content">
-              <div class="modal-header">
-                  <h1 class="modal-title fs-5" id="exampleModalLabel">Editar usuario</h1>
-                  <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
-              </div>
-              <div class="modal-body">
-                <div class="form-group" style="display: none;">
-                  <label for="IdEditarUsuario">Id</label>
-                  <input type="text" id="IdEditarUsuario" class="form-control" required>
-                </div>
-                  <div class="form-group">
-                      <label for="InputEditarDocumento">Documento</label>
-                      <input type="number" id="InputEditarDocumento" class="form-control" required>
-                      <div class="invalid-feedback" id="errorEditarDocumento"></div>
-                  </div>
-                  <div class="form-group">
-                      <label for="InputEditarNombre">Nombre</label>
-                      <input type="text" id="InputEditarNombre" class="form-control" required>
-                      <div class="invalid-feedback" id="errorEditarNombre"></div>
-                  </div>
-                  <div class="form-group">
-                      <label for="InputEditarApellidos">Apellidos</label>
-                      <input type="text" id="InputEditarApellidos" class="form-control" required>
-                      <div class="invalid-feedback" id="errorEditarApellidos"></div>
-                  </div>
-                  <div class="form-group">
-                      <label for="InputEditarCelular">Celular</label>
-                      <input type="number" id="InputEditarCelular" class="form-control" required>
-                      <div class="invalid-feedback" id="errorEditarCelular"></div>
-                  </div>
-                  <div class="form-group">
-                      <label for="InputEditarCorreo">Correo</label>
-                      <input type="email" id="InputEditarCorreo" class="form-control" required>
-                      <div class="invalid-feedback" id="errorEditarCorreo"></div>
-                  </div>
-                  <div class="form-group">
-                      <label for="InputEditarDireccion">Dirección</label>
-                      <input type="text" id="InputEditarDireccion" class="form-control" required>
-                      <div class="invalid-feedback" id="errorEditarDireccion"></div>
-                  </div>
-                  <div class="form-group">
-                      <label for="InputEditarRol">Rol</label>
-                      <select id="InputEditarRol" class="form-control" required>
-                          <!-- Las opciones se generarán dinámicamente utilizando JavaScript -->
-                      </select>
-                  </div>
-                  <div class="form-group">
-                      <label for="InputEditarEstado">Estado</label>
-                      <select id="InputEditarEstado" class="form-control" disabled>
-                          <option value="Activo" selected>Activo</option>
-                          <option value="Inactivo">Inactivo</option>
-                      </select>
-                  </div>
-                  <div class="invalid-feedback" id="errorEdit"></div>
-              </div>
-              <div class="modal-footer">
-                  <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cancelar</button>
-                  <button type="button" class="btn btn-danger" id="BtnConfirmarEdit">Guardar</button>
-              </div>
+        <div class="modal-content">
+          <div class="modal-header">
+            <h5 class="modal-title" id="exampleModalLabel">Editar usuario</h5>
+            <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
           </div>
+          <div class="modal-body">
+            <form class="needs-validation">
+              <input type="hidden" id="IdEditarUsuario">
+              <div class="row mb-3">
+                <div class="col-md-6">
+                  <label for="InputEditarDocumento" class="form-label">Documento</label>
+                  <input type="number" class="form-control" id="InputEditarDocumento" placeholder="Documento" maxlength="10" inputmode="numeric" required>
+                  <div class="invalid-feedback" id="errorEditarDocumento"></div>
+                </div>
+                <div class="col-md-6">
+                  <label for="InputEditarNombre" class="form-label">Nombre</label>
+                  <input type="text" class="form-control" id="InputEditarNombre" placeholder="Nombre" max="25" required>
+                  <div class="invalid-feedback" id="errorEditarNombre"></div>
+                </div>
+              </div>
+              <div class="row mb-3">
+                <div class="col-md-6">
+                  <label for="InputEditarApellidos" class="form-label">Apellidos</label>
+                  <input type="text" class="form-control" id="InputEditarApellidos" placeholder="Apellidos" maxlength="40" required>
+                  <div class="invalid-feedback" id="errorEditarApellidos"></div>
+                </div>
+                <div class="col-md-6">
+                  <label for="InputEditarCelular" class="form-label">Teléfono</label>
+                  <input type="number" class="form-control" id="InputEditarCelular" placeholder="Teléfono" maxlength="10" inputmode="numeric" required>
+                  <div class="invalid-feedback" id="errorEditarCelular"></div>
+                </div>
+              </div>
+              <div class="row mb-3">
+                <div class="col-md-6">
+                  <label for="city" class="form-label">Ciudad</label>
+                  <select class="form-control" id="cityEditar" required>
+                    <option value="Medellin">Medellín</option>
+                    <option value="Bello">Bello</option>
+                  </select>
+                </div>
+                <div class="col-md-6">
+                  <label for="addressTypeSelect" class="form-label">Tipo de dirección</label>
+                  <select class="form-control" id="addressTypeSelectEditar" required>
+                    <option value="Call.">Calle</option>
+                    <option value="Cra.">Carrera</option>
+                    <option value="Av.">Avenida</option>
+                    <option value="Diag.">Diagonal</option>
+                    <option value="Tr.">Transversal</option>
+                  </select>
+                </div>
+              </div>
+              <div class="row mb-3">
+                <div class="col-md-6">
+                  <input type="text" class="form-control direccion-number" id="adressRoadEditar" placeholder="00" maxlength="4" required>
+                </div>
+                <div class="col-md-6">
+                  <div class="input-group">
+                    <span style="margin-right: 10px;">#</span>
+                    <input type="text" class="form-control direccion-number" id="addressNumber1Editar" min="1" required maxlength="2" inputmode="numeric" placeholder="00">
+                    <span style="margin-right: 10px; margin-left: 10px;">-</span>
+                    <input type="text" class="form-control direccion-number" id="addressNumber2Editar" min="1" required maxlength="2" inputmode="numeric" placeholder="00">
+                  </div>
+                </div>
+              </div>
+              <div class="row mb-3">
+                <div class="col-md-12">
+                  <label for="detalles" class="form-label">Detalles de dirección</label>
+                  <input type="text" class="form-control" id="detallesEditar" placeholder="Barrio, apartamento, etc." maxlength="40">
+                </div>
+              </div>
+              <div class="row mb-3">
+                <div class="col-md-12">
+                  <label for="InputEditarCorreo" class="form-label">Correo</label>
+                  <input type="email" class="form-control" id="InputEditarCorreo" placeholder="Correo" maxlength="50" required>
+                  <div class="invalid-feedback" id="errorEditarCorreo"></div>
+                </div>
+              </div>
+              <div class="row mb-3">
+                <div class="col-md-6">
+                    <label for="InputEditarRol" class="form-label">Rol</label>
+                    <select class="form-control" id="InputEditarRol" required>
+
+                    </select>
+                </div>
+                <div class="col-md-6">
+                    <label for="InputEditarEstado" class="form-label">Estado</label>
+                    <select id="InputEditarEstado" class="form-control">
+                      <option value="Activo" selected>Activo</option>
+                      <option value="Inactivo">Inactivo</option>
+                  </select>
+                </div>
+              </div>
+              <div class="invalid-feedback" id="errorEdit"></div>
+            </form>
+          </div>
+          <div class="modal-footer">
+            <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cancelar</button>
+            <button type="button" class="btn btn-danger" id="BtnConfirmarEdit">Guardar</button>
+          </div>
+        </div>
       </div>
     </div>
 
