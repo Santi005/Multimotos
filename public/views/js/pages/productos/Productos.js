@@ -149,7 +149,7 @@ const getcategories = () => {
 
       const defaultOption = document.createElement('option');
       defaultOption.value = '';
-      defaultOption.textContent = 'Seleccionar categoría';
+      defaultOption.textContent = 'Todas';
       categoriesSelect.appendChild(defaultOption);
 
       categorias.forEach((category) => {
@@ -173,7 +173,7 @@ const getMarks = () => {
 
       const defaultOption = document.createElement('option');
       defaultOption.value = '';
-      defaultOption.textContent = 'Seleccionar marca';
+      defaultOption.textContent = 'Todas';
       marksSelect.appendChild(defaultOption);
 
       marcas.forEach((mark) => {

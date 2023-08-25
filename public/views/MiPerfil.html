@@ -1,268 +1,443 @@
 <!DOCTYPE html>
-<html>
+<html lang="es">
+
 <head>
-  <title>Editar Perfil</title>
-  <link rel="shortcut icon" href="img/logoMultimotos.png" type="image/x-icon">
-  <link rel="stylesheet" href="css/miperfil.css">
+    <meta charset="UTF-8">
+    <meta name="description" content="Tienda virtual de multimotos">
+    <meta name="keywords" content="Multimotos, MULTIMOTOS, Multimotos">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <link rel="shortcut icon" href="img/logoMultimotos.png" type="image/x-icon">
+    <title>Multimotos</title>
+
+    <!-- Google Font -->
+    <link href="https://fonts.googleapis.com/css2?family=Lato:wght@300;400;700;900&display=swap" rel="stylesheet">
+
+    <!-- Css Styles -->
+    <link rel="stylesheet" href="css/bootstrap.min.css" type="text/css">
+    <link rel="stylesheet" href="css/font-awesome.min.css" type="text/css">
+    <link rel="stylesheet" href="css/elegant-icons.css" type="text/css">
+    <link rel="stylesheet" href="css/magnific-popup.css" type="text/css">
+    <link rel="stylesheet" href="css/jquery-ui.min.css" type="text/css">
+    <link rel="stylesheet" href="css/owl.carousel.min.css" type="text/css">
+    <link rel="stylesheet" href="css/slicknav.min.css" type="text/css">
+    <link rel="stylesheet" href="css/style.css" type="text/css">
+    <link rel="stylesheet" href="css/estilos.css" type="text/css">
+    <link rel="stylesheet" href="css/miperfil.css" type="text/css">
 </head>
 <body>
-  <div class="container">
-    <div class="profile">
 
-      <h2 style="color: white;">Editar Perfil</h2>
+  <div id="preloder">
+    <div class="loader"></div>
+</div>
+
+<div class="offcanvas-menu-overlay"></div>
+<div class="offcanvas-menu-wrapper">
+    <br>
+    <br><br>
+    <div class="offcanvas__widget">
+        <a href="carrito.html"><i class="fa fa-cart-plus" style="font-size: 1.5em;"></i></a>
+        <a href="#" class="search-switch"><i class="fa fa-search" style="font-size: 1.4em;"></i></a>
+        <a href="loginvista.html" class="primary-btn" style="margin-top: 20px;"><i class="fas fa-user"></i> &nbsp;  Iniciar Sesión</a>
     </div>
-    <div class="profile-info">
-      <table>
-        <tr>
-          <td><label for="InputEditarDocumento">Documento:</label></td>
-          <td><input type="text" id="InputEditarDocumento"></td>
-          <td><span class="error-message" id="ErrorDocumento"></span></td>
-        </tr>
-        <tr>
-          <td><label for="InputEditarNombre">Nombre:</label></td>
-          <td><input type="text" id="InputEditarNombre"></td>
-          <td><span class="error-message" id="ErrorNombre"></span></td>
-        </tr>
-        <tr>
-          <td><label for="InputEditarApellidos">Apellidos:</label></td>
-          <td><input type="text" id="InputEditarApellidos"></td>
-          <td><span class="error-message" id="ErrorApellidos"></span></td>
-        </tr>
-        <tr>
-          <td><label for="InputEditarCelular">Celular:</label></td>
-          <td><input type="text" id="InputEditarCelular"></td>
-          <td><span class="error-message" id="ErrorCelular"></span></td>
-        </tr>
-        <tr>
-          <td><label for="InputEditarCorreo">Correo Electrónico:</label></td>
-          <td><input type="text" id="InputEditarCorreo"></td>
-          <td><span class="error-message" id="ErrorCorreo"></span></td>
-        </tr>
-        <tr>
-          <td><label for="InputEditarDireccion">Dirección:</label></td>
-          <td><input type="text" id="InputEditarDireccion"></td>
-          <td><span class="error-message" id="ErrorDireccion"></span></td>
-        </tr>
-        <tr>
-          <td><label for="InputEditarContrasena">Contraseña:</label></td>
-          <td><input type="password" id="InputEditarContrasena"></td>
-          <td></td>
-        </tr>
+    <div class="offcanvas__logo">
+        <a href="./index.html"><img src="img/logoMultimotos.png" alt="" width="40px"> <b class="link__logo"> Multimotos</b></a>
+    </div>
+    <div id="mobile-menu-wrap"></div>
+    <ul class="offcanvas__widget__add">
+        <li><i class="fa fa-clock-o"></i> Todos los días de: 8:00 am a 6:00 pm</li>
+        <li><i class="fa fa-envelope-o"></i> servicentromultimotos1@gmail.com</li>
+    </ul>
+    <div class="offcanvas__phone__num">
+        <i class="fa fa-phone"></i>
+        <span>2550302</span>
+    </div>
+    <div class="offcanvas__social">
+        <a href="https://www.facebook.com/SERVICENTROMULTIMOS/?locale=es_LA" target="_blank"><i class="fa fa-facebook"></i></a>
+        <a href="https://mail.google.com/mail/?view=cm&fs=1&to=servicentromultimotos1@gmail.com&su=Asunto%20del%20correo&body=Cuerpo%20del%20correo" target="_blank"><i class="fa fa-google"></i></a>
+        <!-- <a href="#"><i class="fa fa-twitter"></i></a>
+        <a href="#"><i class="fa fa-google"></i></a>
+        <a href="#"><i class="fa fa-instagram"></i></a> -->
+    </div>
+</div>
 
-      </table>
+<header class="header fixed-header">
+    <div class="header__top">
+        <div class="container">
+            <div class="row">
+                <div class="col-lg-7">
+                    <ul class="header__top__widget">
+                        <li><i class="fa fa-clock-o"></i> Todos los días de: 8:00 am a 6:00 pm</li>
+                        <li><i class="fa fa-envelope-o"></i> servicentromultimotos1@gmail.com</li>
+                    </ul>
+                </div>
+                <div class="col-lg-5">
+                    <div class="header__top__right">
+                        <div class="header__top__phone">
+                            <i class="fa fa-phone"></i>
+                            <span>2550302</span>
+                        </div>
+                        <div class="header__top__social">
+                            <a href="https://www.facebook.com/SERVICENTROMULTIMOS/?locale=es_LA" target="_blank"><i class="fa fa-facebook"></i></a>
+                            <a href="https://mail.google.com/mail/?view=cm&fs=1&to=servicentromultimotos1@gmail.com&su=Asunto%20del%20correo&body=Cuerpo%20del%20correo" target="_blank"><i class="fa fa-google"></i></a>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+    <div class="container">
+        <div class="row">
+            <div class="col-lg-2">
+                <div class="header__logo">
+                    <a href="./index.html"><img src="img/logoMultimotos.png" alt="" width="40px"> <b class="link__logo" style="margin-left: 10px;"> Multimotos</b></a>
+                </div>
+            </div>
+            <div class="col-lg-10">
+                <div class="header__nav">
+                    <nav class="header__menu">
+                        <ul>
+                            <li><a href="./index.html">Inicio</a></li>
+                            <li><a href="./productos.html">Productos</a></li>
+                            <li><a href="./SobreNosotros.html">Sobre Nosotros</a></li>
+                            <li><a href="./contacto.html">Contacto</a></li>
+                        </ul>
+                    </nav>
+                    <div class="header__nav__widget">
+                        <div class="header__nav__widget__btn">
+                            <a href="javascript:void(0);" id="cartButton">
+                                <span class="count-products" id="contador-productos">0</span>
+                                <i class="fa fa-cart-plus"></i>
+                            </a>
+                        </div>
+                        <a href="loginvista.html" id="loginButton" class="primary-btn"><i class="fas fa-user"></i> &nbsp;  Inicia Sesión o Registrate</a>
 
-      <div class="button-container">
-        <button id="BtnVolver">Volver</button>
-        <button id="BtnGuardarEdicion">Guardar</button>
+                        
+                        <a href="javascript:void(0);" id="logoutButton" class="profile-pic">
+                            <img src="./img/perfil.png" alt="user-img" width="36" class="img-circle">
+                            <span id="NombreCompleto"></span>
+                            <span id="profileDropdownArrow" class="dropdown-arrow">
+                                <i class="fas fa-angle-down"></i>
+                            </span>
+                        </a>
+                        <div class="dropdown-menu dropdown-menu-lg dropdown-menu-right dropdown-custom" id="profileDropdown">
+                            <a href="#" class="dropdown-item">
+                                <!-- Contenido del primer enlace -->
+                            </a>
+                            <div class="dropdown-divider"></div>
+                            <a href="MiPerfil.html" class="dropdown-item">
+                                <!-- Icono de Mi Perfil -->
+                                <i class="fas fa-user"></i>
+                                <span class="dropdown-item-title">Mi Perfil</span>
+                            </a>
+                            <div class="dropdown-divider"></div>
+                            <a href="historialCompras.html" class="dropdown-item">
+                                <!-- Icono de Mis Pedidos -->
+                                <i class="fas fa-shopping-cart"></i>
+                                <span class="dropdown-item-title">Mis Pedidos</span>
+                            </a>
+                            <div class="dropdown-divider"></div>
+                            <a href="#" class="dropdown-item dropdown-footer" onclick="cerrarSesion()">Cerrar Sesión</a>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div class="canvas__open">
+            <span class="fa fa-bars"></span>
+        </div>
+    </div>
+</header>
+
+<div id="cartSidebar" class="sidebar">
+    <button id="closeCartButton" class="close-cart-button">&times;</button>
+    <h2 class="titulo-cart">Carrito de compras</h2>
+
+    <div class="row-product hidden">
+        
+        <ul id="cartItems"></ul>
+
+        <div class="cart-total">
+            
+        </div>
+        
+        <a href="carrito.html" id="checkoutButton" class="primary-btn cart-buttons">Visualizar carrito</a>
+        <a href="#" onclick="event.preventDefault();" id="emptyCart" class="primary-btn cart-buttons">Vaciar carrito</a>
+    </div>
+</div>
+
+<br><br><br><br><br><br><br>
+
+<div class="modal" tabindex="-1" role="dialog" id="EditarUsuario" aria-labelledby="exampleModalLabel" aria-hidden="true">
+  <div class="modal-dialog" role="document">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h5 class="modal-title">Modal title</h5>
+        <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+          <span aria-hidden="true">&times;</span>
+        </button>
       </div>
-      
+      <div class="modal-body">
+        <form class="needs-validation">
+          <div class="form-row">
+            <div class="form-group col-md-6">
+              <input type="text" class="form-control input-pedido" id="InputEditarDocumento" placeholder="Documento" maxlength="10" inputmode="numeric" required>
+              <div class="invalid-feedback" id="errorEditarDocumento"></div>
+            </div>
+            <div class="form-group col-md-6">
+              <input type="text" class="form-control input-pedido" id="InputEditarNombre" placeholder="Nombre" max="25" required>
+              <div class="invalid-feedback" id="errorEditarNombre"></div>
+            </div>
+          </div>
+          <div class="form-row">
+            <div class="form-group col-md-6">
+              <input type="text" class="form-control input-pedido" id="InputEditarApellidos" placeholder="Apellidos" maxlength="40" required>
+              <div class="invalid-feedback" id="errorEditarApellidos"></div>
+            </div>
+            <div class="form-group col-md-6">
+              <input type="text" class="form-control input-pedido" id="InputEditarCelular" placeholder="Teléfono" maxlength="10" inputmode="numeric" required>
+              <div class="invalid-feedback" id="errorEditarCelular"></div>
+            </div>
+          </div>
+          <div class="form-row">
+            <div class="form-group col-md-6">
+              <select class="form-control" id="city" required>
+                <option value="Medellin">Medellín</option>
+                <option value="Bello">Bello</option>
+              </select>
+            </div>
+            <div class="form-group col-md-6">
+              <select class="form-control" id="addressTypeSelect" required>
+                <option value="Call.">Calle</option>
+                <option value="Cra.">Carrera</option>
+                <option value="Av.">Avenida</option>
+                <option value="Diag.">Diagonal</option>
+                <option value="Tr.">Transversal</option>
+              </select>
+            </div>
+          </div>
+          <div class="form-row">
+            <div class="form-group col-md-5">
+              <input type="text" class="form-control direccion-number" id="adressRoad" placeholder="00" maxlength="4" required>
+            </div>
+            <span style="margin-left: 10px;">#</span>
+            <div class="form-group col-md-3">
+              <input type="text" class="form-control direccion-number" id="addressNumber1" min="1" required maxlength="2" inputmode="numeric" placeholder="00">
+            </div>
+            <span>-</span>
+            <div class="form-group col-md-3">
+              <input type="text" class="form-control direccion-number" id="addressNumber2" min="1" required maxlength="2" inputmode="numeric" placeholder="00">
+            </div>
+          </div>
+          <div class="form-row">
+            <div class="form-group col-md-12">
+              <input type="text" class="form-control input-pedido" id="detalles" placeholder="Barrio, apartamento, etc." maxlength="40">
+            </div>
+          </div>
+          <div class="form-row">
+            <div class="form-group col-md-12">
+              <input type="email" class="form-control input-pedido" id="InputEditarCorreo" placeholder="Correo" maxlength="50" required>
+              <div class="invalid-feedback" id="errorEditarCorreo"></div>
+            </div>
+          </div>
+          <div class="invalid-feedback" id="errorEdit"></div>
+        </form>
+      </div>
+      <div class="modal-footer">
+        <button type="button" class="btn btn-secondary" data-dismiss="modal">Cancelar</button>
+        <button type="button" class="btn btn-danger" id="BtnConfirmarEdit">Guardar</button>
+      </div>
     </div>
   </div>
-  <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+</div>
 
-<script>
-$(document).ready(function() {
-  // Obtener el ID del usuario desde el LocalStorage
-  const userData = JSON.parse(localStorage.getItem('userData'));
-  const userId = userData._id;
+<div class="modal" tabindex="-1" role="dialog" id="CambiarContrasenaModal" aria-labelledby="exampleModalLabel" aria-hidden="true">
+  <div class="modal-dialog" role="document">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h5 class="modal-title">Actualizar Contraseña</h5>
+        <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+          <span aria-hidden="true">&times;</span>
+        </button>
+      </div>
+      <div class="modal-body">
+        <form class="needs-validation">
+          <div class="form-group">
+            <input type="password" class="form-control" id="InputContrasenaActual" placeholder="Contraseña actual" required>
+          </div>
+          <div class="form-group">
+            <input type="password" class="form-control" id="InputNuevaContrasena" placeholder="Nueva contraseña" required>
+          </div>
+          <div class="form-group">
+            <input type="password" class="form-control" id="InputConfirmarNuevaContrasena" placeholder="Confirmar nueva contraseña" required>
+          </div>
+          <div class="invalid-feedback" id="errorContrasena"></div>
+        </form>
+      </div>
+      <div class="modal-footer">
+        <button type="button" class="btn btn-secondary" data-dismiss="modal">Cancelar</button>
+        <button type="button" class="btn btn-danger" id="BtnGuardarContrasena">Guardar</button>
+      </div>
+    </div>
+  </div>
+</div>
 
-  // Obtener los datos del usuario desde el servidor y rellenar los campos
-  $.ajax({
-    url: 'http://localhost:8080/users/' + userId,
-    type: 'GET',
-    success: function(response) {
+<div class="container">
+  <div class="row mt-5">
+    <div class="col-md-4">
+      <div class="border p-3 shadow-sm">
+        <h4 class="titulos">¡Hola, <span id="nombreSaludo"></span>!</h4>
+        <br>
+        <ul class="list-group list-group-flush">
+          <li class="list-group-item d-flex justify-content-between align-items-center">
+            <a href="index.html" class="linkMiniMenu">
+              <i class="fas fa-home me-2"></i>
+              Inicio
+            </a>
+          </li>
+          <li class="list-group-item d-flex justify-content-between align-items-center">
+            <a href="historialCompras.html" class="linkMiniMenu">
+              <i class="fas fa-shopping-cart me-2"></i>
+              Mis pedidos
+            </a>
+          </li>
+          <li class="list-group-item d-flex justify-content-between align-items-center">
+            <a href="#" class="linkMiniMenu" onclick="cerrarSesion()">
+              <i class="fas fa-sign-out-alt me-2"></i>
+              Cerrar Sesión
+            </a>
+          </li>
+        </ul>
+      </div>
+    </div>
+    <div class="col-md-8">
+      <div class="border p-3 shadow-sm mb-4">
+        <div class="mb-4">
+          <div class="d-flex justify-content-between align-items-center">
+            <h4 class="titulos">Información personal</h4>
+            <a href="#" class="botonEditar" data-toggle="modal" data-target="#EditarUsuario">Editar <i class="fas fa-edit"></i></a>
+          </div>
+          <br>
+          <ul class="list-group list-group-flush">
+            <li class="list-group-item d-flex justify-content-between">
+              <strong>Documento:</strong>
+              <span id="documento"></span>
+            </li>
+            <li class="list-group-item d-flex justify-content-between">
+              <strong>Nombre:</strong>
+              <span id="nombre"></span>
+            </li>
+            <li class="list-group-item d-flex justify-content-between">
+              <strong>Apellidos:</strong>
+              <span id="apellidos"></span>
+            </li>
+            <li class="list-group-item d-flex justify-content-between">
+              <strong>Teléfono:</strong>
+              <span id="celular"></span>
+            </li>
+            <li class="list-group-item d-flex justify-content-between">
+              <strong>Correo electrónico:</strong>
+              <span id="correo"></span>
+            </li>
+            <li class="list-group-item d-flex justify-content-between">
+              <strong>Dirección:</strong>
+              <span id="direccion"></span>
+            </li>
+          </ul>
+        </div>
+      </div>
 
-      const data = response.data[0];
+      <div class="border p-3 shadow-sm">
+        <div class="d-flex justify-content-between align-items-center mb-4">
+          <h4 class="titulos">Contraseña</h4>
+          <a href="#" class="botonEditar" data-toggle="modal" data-target="#CambiarContrasenaModal">Editar <i class="fas fa-edit"></i></a>
+        </div>
+        <ul class="list-group list-group-flush">
+          <li class="list-group-item d-flex justify-content-between">
+            <strong>Contraseña:</strong>
+            ********
+          </li>
+        </ul>
+      </div>
+    </div>
+  </div>
+</div>
 
-      $('#InputEditarDocumento').val(data.Documento);
-      $('#InputEditarNombre').val(data.Nombre);
-      $('#InputEditarApellidos').val(data.Apellidos);
-      $('#InputEditarCelular').val(data.Celular);
-      $('#InputEditarCorreo').val(data.Correo);
-      $('#InputEditarDireccion').val(data.Direccion);
-    },
-    error: function(xhr, status, error) {
-      console.log(error);
-    }
-  });
+  <br><br>
 
-  $('#BtnVolver').on('click', function() {
-    window.location.href = 'index.html';
-  });
+  <footer class="footer set-bg" style="background: #000;">
+    <div class="container">
+        <div class="footer__contact">
+            <div class="row">
+                <div class="col-lg-6 col-md-6">
+                    <div class="footer__contact__title">
+                        <h2>¡Contáctanos ahora!</h2>
+                    </div>
+                </div>
+                <div class="col-lg-6 col-md-6">
+                    <div class="footer__contact__option">
+                        <div class="option__item"><i class="fa fa-phone"></i> 2550302</div>
+                        <div class="option__item email"><i class="fa fa-envelope-o"></i> servicentromultimotos1@gmail.com</div>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div class="row">
+            <div class="col-lg-4 col-md-4">
+                <div class="footer__about">
+                    <div class="footer__logo">
+                        <a href="#"><img src="img/logoMultimotos.png" alt="" width="50px"></a>
+                    </div>
+                    <p>Contáctanos en caso de dudas, puedes enviar un correo o llamar a nuestro número de teléfono</p>
+                    <div class="footer__social">
+                        <a href="https://www.facebook.com/SERVICENTROMULTIMOS/?locale=es_LA" target="_blank" class="facebook"><i class="fa fa-facebook"></i></a>
+                        <!-- <a href="#" class="twitter"><i class="fa fa-twitter"></i></a> -->
+                        <a href="https://mail.google.com/mail/?view=cm&fs=1&to=servicentromultimotos1@gmail.com&su=Asunto%20del%20correo&body=Cuerpo%20del%20correo" target="_blank" class="google"><i class="fa fa-google"></i></a>
+                        <!-- <a href="#" class="skype"><i class="fa fa-skype"></i></a> -->
+                    </div>
+                </div>
+            </div>
+            <div class="col-lg-2 offset-lg-1 col-md-3">
+                <div class="footer__widget">
+                    <h5>&nbsp;</h5>
+                </div>
+            </div>
+            <div class="col-lg-2 offset-lg-1 col-md-3">
+                <div class="footer__widget">
+                    <h5>Información</h5>
+                    <ul>
+                        <li><a href="productos.html"><i class="fa fa-angle-right"></i> Productos</a></li>
+                        <li><a href="SobreNosotros.html"><i class="fa fa-angle-right"></i> Sobre nosotros</a></li>
+                        <li><a href="contacto.html"><i class="fa fa-angle-right"></i> Contáctanos</a></li>
+                    </ul>
+                </div>
+            </div>
+        </div>
+        <div class="footer__copyright__text">
+            <p>Copyright &copy;<script>document.write(new Date().getFullYear());</script> Todos los derechos reservados | Servicentro Multimotos</p>
+        </div>
+    </div>
+</footer>
 
-  // Evento click del botón de guardar edición
-  $('#BtnGuardarEdicion').on('click', async function() {
-    // Reiniciar los mensajes de error
-    $('.error-message').text('');
+    <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
+    <script src="js/pages/carrito/carrito.js"></script>
+    <script src="https://kit.fontawesome.com/02fc697ff9.js" crossorigin="anonymous"></script>
+    <script src="js/jquery-3.3.1.min.js"></script>
+    <script src="js/bootstrap.min.js"></script>
+    <script src="js/jquery-ui.min.js"></script>
+    <script src="js/jquery.magnific-popup.min.js"></script>
+    <script src="js/mixitup.min.js"></script>
+    <script src="js/jquery.slicknav.js"></script>
+    <script src="js/owl.carousel.min.js"></script>
+    <script src="js/main.js"></script>
+    <script src="js/botonesHeader.js"></script>
+    <script src="js/cerrarsesion.js"></script>
+    <script src="js/Userdata.js"></script>
+    <script src="js/datosUsuario.js"></script>
+    <script src="js/ventanaEmergent.js"></script>
+    <script src="js/pages/Index.js"></script>
+    <script src="js/vallidarToken.js"></script>
+    <script src="js/pages/miPerfil.js"></script>
 
-    try {
-      const response = await fetch(`http://localhost:8080/users/${userId}`);
-      const userDataFromDB = await response.json();
-      const user = userDataFromDB.data[0];
-
-      var documento = $('#InputEditarDocumento').val();
-      var nombre = $('#InputEditarNombre').val();
-      var apellidos = $('#InputEditarApellidos').val();
-      var celular = $('#InputEditarCelular').val();
-      var correo = $('#InputEditarCorreo').val();
-      var direccion = $('#InputEditarDireccion').val();
-      var contrasena = $('#InputEditarContrasena').val();
-
-      var isValid = true;
-
-      if (documento === '') {
-        $('#ErrorDocumento').text('El campo Documento es obligatorio');
-        isValid = false;
-      }
-
-      if (nombre === '') {
-        $('#ErrorNombre').text('El campo nombre es obligatorio');
-        isValid = false;
-      }
-
-      if (apellidos === '') {
-        $('#ErrorApellidos').text('Los apellidos son obligatorio');
-        isValid = false;
-      }
-
-    if (isNaN(documento)) {
-      $('#ErrorDocumento').text('Documento invalido');
-      isValid = false;
-    }
-
-    if (documento.length < 8 || documento.length > 11) {
-      $('#ErrorDocumento').text('Documento invalido');
-      isValid = false;
-    }
-
-    if (celular === '') {
-      $('#ErrorCelular').text('El campo Celular es obligatorio');
-      isValid = false;
-    }
-
-    if (isNaN(documento)) {
-        $('#ErrorDocumento').text('Documento invalido');
-        isValid = false;
-      }
-
-      if (documento.length < 8 || documento.length > 11) {
-        $('#ErrorDocumento').text('Documento invalido');
-        isValid = false;
-      }
-
-      if (celular === '') {
-        $('#ErrorCelular').text('El campo Celular es obligatorio');
-        isValid = false;
-      }
-
-      if (isNaN(celular)) {
-        $('#ErrorCelular').text('Celular invalido');
-        isValid = false;
-      }
-
-      if (celular.length !== 10) {
-        $('#ErrorCelular').text('Celular invalido');
-        isValid = false;
-      }
-
-      if (correo === '') {
-        $('#ErrorCorreo').text('El campo direccion es obligatoria');
-        isValid = false;
-      }
-
-      if (direccion === '') {
-        $('#ErrorDireccion').text('El campo direccion es obligatorio');
-        isValid = false;
-      } else if (!isValidEmail(correo)) {
-        $('#ErrorCorreo').text('El campo Correo Electrónico debe tener un formato válido (ejemplo@gmail.com)');
-        isValid = false;
-      }
-
-            // Verificar si el documento ha cambiado y validar si es necesario
-      if (documento !== user.Documento) {
-        const documentoValido = await validarDocumentoExistente(documento);
-        if (!documentoValido) {
-          $('#ErrorDocumento').text('El documento ya está registrado');
-          return;
-        }
-      }
-
-      // Verificar si el correo ha cambiado y validar si es necesario
-      if (correo !== user.Correo) {
-        const correoValido = await validarCorreoExistente(correo);
-        if (!correoValido) {
-          $('#ErrorCorreo').text('El correo ya está registrado');
-          return;
-        }
-      }
-
-
-    if (isValid) {
-      var userDataUpdated = {
-        Documento: documento,
-        Nombre: nombre,
-        Apellidos: apellidos,
-        Celular: celular,
-        Correo: correo,
-        Direccion: direccion,
-        Contrasena: contrasena
-      };
-
-      if (contrasena.trim() === '') {
-      delete userDataUpdated.Contrasena;
-      }
-
-      $.ajax({
-          url: 'http://localhost:8080/users/' + userId,
-          type: 'PUT',
-          contentType: 'application/json',
-          data: JSON.stringify(userDataUpdated),
-          success: function(response) {
-            console.log('Edición exitosa:', response);
-            alert('Datos actualizados correctamente');
-            location.reload();
-          },
-          error: function(xhr, status, error) {
-            console.log('Error al editar el usuario:', error);
-          }
-        });
-      }
-    } catch (error) {
-      console.error('Error al obtener los datos del usuario:', error);
-    }
-  });
-});
-
-function isValidEmail(email) {
-  var emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
-  return emailRegex.test(email);
-}
-
-// Función para validar si el nuevo documento ya está registrado
-async function validarDocumentoExistente(documento) {
-  try {
-    const response = await fetch(`http://localhost:8080/users/check-documento/${documento}`);
-    const data = await response.json();
-    return !data.exists;
-  } catch (error) {
-    console.error('Error al verificar documento:', error);
-    return false;
-  }
-}
-
-// Función para validar si el nuevo correo ya está registrado
-async function validarCorreoExistente(correo) {
-  try {
-    const response = await fetch(`http://localhost:8080/users/check-email/${correo}`);
-    const data = await response.json();
-    return !data.exists;
-  } catch (error) {
-    console.error('Error al verificar correo:', error);
-    return false;
-  }
-}
-</script>
-
-<script src="js/vallidarToken.js"></script>
 </body>
 </html>

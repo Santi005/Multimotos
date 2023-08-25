@@ -27,7 +27,7 @@ router.post('/login', async (req, res) => {
       return res.status(401).json({ message: 'Correo o contraseña incorrectos.' });
     }
 
-    const { _id, Documento, Nombre, Apellidos, Correo: correoUsuario, Rol } = user;
+    const { _id, Documento, Nombre, Apellidos, Celular, Correo: correoUsuario, Direccion, Rol } = user;
 
     console.log('Nombre del rol:', Rol.nombre);
     console.log('Permisos', Rol.permisos)
@@ -59,7 +59,9 @@ router.post('/login', async (req, res) => {
           Documento,
           Nombre,
           Apellidos,
+          Celular,
           Correo: correoUsuario,
+          Direccion,
           Rol: {
             nombre: Rol.nombre,
           }

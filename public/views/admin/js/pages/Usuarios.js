@@ -30,11 +30,11 @@ const listUsers = () => {
                   <td>${user.Apellidos}</td>
                   <td>${user.Celular}</td>
                   <td>${user.Correo}</td>
-                  <td>${user.Direccion}</td>
+                  <td>${user.Direccion[0]}, ${user.Direccion[1]} ${user.Direccion[2]} #${user.Direccion[3]} - ${user.Direccion[4]}, ${user.Direccion[5]}</td>
                   <td>${rolNombre}</td>
                   <td>${user.Estado}</td>
                   <td>
-                    <i onclick="EditUser('${user._id}', '${user.Documento}', '${user.Nombre}', '${user.Apellidos}', '${user.Celular}', '${user.Correo}', '${user.Direccion}', '${user.Rol}', '${user.Estado}')"
+                    <i onclick="EditUser('${user._id}', '${user.Documento}', '${user.Nombre}', '${user.Apellidos}', '${user.Celular}', '${user.Correo}', '${user.Direccion[0]}', '${user.Direccion[1]}', '${user.Direccion[2]}', '${user.Direccion[3]}', '${user.Direccion[4]}', '${user.Direccion[5]}', '${user.Rol}', '${user.Estado}')"
                       class="bi bi-pencil-square usuarios" style="color:#f62d51; font-size: 1.3em; cursor:pointer;"></i>
                   
                         &nbsp;&nbsp;
@@ -74,13 +74,11 @@ $(document).ready(function() {
   const $InputAgregarApellidos = $('#InputAgregarApellidos');
   const $InputAgregarCelular = $('#InputAgregarCelular');
   const $InputAgregarCorreo = $('#InputAgregarCorreo');
-  const $InputAgregarDireccion = $('#InputAgregarDireccion');
   const $errorDocumento = $('#errorDocumento');
   const $errorNombre = $('#errorNombre');
   const $errorApellidos = $('#errorApellidos');
   const $errorCelular = $('#errorCelular');
   const $errorCorreo = $('#errorCorreo');
-  const $errorDireccion = $('#errorDireccion');
   const $errorAdd = $('#errorAdd');
   const $modalAgregarUsuario = $('#AgregarUsuario');
   const $btnConfirmarAgregar = $('#BtnConfirmarAdd');
@@ -172,27 +170,30 @@ $(document).ready(function() {
     }
   }
 
-  // Función de validación para el campo de Dirección
-  function validarDireccion() {
-    const direccion = $InputAgregarDireccion.val().trim();
-    if (direccion === "") {
-      $errorDireccion.text("El campo de dirección no puede estar vacío.").removeClass("d-none");
-      $InputAgregarDireccion.addClass("is-invalid");
-    } else if (direccion.length > 150) {
-    $errorDireccion.text("El correo no puede tener más de 150 caracteres.").removeClass("d-none");
-    $InputAgregarDireccion.addClass("is-invalid");
-  } else {
-      $errorDireccion.text("").addClass("d-none");
-      $InputAgregarDireccion.removeClass("is-invalid");
-    }
-  }
+  // // Función de validación para el campo de Dirección
+  // function validarDireccionCompletaEditar() {
+  //   const city = $('#citySelect').val();
+  //   const addressType = $('#addressTypeSelect').val();
+  //   const adressTypeNumber = $('#adressRoad').val();
+  //   const addressNumber1 = $('#addressNumber1').val();
+  //   const addressNumber2 = $('#addressNumber2').val();
+  //   const detalles = $('#InputDetalles').val();
+  
+  //   if (city === "" || addressType === "" || adressTypeNumber === "" || addressNumber1 === "" || addressNumber2 === "") {
+  //     $('#errorEditarDireccion').text("Por favor completa todos los campos de la dirección.").removeClass("d-none");
+  //     return false;
+  //   } else {
+  //     $('#errorEditarDireccion').text("").addClass("d-none");
+  //     return true;
+  //   }
+  // }
 
     $InputAgregarDocumento.on('input', validarDocumento);
     $InputAgregarNombre.on('input', validarNombre);
     $InputAgregarApellidos.on('input', validarApellidos);
     $InputAgregarCelular.on('input', validarCelular);
     $InputAgregarCorreo.on('input', validarCorreo);
-    $InputAgregarDireccion.on('input', validarDireccion);
+
 
 
   // Función para validar todos los campos
@@ -202,18 +203,17 @@ $(document).ready(function() {
     validarApellidos();
     validarCelular();
     validarCorreo();
-    validarDireccion();
+    // validarDireccionCompletaEditar();
   }
 
   // Función para agregar un usuario
   function agregarUsuario() {
     // Obtener los valores de los campos
-    const documento = $InputAgregarDocumento.val().trim();
-    const nombre = $InputAgregarNombre.val().trim();
-    const apellidos = $InputAgregarApellidos.val().trim();
-    const celular = $InputAgregarCelular.val().trim();
-    const correo = $InputAgregarCorreo.val().trim();
-    const direccion = $InputAgregarDireccion.val().trim();
+    const documento = $('#InputAgregarDocumento').val().trim();
+    const nombre = $('#InputAgregarNombre').val().trim();
+    const apellidos = $('#InputAgregarApellidos').val().trim();
+    const celular = $('#InputAgregarCelular').val().trim();
+    const correo = $('#InputAgregarCorreo').val().trim();
     const rol = $('#InputAgregarRol').val();
     const estado = $('#InputAgregarEstado').val();
 
@@ -224,7 +224,7 @@ $(document).ready(function() {
       Apellidos: apellidos,
       Celular: celular,
       Correo: correo,
-      Direccion: direccion,
+      Direccion: getFullAddress(),
       Rol: rol,
       Estado: estado,
       Contrasena: "123"
@@ -257,19 +257,17 @@ $(document).ready(function() {
     $InputAgregarApellidos.val('');
     $InputAgregarCelular.val('');
     $InputAgregarCorreo.val('');
-    $InputAgregarDireccion.val('');
     $InputAgregarDocumento.removeClass('is-invalid is-valid');
     $InputAgregarNombre.removeClass('is-invalid is-valid');
     $InputAgregarApellidos.removeClass('is-invalid is-valid');
     $InputAgregarCelular.removeClass('is-invalid is-valid');
     $InputAgregarCorreo.removeClass('is-invalid is-valid');
-    $InputAgregarDireccion.removeClass('is-invalid is-valid');
     $errorDocumento.addClass('d-none');
     $errorNombre.addClass('d-none');
     $errorApellidos.addClass('d-none');
     $errorCelular.addClass('d-none');
     $errorCorreo.addClass('d-none');
-    $errorDireccion.addClass('d-none');
+    // $errorDireccion.addClass('d-none');
     $errorAdd.addClass('d-none');
   });
 
@@ -282,8 +280,7 @@ $(document).ready(function() {
       !$InputAgregarNombre.hasClass("is-invalid") &&
       !$InputAgregarApellidos.hasClass("is-invalid") &&
       !$InputAgregarCelular.hasClass("is-invalid") &&
-      !$InputAgregarCorreo.hasClass("is-invalid") &&
-      !$InputAgregarDireccion.hasClass("is-invalid")
+      !$InputAgregarCorreo.hasClass("is-invalid")
     ) {
       // Función para agregar un usuario
       agregarUsuario();
@@ -299,7 +296,7 @@ $(document).ready(function() {
 let currentDocumento = "";
 let currentCorreo = "";
 // Función para abrir el modal de edición de usuario con los valores actuales
-function EditUser(id, documento, nombre, apellidos, celular, correo, direccion, rol, estado) {
+function EditUser(id, documento, nombre, apellidos, celular, correo, ciudad, typeadress, road, adress1, adress2, detalles, rol, estado) {
   console.log("EditUser - ID:", id);
   currentDocumento = documento;
   currentCorreo = correo;
@@ -313,9 +310,31 @@ function EditUser(id, documento, nombre, apellidos, celular, correo, direccion, 
   $('#InputEditarApellidos').val(apellidos);
   $('#InputEditarCelular').val(celular);
   $('#InputEditarCorreo').val(correo);
-  $('#InputEditarDireccion').val(direccion);
+  // $('#InputEditarDireccion').val(direccion);
   $('#InputEditarRol').val(rol);
   $('#InputEditarEstado').val(estado);
+  var cityEditar = document.getElementById("cityEditar");
+  var addressTypeSelectEditar = document.getElementById("addressTypeSelectEditar");
+  $('#adressRoadEditar').val(road);
+  $('#addressNumber1Editar').val(adress1);
+  $('#addressNumber2Editar').val(adress2);
+  $('#detallesEditar').val(detalles);
+
+  console.log(ciudad);
+
+  for (var i = 0; i < cityEditar.options.length; i++) {
+    if (cityEditar.options[i].value === ciudad) {
+      cityEditar.selectedIndex = i;
+      break;
+    }
+  }
+
+  for (var i = 0; i < addressTypeSelectEditar.options.length; i++) {
+    if (addressTypeSelectEditar.options[i].value === typeadress) {
+      addressTypeSelectEditar.selectedIndex = i;
+      break;
+    }
+  }
 
   // Agregar eventos 'input' para validación en tiempo real
   $('#InputEditarDocumento').on('input', validarDocumentoEditar);
@@ -323,7 +342,7 @@ function EditUser(id, documento, nombre, apellidos, celular, correo, direccion, 
   $('#InputEditarApellidos').on('input', validarApellidosEditar);
   $('#InputEditarCelular').on('input', validarCelularEditar);
   $('#InputEditarCorreo').on('input', validarCorreoEditar);
-  $('#InputEditarDireccion').on('input', validarDireccionEditar);
+  // $('#InputEditarDireccion').on('input', validarDireccionEditar);
 }
 
 // Evento Click del Botón de Confirmación
@@ -337,8 +356,8 @@ $('#BtnConfirmarEdit').on('click', () => {
     !$('#InputEditarDocumento').hasClass("is-invalid") &&
     !$('#InputEditarNombre').hasClass("is-invalid") &&
     !$('#InputEditarApellidos').hasClass("is-invalid") &&
-    !$('#InputEditarCelular').hasClass("is-invalid") &&
-    !$('#InputEditarDireccion').hasClass("is-invalid")
+    !$('#InputEditarCelular').hasClass("is-invalid")
+    // !$('#InputEditarDireccion').hasClass("is-invalid")
   ) {
     if (newDocumento === currentDocumento) {
       // No se han realizado cambios en el documento, validar solo el correo si es necesario
@@ -429,19 +448,19 @@ function validarNombreEditar() {
   }
 
   // Función de validación para el campo de Dirección
-  function validarDireccionEditar() {
-    const direccion = $('#InputEditarDireccion').val().trim();
-    if (direccion === "") {
-      $('#errorEditarDireccion').text("El campo de dirección no puede estar vacío.").removeClass("d-none");
-      $('#InputEditarDireccion').addClass("is-invalid");
-    } else if (direccion.length > 150) {
-    $('#errorEditarDireccion').text("La direccion no puede tener más de 150 caracteres.").removeClass("d-none");
-    $('#InputEditarDireccion').addClass("is-invalid");
-    } else {
-      $('#errorEditarDireccion').text("").addClass("d-none");
-      $('#InputEditarDireccion').removeClass("is-invalid");
-    }
-  }
+  // function validarDireccionEditar() {
+  //   const direccion = $('#InputEditarDireccion').val().trim();
+  //   if (direccion === "") {
+  //     $('#errorEditarDireccion').text("El campo de dirección no puede estar vacío.").removeClass("d-none");
+  //     $('#InputEditarDireccion').addClass("is-invalid");
+  //   } else if (direccion.length > 150) {
+  //   $('#errorEditarDireccion').text("La direccion no puede tener más de 150 caracteres.").removeClass("d-none");
+  //   $('#InputEditarDireccion').addClass("is-invalid");
+  //   } else {
+  //     $('#errorEditarDireccion').text("").addClass("d-none");
+  //     $('#InputEditarDireccion').removeClass("is-invalid");
+  //   }
+  // }
 
 // Función para validar los cambios editados (documento y correo)
 function validarCambiosEditados() {
@@ -552,7 +571,7 @@ function validarCamposEditar() {
   validarApellidosEditar();
   validarCelularEditar();
   validarCorreoEditar();
-  validarDireccionEditar();
+  // validarDireccionEditar();
 }
 
 // Función para editar un usuario
@@ -564,7 +583,7 @@ function editarUsuario() {
     Apellidos: $('#InputEditarApellidos').val(),
     Celular: $('#InputEditarCelular').val(),
     Correo: $('#InputEditarCorreo').val(),
-    Direccion: $('#InputEditarDireccion').val(),
+    Direccion: getFullAddressEditar(),
     Rol: $('#InputEditarRol').val(),
     Estado: $('#InputEditarEstado').val()
   };
@@ -656,6 +675,37 @@ function ValidateForm() {
       });
   });
 }
+
+function getFullAddress() {
+  let direccionCompleta = [];
+
+  const city = $('#city').val();
+  const addressType = $('#addressTypeSelect').val();
+  const adressTypeNumber = $('#adressRoad').val();
+  const addressNumber1 = $('#addressNumber1').val();
+  const addressNumber2 = $('#addressNumber2').val();
+  var detalles = $('#detalles').val();
+
+  direccionCompleta.push(city, addressType, adressTypeNumber, addressNumber1, addressNumber2, detalles);
+
+  return direccionCompleta;
+}
+
+function getFullAddressEditar() {
+  let direccionCompleta = [];
+
+  const city = $('#cityEditar').val();
+  const addressType = $('#addressTypeSelectEditar').val();
+  const adressTypeNumber = $('#adressRoadEditar').val();
+  const addressNumber1 = $('#addressNumber1Editar').val();
+  const addressNumber2 = $('#addressNumber2Editar').val();
+  var detalles = $('#detallesEditar').val();
+
+  direccionCompleta.push(city, addressType, adressTypeNumber, addressNumber1, addressNumber2, detalles);
+
+  return direccionCompleta;
+}
+
 
 function resetForm(modalType) {
   let InputDocumento;
