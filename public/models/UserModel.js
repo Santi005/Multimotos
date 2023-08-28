@@ -40,6 +40,10 @@ const UserModel = new Schema({
     type: String,
     required: ["La contraseña es obligatoria."]
   },
+  FechaRegistro: {
+    type: Date, 
+    default: Date.now, // Establece la fecha de registro al momento actual por defecto
+  },
 });
 
 // Middleware para encriptar la contraseña antes de guardarla en la base de datos

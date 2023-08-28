@@ -306,6 +306,35 @@
                   </div>
                 </div>
               </div>
+              <div class="row">
+                <div class="col-8">
+                  <div class="card">
+                    <div class="card-header">
+                      <h4>Cantidad de Clientes</h4>
+                      <div>
+                        <label for="filterYearClientes" class="font-extrabold mb-0">Filtrar por año:</label>
+                        <select id="filterYearClientes" style="border: none; outline: none;"></select>
+                      </div>
+                    </div>
+                    <div class="card-body">
+                      <div id="chart-clientes"></div>
+                    </div>
+                  </div>
+                </div>
+                
+                <div class="col-4">
+                  <div class="card">
+                    <div class="card-header">
+                      <h4>Productos más Vendidos (Top 5)</h4>
+                    </div>
+                    <div class="card-body">
+                      <div id="chart-productos"></div>
+                    </div>
+                  </div>
+                </div>
+              </div>
+          
+
               
 
           </section>
@@ -329,6 +358,8 @@
     
     <!-- Need: Apexcharts -->
     <script src="assets/extensions/apexcharts/apexcharts.min.js"></script>
+
+    
     <script src="assets/static/js/pages/dashboard.js"></script>
 
     <!-- Dashboard -->

@@ -38,7 +38,7 @@ const getUsers = async (req, res) => {
 };
 
 const postUser = async (req, res) => {
-  const { Documento, Nombre, Apellidos, Celular, Correo, Direccion, Rol, Estado, Contrasena } = req.body;
+  const { Documento, Nombre, Apellidos, Celular, Correo, Direccion, Rol, Estado, Contrasena, FechaRegistro } = req.body;
 
   // Verifica si el correo ya está registrado en la base de datos
   console.log("Verificando correo existente:", Correo);
@@ -64,7 +64,7 @@ const postUser = async (req, res) => {
     });
   }
 
-  const user = new User({ Documento, Nombre, Apellidos, Celular, Correo, Direccion, Rol, Estado, Contrasena });
+  const user = new User({ Documento, Nombre, Apellidos, Celular, Correo, Direccion, Rol, Estado, Contrasena, FechaRegistro });
 
   await user.save();
 
