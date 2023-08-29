@@ -175,7 +175,7 @@ fetch('http://localhost:8080/sales/')
       }
   
       const clientes = responseData.allUsers.filter(user =>
-        user.Rol === '64ebd2d2c41fcf4e7c0c09a9' //ID del rol Cliente
+        user.Rol === '64defa9c74fb54f6dfe372e9' //ID del rol Cliente
       );
   
       const selectedYear = parseInt(filterYearClientesSelect.value);
