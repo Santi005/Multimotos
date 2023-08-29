@@ -122,29 +122,53 @@
                             </li>
               
                             <li class="text-center p-20 upgrade-btn sidebar-item">
-                              <a href="#" onclick="cerrarSesion()" class="btn d-grid btn-danger text-white" target="_blank">Cerrar sesión</a>
-                            </li>
-              
-                          </ul>
-
-                        <div class="col-12 col-lg-3">
-                            <div class="card">
+                                <a class="btn d-grid btn-danger text-white" data-bs-toggle="modal" data-bs-target="#confirmModal">Cerrar sesión</a>
+                              </li>
+                
+                
+                            </ul>
+                
+                            <div class="col-12 col-lg-3">
+                              <div class="card">
                                 <div class="card-body py-4 px-4">
-                                    <div class="d-flex align-items-center">
-                                        <div class="avatar avatar-xl">
-                                            <img src="./assets/compiled/jpg/1.jpg" alt="Face 1" />
-                                        </div>
-                                        <div class="ms-3 name">
-                                            <h5 class="font-bold" id="nombreUsuario"></h5>
-                                        </div>
+                                  <div class="d-flex align-items-center">
+                                    <div class="avatar avatar-xl">
+                                      <img src="./assets/compiled/jpg/1.jpg" alt="Face 1" />
                                     </div>
+                                    <div class="ms-3 name">
+                                      <h5 class="font-bold" id="nombreUsuario"></h5>
+                                    </div>
+                                  </div>
                                 </div>
-                            </div>
+                              </div>
+                          </div>
                         </div>
+                      </div>
+                
+                      <!--
+                        Dashboard
+                      -->
+                
+                      
+                
+                <!-- Modal de confirmación -->
+                <div class="modal fade" id="confirmModal" tabindex="-1" aria-labelledby="confirmModalLabel" aria-hidden="true">
+                  <div class="modal-dialog">
+                    <div class="modal-content">
+                          <div class="modal-header">
+                            <h5 class="modal-title" id="confirmModalLabel">Cerrar Sesión</h5>
+                            <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                          </div>
+                          <div class="modal-body">
+                            ¿Estás seguro de que deseas cerrar la sesión?
+                          </div>
+                          <div class="modal-footer">
+                            <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">No</button>
+                            <button type="button" class="btn btn-danger" onclick="cerrarSesion()">Sí</button>
+                          </div>
                     </div>
+                  </div>
                 </div>
-            </div>
-        </div>
 
         <div id="main">
             <header class="mb-3">
