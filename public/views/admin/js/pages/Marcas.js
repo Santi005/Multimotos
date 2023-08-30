@@ -59,7 +59,7 @@ $(document).ready(function() {
         }
 
         for (const marca of marksData) {
-            if (marca.NombreMarca === nombreMarca) {
+            if (marca.NombreMarca.toLowerCase() === nombreMarca.toLowerCase()) {
                 $('#NombreMarca').addClass('is-invalid');
                 $errorAdd.text('El nombre de la marca ya está en uso').removeClass('d-none');
 
@@ -83,7 +83,7 @@ $(document).ready(function() {
             return false;
         } else {
             $('#FormFileAdd').removeClass('is-invalid');
-
+            $errorAddFile.addClass('d-none');  // Ocultar el mensaje de error cuando se selecciona una imagen
             return true;
         }  
     }
@@ -159,7 +159,7 @@ function isNameUnique(nameMark) {
     const $rows = $('#MarksTable tbody tr');
     for (let i = 0; i < $rows.length; i++) {
         const nombreMarcaEnTabla = $rows.eq(i).find('td:eq(1)').text().trim();
-        if (nombreMarcaEnTabla === nameMark) {
+        if (nombreMarcaEnTabla.toLowerCase() === nameMark.toLowerCase()) {
             return false;
         }
     }
@@ -205,7 +205,7 @@ $('#BtnConfirmarEdit').on('click', function () {
     }
 
    
-    if (!isNameUnique(nameMark)) {
+    if (!isNameUnique(newName)) {
         $('#InputEditarNombreMarca').addClass('is-invalid').removeClass('is-valid');
         $errorEdit.text('El nombre de categoría ya está en uso.').removeClass('d-none');
         return false;
