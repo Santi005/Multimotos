@@ -104,9 +104,11 @@ $('#BtnConfirmarAddModal').on('click', async () => {
     const marca = $('#AddMarcaProducto').val();
     const precio = $('#AddPrecioProducto').val();
     const archivosImagen = $('#formFileAdd')[0].files;
+ 
 
     if (!nombreProducto || !descripcion || !stock || !precio || archivosImagen.length === 0) {
 
+      
         if (!nombreProducto.trim()) {
             $('#errorAddNombre').text('Ingrese un nombre para el producto.').removeClass('d-none');
             $('#AddNombreProducto').addClass('is-invalid');
@@ -114,6 +116,7 @@ $('#BtnConfirmarAddModal').on('click', async () => {
             $('#errorAddNombre').addClass('d-none');
             $('#AddNombreProducto').removeClass('is-invalid');
         }
+        
                 
         if (!descripcion.trim()) {
             $('#errorAddDescripcion').text('Ingrese una descripción para el producto.').removeClass('d-none');
@@ -149,7 +152,6 @@ $('#BtnConfirmarAddModal').on('click', async () => {
                 
         return
     }
-
     for (const producto of productData) {
         if (producto.NombreProducto === nombreProducto) {
             $('#AddNombreProducto').addClass('is-invalid');
@@ -158,6 +160,8 @@ $('#BtnConfirmarAddModal').on('click', async () => {
             return false;
         }
     }
+
+    
 
     const formData = new FormData();
 
