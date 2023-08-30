@@ -1,6 +1,6 @@
 userData = JSON.parse(localStorage.getItem('userData'));   
 
-console.log(userData)
+console.log(userData);
 
 const Documento = userData.Documento;
 const firstName = userData.Nombre;
@@ -10,38 +10,77 @@ const celular = userData.Celular;
 const direccion = userData.Direccion;
 let cantidadProducto;
 
+const input = document.getElementById('autocompleteDirection');
+const latitudeField = document.getElementById('latitude');
+const longitudeField = document.getElementById('longitude');
+
+const options = {
+    componentRestrictions: { 
+      country: 'CO', // Código de país para Colombia
+    }
+  };
+
+// Inicializar el autocompletado
+const autocomplete = new google.maps.places.Autocomplete(input, options);
+
+let city = '';
+
+// Escuchar el evento de lugar seleccionado
+autocomplete.addListener('place_changed', () => {
+    const place = autocomplete.getPlace();
+
+    if (!place.geometry) {
+        console.log("No se encontró ningún lugar para la selección.");
+        return;
+    }
+
+    // Obtener la latitud y longitud del lugar seleccionado
+    const latitude = place.geometry.location.lat();
+    const longitude = place.geometry.location.lng();
+
+    const addressComponents = place.address_components || [];
+    for (const component of addressComponents) {
+        if (component.types.includes('locality')) {
+            city = component.long_name;
+            break;
+        }
+    }
+
+    // Crear un objeto con la información necesaria
+    const selectedPlace = {
+        name: place.name,
+        address: place.formatted_address,
+        latitude: latitude,
+        longitude: longitude
+    };
+
+    latitudeField.value = latitude
+    longitudeField.value = longitude
+    // cliente.push(latitude);
+    // cliente.push(longitude);
+
+    // Convertir el objeto a JSON
+    const selectedPlaceJSON = JSON.stringify(selectedPlace);
+
+    // Actualizar el costo de envío y el resumen después de cambiar la ciudad
+    updateShippingCost();
+    updateResume();
+
+    console.log("Lugar seleccionado:", selectedPlaceJSON);
+});
+
 document.getElementById('idCard').value = Documento;
 document.getElementById('firstName').value = firstName;
 document.getElementById('lastName').value = lastName;
 document.getElementById('email').value = email;
 document.getElementById('phone').value = celular;
-document.getElementById('adressRoad').value = direccion[2];
-document.getElementById('addressNumber1').value = direccion[3];
-document.getElementById('addressNumber2').value = direccion[4];
-document.getElementById('detalles').value = direccion[5];
 
 // Obtener referencia a la lista de productos en el resumen de compra
 var productList = document.getElementById('productList');
 const totalInfoCart = document.getElementById('totalInfoCart');
-var citySelect = document.getElementById('city');
-var adressTypeSelect = document.getElementById('addressTypeSelect');
 var shippingCostElement = document.getElementById('shippingCost');
 var subtotalInfoCart = document.getElementById('subtotalInfoCart');
-const iniciarPagoButton = document.getElementById('Btn');
-
-for (var i = 0; i < citySelect.options.length; i++) {
-    if (citySelect.options[i].value === direccion[0]) {
-        citySelect.selectedIndex = i;
-        break;
-    }
-}
-
-for (var i = 0; i < adressTypeSelect.options.length; i++) {
-    if (adressTypeSelect.options[i].value === direccion[1]) {
-        adressTypeSelect.selectedIndex = i;
-        break;
-    }
-}
+const iniciarPagoButton = document.getElementById('checkout');
 
 // Variables para el costo de envío y subtotal
 var shippingCost = 0;
@@ -49,15 +88,20 @@ var subtotal = 0;
 
 // Función para el costo de envío
 const updateShippingCost = () => {
-    if (citySelect.value === 'Bello') {
+    if (city === 'Bello') {
         shippingCost = 15000;
-    } else if (citySelect.value === 'Medellin') {
+        shippingCostElement.textContent = `Costo de envío: ${shippingCost.toLocaleString('es-CO', { style: 'currency', currency: 'COP' })}`;
+        iniciarPagoButton.classList.remove('disabled-link');
+    } else if (city === 'Medellin' || city === 'Medellín') {
         shippingCost = 10000;
+        shippingCostElement.textContent = `Costo de envío: ${shippingCost.toLocaleString('es-CO', { style: 'currency', currency: 'COP' })}`;
+        iniciarPagoButton.classList.remove('disabled-link');
     } else {
+        iniciarPagoButton.classList.add('disabled-link');
         shippingCost = 0;
-    }
+        shippingCostElement.textContent = `Costo de envío: No disponible.`;
 
-    shippingCostElement.textContent = `Costo de envío: ${shippingCost.toLocaleString('es-CO', { style: 'currency', currency: 'COP' })}`;
+    }
 
     // Actualizar el resumen después de cambiar el costo de envío
     updateResume();
@@ -103,9 +147,7 @@ const loadCartItems = () => {
     updateResume();
 };
 
-citySelect.addEventListener('change', (event) => {
-    console.log(citySelect.value)
-});
+
 
 const checkout = async () => {
 
@@ -129,11 +171,7 @@ const checkout = async () => {
 
     }
 
-    const adressRoad = document.getElementById('adressRoad').value;
-    const addressNumber1 = document.getElementById('addressNumber1').value;
-    const addressNumber2 = document.getElementById('addressNumber2').value;
-    const detalles = document.getElementById('detalles').value; 
-    const direccionCompleta = `${citySelect.value}, ${adressTypeSelect.value} ${adressRoad} #${addressNumber1} - ${addressNumber2}, ${detalles}`;
+    const direccionCompleta = input.value;
 
     // Obtener los datos del cliente de los input
     cliente.push(userData.Nombre);
@@ -142,6 +180,8 @@ const checkout = async () => {
     cliente.push(document.getElementById('email').value);
     cliente.push(document.getElementById('phone').value);
     cliente.push(userData.Documento);
+    cliente.push(latitudeField.value);
+    cliente.push(longitudeField.value);
 
     const ventaData = {
         Productos: productos,
