@@ -64,41 +64,6 @@
         </div>
     </div>
 
-
-
-
-
-
-
-
-    <!-- <button class="home-button" onclick="window.location.href = 'index.html'">
-        <i class="fas fa-home"></i>
-    </button>
-    <div class="container center">
-        <h1>Iniciar Sesión</h1>
-        <img src="img/logoMultimotos2.png" alt="Logo de Multimotos">
-        <form id="loginForm">
-            <div class="txt_field">
-                <input type="text" class="form-control" id="emailInput" required>
-                <span></span>
-                <label for="emailInput">Correo</label>
-            </div>
-            <div class="txt_field">
-                <input type="password" class="form-control" id="passwordInput" required>
-                <span></span>
-                <label for="contrasenaInput">Contraseña</label>
-            </div>
-            <input type="submit" value="Iniciar Sesión">
-            <div class="forgot-password-link">
-                <a href="#" data-toggle="modal" data-target="#recoveryModal">Olvidé mi contraseña</a>
-            </div>
-            <div id="errorMessage" class="error-message"></div>
-            <div class="signup_link">
-                No tienes una cuenta? <a href="registrarvista.html">Registrate</a>
-            </div>
-        </form>
-    </div>
-
     <!-- Modal de recuperación de contraseña -->
     <div class="modal fade" id="recoveryModal" tabindex="-1" role="dialog">
         <div class="modal-dialog" role="document">
@@ -164,6 +129,14 @@
                         const user = data.user;
                         const { _id, Documento, Nombre, Apellidos, Rol } = user;
                         localStorage.setItem('userData', JSON.stringify(user));
+                        const continuarCompra = localStorage.getItem('continuarCompra');
+                        if (continuarCompra === 'true') {
+                            // Borrar el valor del localStorage para la próxima vez
+                            localStorage.removeItem('continuarCompra');
+                            
+                            // Redirigir a "carrito.html"
+                            window.location.href = 'carrito.html';
+                        }
                     } else {
                         // Si la solicitud falla, mostrar el mensaje de error en el formulario
                         const errorData = await response.json();
