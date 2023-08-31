@@ -56,11 +56,11 @@ $(document).ready(function() {
     } 
 
     for (const categoria of categoriesData) {
-      if (categoria.NombreCategoria === nombreCategoria) {
+      if (categoria.NombreCategoria.toLowerCase() === nombreCategoria.toLowerCase()) {
         $inputCategoria.addClass('is-invalid').removeClass('is-valid');
         $errorAdd.text('El nombre de categoría ya está en uso').removeClass('d-none');
         return false;
-      }
+      }      
     }
 
     $inputCategoria.removeClass('is-invalid').addClass('is-valid');
@@ -115,9 +115,7 @@ $(document).ready(function() {
 
 //EDITAR-------------------------------------------------------
 
-function validarEdicionCategoria() {
-  let nombreCategoria = $('#InputEditarNombreCategoria').val().trim();
-
+function validarEdicionCategoria(nombreCategoria) {
   if (nombreCategoria === '') {
     $('#InputEditarNombreCategoria').addClass('is-invalid').removeClass('is-valid');
     $('#errorEdit').text('Ingrese un nombre para la categoría').removeClass('d-none');
@@ -126,8 +124,8 @@ function validarEdicionCategoria() {
 
   const $rows = $('#CategoriesTable tbody tr');
   for (let i = 0; i < $rows.length; i++) {
-    const nombreCategoriaEnTabla = $rows.eq(i).find('td:eq(1)').text().trim(); // Asumiendo que el nombre de categoría está en la segunda columna de la tabla (índice 1)
-    if (nombreCategoriaEnTabla === nombreCategoria) {
+    const nombreCategoriaEnTabla = $rows.eq(i).find('td:eq(1)').text().trim();
+    if (nombreCategoriaEnTabla.toLowerCase() === nombreCategoria.toLowerCase()) {
       $('#InputEditarNombreCategoria').addClass('is-invalid').removeClass('is-valid');
       $('#errorEdit').text('El nombre de categoría ya está en uso.').removeClass('d-none');
       return false;
@@ -140,14 +138,26 @@ function validarEdicionCategoria() {
 }
 
 
+
 function EditCategory(id, name) {
   $('#IdEditarCategoria').val(id); 
   $('#InputEditarNombreCategoria').val(name); 
   $('#EditarCategoria').modal('show');
 }
 
+$(document).ready(function () {
+  $('#InputEditarNombreCategoria').on('input', function () {
+    const nombreCategoria = $(this).val().trim();
+    validarEdicionCategoria(nombreCategoria);
+  });
+});
+
 $('#BtnConfirmarEdit').on('click', () => {
-  if (validarEdicionCategoria()) {
+  const nombreCategoria = $('#InputEditarNombreCategoria').val().trim();
+  validarEdicionCategoria(nombreCategoria);
+
+  if ($('.is-invalid').length === 0) {
+    // Realizar el proceso de edición si no hay errores de validación
     const id = $('#IdEditarCategoria').val();
     const nameCategory = $('#InputEditarNombreCategoria').val();
 
@@ -178,9 +188,9 @@ $('#BtnConfirmarEdit').on('click', () => {
 });
 
 $('#EditarCategoria').on('hidden.bs.modal', function () {
-  $('#InputEditarNombreCategoria').val(''); // Limpiar el valor del campo de entrada
-  $('#InputEditarNombreCategoria').removeClass('is-invalid is-valid'); // Eliminar las clases de validación
-  $('#errorEdit').addClass('d-none'); // Ocultar el mensaje de error
+  $('#InputEditarNombreCategoria').val('');
+  $('#InputEditarNombreCategoria').removeClass('is-invalid is-valid');
+  $('#errorEdit').addClass('d-none');
 });
 //------------------------------------------------------------
 

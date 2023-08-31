@@ -263,3 +263,8 @@ a.profile-pic {
 .input-pedido::placeholder {
   color: #aaa;
 }
+
+.disabled-link {
+  pointer-events: none;
+  opacity: 0.6;
+}

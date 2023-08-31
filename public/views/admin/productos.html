@@ -233,47 +233,9 @@
                             </div>
                             <div style="display:flex ;" id="select">
                                 <select id="AddMarcaProducto" class="form-control" style="width:200px ;">
-                                   <script>
-                                    fetch('http://localhost:8080/marks/')
-                                    .then(response => response.json())
-                                    .then(data => {
-                                        const selectElement = document.getElementById('AddMarcaProducto');
-                                        selectElement.innerHTML = '';
-                                        if (Array.isArray(data.allMarks)) {
-                                            data.allMarks.forEach((mark, index) => {
-                                                const option = document.createElement('option');
-                                                option.value = mark.NombreMarca;
-                                                option.textContent = mark.NombreMarca;
-                                                selectElement.appendChild(option);
-                                            });
-                                        }
-                                    })
-                                    .catch(error => {
-                                        console.error(error);
-                                    });
-                                   </script>
                                 </select>
                                 <small class="form-text text-danger d-none" id="errorAddMarca"></small>
                                 <select id="AddCategoriaProducto" class="form-control" style="width: 200px;  margin-left: 20px; ">
-                                    <script>
-                                            fetch('http://localhost:8080/categories/')
-                                            .then(response => response.json())
-                                            .then(data => {
-                                                const selectElement = document.getElementById('AddCategoriaProducto');
-                                                selectElement.innerHTML = '';
-                                                if (Array.isArray(data.allCategories)) {
-                                                    data.allCategories.forEach((category,index) => {
-                                                        const option = document.createElement('option');
-                                                        option.value = category.NombreCategoria;
-                                                        option.textContent = category.NombreCategoria;
-                                                        selectElement.appendChild(option);
-                                                    });
-                                                }
-                                            })
-                                            .catch(error => {
-                                                console.error(error);
-                                            });
-                                    </script>
                                 </select>
                                 <small class="form-text text-danger d-none" id="errorAddCategoria"></small>
                             </div>
@@ -301,7 +263,7 @@
                             </div>
                             <div class="modal-footer">
                                 <button type="button" class="btn btn-secondary" data-bs-dismiss="modal" style="color: #ffff;">Cancelar</button>
-                                <button type="submit" class="btn btn-danger" id="BtnConfirmarAdd" style="color: #ffff">Confirmar</button>
+                                <button type="button" class="btn btn-danger" id="BtnConfirmarAddModal" style="color: #ffff">Confirmar</button>
                             </div>
                 </div>
             </div>
@@ -334,69 +296,9 @@
                             </div>
                             <div style="display:flex ;">
                                 <select name="" id="EditMarcaProducto" class="form-control" style="width:100px ;">
-                                    <script>
-                                        const getMarcasEdit = () => {
-                                            fetch('http://localhost:8080/marks/')
-                                                .then(response => response.json())
-                                                .then(data => {
-                                                    const selectElement = document.getElementById('EditMarcaProducto');
-                                                    selectElement.innerHTML = '';
-                                                    if (Array.isArray(data.allMarks)) {
-                                                        data.allMarks.forEach((mark,index) => {
-                                                                const option = document.createElement('option');
-                                                                option.value = mark.NombreMarca;
-                                                                option.textContent = mark.NombreMarca;
-                                                                selectElement.appendChild(option);
-                                                            });
-                                                    }
-                                                })
-                                                .catch(error => {
-                                                    console.error(error);
-                                                });
-
-                                                for (let i = 0; i < marcaProductoSelect.options.length; i++) {
-                                                if (marcaProductoSelect.options[i].value.trim() === mark.trim()) {
-                                                    marcaProductoSelect.selectedIndex = i;
-                                                    break;
-                                                }
-                                            }
-                                        }
-
-                                      
-                                        getMarcasEdit()
-                                    </script>
                                 </select>
                                 &nbsp;&nbsp;
                                 <select name="" id="EditCategoriaProducto" class="form-control" style="width:140px ;">
-                                    <script>
-                                        const getCategoriasEdit = () => {
-                                            fetch('http://localhost:8080/categories/')
-                                                .then(response => response.json())
-                                                .then(data => {
-                                                    const selectElement = document.getElementById('EditCategoriaProducto');
-                                                    selectElement.innerHTML = '';
-                                                    if (Array.isArray(data.allCategories)) {
-                                                        data.allCategories.forEach((category,index) => {
-                                                                const option = document.createElement('option');
-                                                                option.value = category.NombreCategoria;
-                                                                option.textContent = category.NombreCategoria;
-                                                                selectElement.appendChild(option);
-                                                            });
-                                                    }
-                                                })
-                                                .catch(error => {
-                                                    console.error(error);
-                                                });
-                                                for (let i = 0; i < categoriaProductoSelect.options.length; i++) {
-                                        if (categoriaProductoSelect.options[i].value.trim() === category.trim()) {
-                                            categoriaProductoSelect.selectedIndex = i;
-                                            break;
-                                        }
-                                    }
-                                        }
-                                        
-                                        getCategoriasEdit()
-                                    </script>
                                 </select>
                                 &nbsp;&nbsp;
                                 <input type="text" id="EditPrecioProducto" class="form-control" style="width:30% ; " oninput="mascara(this, cpf)" onblur="convertirYActualizarEdicion(this)" placeholder="$" onpaste="return false"  >
@@ -456,9 +358,6 @@
                             <p><strong>Precio:</strong> <span id="productoPrecio"></span></p>
                             <p><strong>Cantidad:</strong> <span id="productoCantidad"></span></p>
                             <p><strong>Estado:</strong> <span id="productoEstado"></span></p>
-
-
-                            <!-- Agrega más detalles si es necesario -->
                         </div>
                     </div>
                     <div class="modal-footer">
@@ -506,7 +405,7 @@
                     </div>
                     <div class="modal-footer">
                         <button type="button" class="btn btn-secondary" data-bs-dismiss="modal" style="color: #ffff;">Cancelar</button>
-                        <button type="subm it" class="btn" id="BtnConfirmaEditStock" style="background-color: #f62d51;  color: #ffff;">Guardar</button>
+                        <button type="button" class="btn" id="BtnConfirmaEditStock" style="background-color: #f62d51;  color: #ffff;">Guardar</button>
                     </div>
                         </form>
                 </div>
@@ -551,8 +450,12 @@
                 }
             }
             $(document).ready(()=>{
-                    listProducts();
-                })
+                listProducts();
+                showCategories();
+                showMarks();
+                // showCategoriesEdit();
+                // showMarksEdit();
+            })
         </script>
     </body>
 </html>
