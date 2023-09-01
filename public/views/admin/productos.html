@@ -217,49 +217,40 @@
                     </div>
                     <div class="modal-body">
                             <label for="AddNombreProducto">Producto</label>
-                            <input type="text" id="AddNombreProducto" class="form-control" >
+                            <input type="text" id="AddNombreProducto" class="form-control" maxlength="50">
                             <small class="form-text text-danger d-none" id="errorAddNombre"></small>
                             <br>
                             <label for="AddDescripcionProducto">Descripción</label>
-                            <textarea id="AddDescripcionProducto" cols="30" rows="5" class="form-control" style=" resize: none; "
-                            required></textarea>
+                            <textarea id="AddDescripcionProducto" cols="30" rows="4" class="form-control" style=" resize: none; "required maxlength="600"></textarea>
                             <small class="form-text text-danger d-none" id="errorAddDescripcion"></small>
-
                             <br>
-                            <br>
-                            <div style="display:flex ;">
-                                <label for="AddMarcaProducto" style="padding-left: 10px;">Marca</label>
-                                <label for="AddCategoriaProducto" style="padding-left: 178px;">Categoría</label>
-                            </div>
-                            <div style="display:flex ;" id="select">
-                                <select id="AddMarcaProducto" class="form-control" style="width:200px ;">
-                                </select>
-                                <small class="form-text text-danger d-none" id="errorAddMarca"></small>
-                                <select id="AddCategoriaProducto" class="form-control" style="width: 200px;  margin-left: 20px; ">
-                                </select>
-                                <small class="form-text text-danger d-none" id="errorAddCategoria"></small>
+                            <div style="display: flex; justify-content: space-between; ">
+                                <div class="col-5">
+                                    <label for="AddCategoriaProducto">Categoría</label>
+                                    <select id="AddCategoriaProducto" class="form-select"></select>
+                                </div>
+                                <div class="col-5">
+                                    <label for="AddMarcaProducto">Marca</label>
+                                    <select id="AddMarcaProducto" class="form-select"></select>
+                                </div>
                             </div>
                             <br>
-                            <div style=" display: flex;">
-                                <label for="AddPrecioProducto"style="padding-left: 10px;">Precio</label>
-                                <label for="AddCantidadProducto"style="padding-left: 178px;">Cantidad </label>
+                            <div style="display: flex; justify-content: space-between; ">
+                                <div class="col-5">
+                                    <label for="AddPrecioProducto">Precio</label>
+                                    <input type="text" id="AddPrecioProducto"maxlength="12" class="form-control" onblur="convertirYActualizar(this)" onkeypress="mascara(this, cpf)" onpaste="return false" required>
+                                    <small class="form-text text-danger d-none" id="errorAddPrecio"></small>
+                                </div>
+                                <div class="col-5">
+                                    <label for="AddCantidadProducto">Cantidad </label>
+                                    <input type="number" id="AddCantidadProducto" class="form-control" required>
+                                    <small class="form-text text-danger d-none" id="errorAddCantidad"></small>
+                                </div>
                             </div>
-                            <div style="display:flex ; ">
-                                <input type="text" id="AddPrecioProducto" class="form-control" style="width:200px;" onblur="convertirYActualizar(this)" onkeypress="mascara(this, cpf)" onpaste="return false" required>
-                                <input type="number" id="AddCantidadProducto" class="form-control"style="width:200px ;  margin-left: 20px;" required>
-                            </div>
-                            <div style="display:flex ; ">
-                            <small class="form-text text-danger d-none" id="errorAddPrecio"></small>
-                            <small class="form-text text-danger d-none" id="errorAddCantidad" style="padding-left: 8px;"></small>
-                            </div>
-                            <br>
                             <br>
                             <label for="formFileAdd" class="form-label">Imagen</label>
-                            <div class="mb-3">
                                 <input class="form-control " type="file" id="formFileAdd" accept=".png, .jpg, .jpeg"  multiple required>
                                 <small class="form-text text-danger d-none" id="errorAddFile"></small>
-                            </div>
-
                             </div>
                             <div class="modal-footer">
                                 <button type="button" class="btn btn-secondary" data-bs-dismiss="modal" style="color: #ffff;">Cancelar</button>
@@ -279,40 +270,33 @@
                     </div>
                     <div class="modal-body">
                             <input type="hidden" id="IdEditarProducto">
-                            <label for="EditNombreProducto" style="text-align: left;">Producto</label>
-                            <input type="text" id="EditNombreProducto" class="form-control" data-interactive="false">
+                            <label for="EditNombreProducto">Producto</label>
+                            <input type="text" id="EditNombreProducto" class="form-control" maxlength="50">
                             <small class="form-text text-danger d-none" id="errorEditNombre"></small>
                             <br>
                             <label for="EditDescripcionProducto" style="text-align: left;">Descripción</label>
-                            <textarea id="EditDescripcionProducto" cols="30" rows="5" class="form-control" style=" resize: none; "
-                            required></textarea>
+                            <textarea id="EditDescripcionProducto"  cols="30" rows="4" class="form-control" style=" resize: none; "required  maxlength="600"></textarea>
                             <small class="form-text text-danger d-none" id="errorEditDescripcion"></small>
                             <br>
-                            <br>
-                            <div style="display:flex ;">
-                                <label for="EditMarcaProducto" style="padding-left: 5px;">Marca</label>
-                                <label for="EditCategoriaProducto" style="padding-left: 72px;">Categoría</label>
-                                <label for="EditPrecioProducto" style="padding-left: 86px;">Precio</label>
+                            <div style="display: flex; justify-content: space-between;">
+                                <div class="col-3.5">
+                                    <label for="EditCategoriaProducto">Categoría</label>
+                                    <select name="" id="EditCategoriaProducto" class="form-select"></select>
+                                </div>
+                                <div class="col-3.5">
+                                    <label for="EditMarcaProducto">Marca</label>
+                                    <select name="" id="EditMarcaProducto" class="form-select"></select>
+                                </div>
+                                <div class="col-3.5">
+                                    <label for="EditPrecioProducto">Precio</label>
+                                    <input type="text" id="EditPrecioProducto"maxlength="12" class="form-control"  oninput="mascara(this, cpf)" onblur="convertirYActualizarEdicion(this)" placeholder="$" onpaste="return false"  >
+                                    <small class="form-text text-danger d-none" id="errorEditPrecio"></small>
+                                </div>
                             </div>
-                            <div style="display:flex ;">
-                                <select name="" id="EditMarcaProducto" class="form-control" style="width:100px ;">
-                                </select>
-                                &nbsp;&nbsp;
-                                <select name="" id="EditCategoriaProducto" class="form-control" style="width:140px ;">
-                                </select>
-                                &nbsp;&nbsp;
-                                <input type="text" id="EditPrecioProducto" class="form-control" style="width:30% ; " oninput="mascara(this, cpf)" onblur="convertirYActualizarEdicion(this)" placeholder="$" onpaste="return false"  >
-                                <small class="form-text text-danger d-none" id="errorEditPrecio"></small>
-                            </div>
                             <br>
-                            <br>
-                            <label  for="EditformFile" class="form-label" style="text-align: left;">Imagen</label>
-                            <div class="mb-3">
+                            <label  for="EditformFile" class="form-label" style="text-align: left;">Imagenes</label>
                                 <input class="form-control " type="file" id="EditformFile" accept=".png, .jpg, .jpeg"  multiple >
                                 <small class="form-text text-danger d-none" id="errorEditFileLength"></small>
-
-                            </div>
-
                             </div>
                             <div class="modal-footer">
                                 <button type="button" class="btn btn-secondary" data-bs-dismiss="modal" style="color: #ffff;">Cancelar</button>
@@ -350,9 +334,11 @@
                         <!-- Aquí se muestra la información del producto -->
                         <div class="col-5">
                             <br>
-                            <h4><span id="productoNombre"></span></h4>
-                            <p><strong>Descripción:</strong></p>
-                            <div style="max-width: 500px; word-wrap: break-word;" id="productoDescripcion"></div>
+                            <h4><span id="productoNombre" style=" word-wrap: break-word;"></span></h4>
+                                <p style="margin: 0;"><strong>Descripción:</strong></p>
+                                <div style="max-width: 500px;  word-wrap: break-word; margin: 0;" id="productoDescripcion"></div>
+                            <br>
+                            
                             <p><strong>Categoría:</strong> <span id="productoCategoria"></span></p>                       
                             <p><strong>Marca:</strong> <span id="productoMarca"></span></p>
                             <p><strong>Precio:</strong> <span id="productoPrecio"></span></p>
@@ -427,6 +413,7 @@
         <script src="assets/extensions/jquery/jquery.min.js"></script>
         <script src="https://cdn.datatables.net/v/bs5/dt-1.12.1/datatables.min.js"></script>
         <script src="assets/static/js/pages/datatables.js"></script>
+        
 
         <!-- Dashboard -->
         <script src="js/cerrarsesion.js"></script>

@@ -91,7 +91,20 @@ class Server {
         }
       });
       
-      }
+
+      // Enviar codigo contrasena desde la app movil
+      this.app.post('/send-recovery-code', recoveryController.sendRecoveryCode);
+
+      // Ruta para solicitar recuperación de contraseña desde la app móvil
+      this.app.post('/request-password-recovery', recoveryController.requestPasswordRecovery);
+
+      // Ruta para verificar el código de recuperación desde la app móvil
+      this.app.post('/verify-recovery-code', recoveryController.verifyRecoveryCode);
+      
+      this.app.post('/reset-password-code', recoveryController.resetPasswordWithCode);
+
+    }
+
     
 
     listen() {

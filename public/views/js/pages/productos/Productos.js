@@ -84,14 +84,14 @@ const listProducts = () => {
               let disabledAttr = product.Estado == 'Disponible' ? '' : 'disabled';
 
               let card = `
-                <div class="col-lg-4 col-md-4">
+                <div class="col-lg-4 col-md-4" style=" word-wrap: break-word;">
                   <div class="car__item">
                     <div class="productos" style="height: 200px; line-height: 200px;">
                       ${imageTag}
                     </div>
                     <div class="car__item__text" >
                       <div class="car__item__text__inner" style="height:120px">
-                        <h5 style="font-weight:600">${product.NombreProducto}</h5>
+                        <h5 class="truncate-text" style="font-weight:600;">${product.NombreProducto}</h5>
                         <ul>
                           <li><span>${product.Precio.toLocaleString('es-CO', { style: 'currency', currency: 'COP' })}</span></li>
                           <li><i id='${product._id}' ${product.Estado == "Disponible" ? "class='fas fa-circle' style='color:green'" : "class='fas fa-circle' style='color:red'"}></i>${product.Estado}</li>
@@ -114,6 +114,17 @@ const listProducts = () => {
 
               cardsContainer.append(card);
             }
+            const truncateTextElements = document.querySelectorAll(".truncate-text");
+
+            truncateTextElements.forEach((element) => {
+            const text = element.textContent;
+            const maxLength = 18;
+
+            if (text.length > maxLength) {
+                const truncatedText = text.substring(0, maxLength - 3) + "...";
+                element.textContent = truncatedText;
+            }
+            });
           }
         } 
         else {

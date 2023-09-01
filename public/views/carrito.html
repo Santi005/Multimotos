@@ -267,6 +267,7 @@
             </div>
             <div class="footer__copyright__text">
                 <p>Copyright &copy;<script>document.write(new Date().getFullYear());</script> Todos los derechos reservados | Servicentro Multimotos</p>
+                <p>Desarrollado por Santiago García - Valentina Rodriguez - Juan Pablo Arenas</p>
             </div>
         </div>
     </footer>
@@ -308,6 +309,12 @@
         });
     </script>
 
+    <script>
+        document.getElementById("llenarInfoButton").addEventListener("click", function() {
+            // Almacenar un valor en el localStorage indicando que el usuario quiere continuar la compra
+            localStorage.setItem('continuarCompra', 'true');
+        });
+    </script>
     <!-- 
         ──────▄▀▄─────▄▀▄
         ─────▄█░░▀▀▀▀▀░░█▄

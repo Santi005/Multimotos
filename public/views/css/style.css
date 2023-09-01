@@ -1393,7 +1393,6 @@ ol {
 .footer__contact__option .option__item {
 	font-size: 15px;
 	color: #ffffff;
-	background: #db2d2e;
 	display: inline-block;
 	font-weight: 700;
 	padding: 14px 18px 14px 24px;
@@ -1406,12 +1405,11 @@ ol {
 }
 
 .footer__contact__option .option__item.email {
-	color: #323232;
-	background: #ffffff;
+	color: #ffffff;
 }
 
 .footer__contact__option .option__item.email i {
-	color: #db2d2e;
+	color: #ffffff;
 }
 
 .footer__contact__option .option__item i {

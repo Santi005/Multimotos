@@ -13,7 +13,6 @@ function ViewDetail(id) {
   .then(data => {
     const producto = data.data;
 
-    let disabledAttr = producto.Estado ? "" : "disabled";
     let section = `
       <div id="${producto._id}" class="row">
         <div class="col-lg-1">
@@ -45,7 +44,7 @@ function ViewDetail(id) {
               <br>
                 <h4 style="font-weight: 800; color: #a09f9f;">Descripción</h4>
                 <br>
-                  <p>${producto.Descripcion}</p>
+                  <p  style=" word-wrap: break-word;">${producto.Descripcion}</p>
                 <br>
               </div>
             </div>
@@ -53,7 +52,7 @@ function ViewDetail(id) {
             <div class="col-lg-3"> <!-- Columna de detalles de compra -->
               <div class="car__details__sidebar">
                 <div class="car__details__sidebar__model">
-                  <h4>${producto.NombreProducto}</h4> <!-- Muestra el nombre del producto -->
+                  <h4 style="word-wrap: break-word;">${producto.NombreProducto}</h4> <!-- Muestra el nombre del producto -->
                   <br>
                   <p>${producto.Marca.NombreMarca}</p>
                 </div>
@@ -62,7 +61,8 @@ function ViewDetail(id) {
                     <li>Precio: <span>${producto.Precio}</span></li>
                     <li>Disponibilidad: <span>${producto.Stock}</span></li>
                   </ul>
-                  <a href="#" onclick="if(${producto.Estado}) addToCart('${producto._id}', true); event.preventDefault();" ${disabledAttr} class="primary-btn"><i class="fa fa-credit-card"></i> Agregar al carrito</a>
+                 
+                  <a href="#" onclick="${producto.Estado === 'Disponible' ? `addToCart('${producto._id}', true);` : 'event.preventDefault();'}" class="primary-btn""></i> Agregar al carrito</a>
                 </div>
               </div>
             </div>
