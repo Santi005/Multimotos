@@ -70,11 +70,12 @@ $(document).ready(function() {
   }
 
   // Función para agregar una categoría
-  function agregarCategoria() {
+  async function agregarCategoria() {
     let _datos = {
       NombreCategoria: $inputCategoria.val()
     };
-
+    await Swal.fire('Categoría agregada')
+    location.reload();
     fetch('http://localhost:8080/categories/', {
       method: "POST",
       body: JSON.stringify(_datos),
@@ -139,28 +140,30 @@ function validarEdicionCategoria(nombreCategoria) {
 
 
 
-function EditCategory(id, name) {
+ function EditCategory(id, name) {
   $('#IdEditarCategoria').val(id); 
   $('#InputEditarNombreCategoria').val(name); 
   $('#EditarCategoria').modal('show');
 }
 
 $(document).ready(function () {
-  $('#InputEditarNombreCategoria').on('input', function () {
+  $('#InputEditarNombreCategoria').on('input', function  () {
     const nombreCategoria = $(this).val().trim();
     validarEdicionCategoria(nombreCategoria);
   });
 });
 
-$('#BtnConfirmarEdit').on('click', () => {
+$('#BtnConfirmarEdit').on('click',async () => {
   const nombreCategoria = $('#InputEditarNombreCategoria').val().trim();
   validarEdicionCategoria(nombreCategoria);
 
-  if ($('.is-invalid').length === 0) {
+  if ( $('.is-invalid').length === 0) {
     // Realizar el proceso de edición si no hay errores de validación
     const id = $('#IdEditarCategoria').val();
     const nameCategory = $('#InputEditarNombreCategoria').val();
 
+    await Swal.fire('Categoría editada')
+    location.reload();
     fetch(`http://localhost:8080/categories/${id}`, {
       method: 'PUT',
       headers: {
@@ -168,6 +171,7 @@ $('#BtnConfirmarEdit').on('click', () => {
       },
       body: JSON.stringify({ NombreCategoria: nameCategory })
     })
+    
     .then(response => {
       if (!response.ok) {
         throw new Error('El nombre de la categoría ya está en uso');
@@ -201,9 +205,11 @@ function DeleteCategory(id) {
   $('#errorDelete').addClass('d-none'); 
   }
   
-  $('#BtnConfirmarDelete').on('click', () => {
+  $('#BtnConfirmarDelete').on('click', async () => {
   const id = $('#IdEliminarCategoria').val();
   
+  await Swal.fire('Categoría eliminada')
+    location.reload();
   fetch(`http://localhost:8080/categories/${id}`, {
     method: 'DELETE',
   })

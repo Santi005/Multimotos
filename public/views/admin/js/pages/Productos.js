@@ -104,11 +104,10 @@ $('#BtnConfirmarAddModal').on('click', async () => {
     const marca = $('#AddMarcaProducto').val();
     const precio = $('#AddPrecioProducto').val();
     const archivosImagen = $('#formFileAdd')[0].files;
- 
 
     if (!nombreProducto || !descripcion || !stock || !precio || archivosImagen.length === 0) {
 
-      
+    
         if (!nombreProducto.trim()) {
             $('#errorAddNombre').text('Ingrese un nombre para el producto.').removeClass('d-none');
             $('#AddNombreProducto').addClass('is-invalid');
@@ -161,8 +160,6 @@ $('#BtnConfirmarAddModal').on('click', async () => {
         }
     }
 
-    
-
     const formData = new FormData();
 
     formData.append('NombreProducto', nombreProducto);
@@ -178,11 +175,12 @@ $('#BtnConfirmarAddModal').on('click', async () => {
 
     registrarProducto(formData);
     
-    alert('Producto agregado');
-    location.reload();
+    
 });
 
 async function registrarProducto (formData) {
+    await Swal.fire('Producto agregado')
+    location.reload();
     const responseProducts = await fetch('http://localhost:8080/products/', {
         method: 'POST',
         body: formData,
@@ -202,17 +200,18 @@ fileInput.addEventListener('change', () => {
             showConfirmButton: false,
             timer: 1500,
             didOpen: (toast) => {
-              toast.addEventListener('mouseleave', Swal.resumeTimer)
+                toast.addEventListener('mouseleave', Swal.resumeTimer)
             }
-          })
-          
-          Toast.fire({
+        })
+        Toast.fire({
             icon: 'error',
             title: `Sólo se permiten ${imagenesMaximas} imagenes.`
-          });
+        });
         fileInput.value = '';
     }
 });
+
+
 
 // EDITAR
 const EditProduct = (id, name, description, category, mark, price, images) => {
@@ -352,7 +351,7 @@ $('#BtnConfirmarEdit').on('click', async (event) => {
     formData.append('Categoria', categoriaEdit);
 
     editarProducto(formData, idEdit);
-    alert('Producto editado');
+    await Swal.fire('Producto editado')
     location.reload();
 });
 
@@ -454,6 +453,7 @@ $('#BtnConfirmaEditStock').on('click', async () => {
     });
 
     const dataStock = await responseStock.json();
+    await Swal.fire('Stock aumentado')
     location.reload();
 });
 
@@ -466,14 +466,17 @@ const DeleteProduct = (id) => {
 $('#BtnConfirmarDelete').on('click', async () => {
     const id = $('#IdEliminarProducto').val();
 
+    await Swal.fire('Producto eliminado')
+    location.reload();
+
     const responseEliminar = await fetch(`http://localhost:8080/products/${id}`, {
         method: 'DELETE',
     });
-
+   
     const data = responseEliminar.json();
     
     $('#EliminarProducto').modal('hide');
-    location.reload();
+
 })
 
 // TRAER CATEGORIAS AL SELECT

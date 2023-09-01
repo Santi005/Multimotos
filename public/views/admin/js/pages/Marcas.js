@@ -99,7 +99,7 @@ $(document).ready(function() {
     $('#NombreMarca').on('input', validarNombreMarca);
     $('#FormFileAdd').on('change', validarArchivoImagen);
 
-    $('#BtnConfirmarAdd').on('click', () => {
+    $('#BtnConfirmarAdd').on('click',async () => {
         if (!validarCampos()) {
             return; // Evitar enviar el formulario si la validación falla
         }
@@ -110,6 +110,8 @@ $(document).ready(function() {
         formData.append('NombreMarca', nombreMarca);
         formData.append('Imagenes', archivoImagen);
 
+        await Swal.fire('Marca agregada')
+        location.reload();
         $.ajax({
             url: 'http://localhost:8080/marks/',
             type: 'POST',
@@ -191,7 +193,7 @@ $('#InputEditarNombreMarca').on('input', function () {
     }
 });
 
-$('#BtnConfirmarEdit').on('click', function () {
+$('#BtnConfirmarEdit').on('click', async function () {
     const id = $('#IdEditarMarca').val();
     const nameMark = $('#InputEditarNombreMarca').val();
     const newImage = $('#formFileEdit')[0].files[0];
@@ -221,6 +223,8 @@ $('#BtnConfirmarEdit').on('click', function () {
         formData.append('Imagenes', newImage);
     }
 
+    await Swal.fire('Marca editada')
+    location.reload();
     fetch(`http://localhost:8080/marks/${id}`, {
         method: 'PUT',
         body: formData
@@ -248,9 +252,11 @@ function DeleteMark(id) {
     $('#errorDelete').addClass('d-none'); 
 }
 
-$('#BtnConfirmarDelete').on('click', () => {
+$('#BtnConfirmarDelete').on('click', async () => {
     const id = $('#IdEliminarMarca').val();
 
+    await Swal.fire('Marca eliminada')
+    location.reload();
     fetch(`http://localhost:8080/marks/${id}`, {
         method: 'DELETE',
     })

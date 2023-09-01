@@ -229,7 +229,7 @@
               <div class="modal-body">
                     <div>
                       <label for="NombreMarca">Nombre de la marca</label>
-                      <input type="text" class="form-control" id="NombreMarca" required>
+                      <input type="text" class="form-control" id="NombreMarca" maxlength="20" required>
                      <small class="form-text text-danger d-none" id="errorAdd"></small>
                   </div>
                   <br>
@@ -264,7 +264,7 @@
                     <input type="hidden" class="form-control" id="IdEditarMarca" >
                     <div>
                         <label for="InputEditarNombreMarca">Nombre de la marca</label>
-                        <input type="text" class="form-control" id="InputEditarNombreMarca" required>
+                        <input type="text" class="form-control" id="InputEditarNombreMarca"maxlength="20" required>
                         <small id="errorEdit" class="form-text text-danger d-none"></small>
                     </div>
                     <br>
@@ -372,6 +372,8 @@
     <script src="assets/extensions/jquery/jquery.min.js"></script>
     <script src="https://cdn.datatables.net/v/bs5/dt-1.12.1/datatables.min.js"></script>
     <script src="assets/static/js/pages/datatables.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
+
 
     <!-- Dashboard -->
     <script src="js/cerrarsesion.js"></script>
