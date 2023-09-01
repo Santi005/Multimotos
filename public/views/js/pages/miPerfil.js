@@ -1,3 +1,7 @@
+const input = document.getElementById('autocompleteDirection');
+const latitudeField = document.getElementById('latitude');
+const longitudeField = document.getElementById('longitude');
+
 fetch(`http://localhost:8080/users/${userId}`)
   .then((response) => response.json())
   .then((data) => {
@@ -10,34 +14,51 @@ fetch(`http://localhost:8080/users/${userId}`)
     $("#celular").text(datos.Celular);
     $("#correo").text(datos.Correo);
     $("#direccion").text(
-      `${datos.Direccion[0]}, ${datos.Direccion[1]} ${datos.Direccion[2]} #${datos.Direccion[3]} - ${datos.Direccion[4]}, ${datos.Direccion[5]}`
+      `${datos.Direccion[0]}`
     );
 
+    $('#latitude').val(datos.Direccion[1]);
+    $('#longitude').val(datos.Direccion[2]);
     $("#InputEditarDocumento").val(datos.Documento);
     $("#InputEditarNombre").val(datos.Nombre);
     $("#InputEditarApellidos").val(datos.Apellidos);
     $("#InputEditarCelular").val(datos.Celular);
     $("#InputEditarCorreo").val(datos.Correo);
-    var citySelect = document.getElementById("city");
-    var adressTypeSelect = document.getElementById("addressTypeSelect");
-    $("#adressRoad").val(datos.Direccion[2]);
-    $("#addressNumber1").val(datos.Direccion[3]);
-    $("#addressNumber2").val(datos.Direccion[4]);
-    $("#detalles").val(datos.Direccion[5]);
+    $('#autocompleteDirection').val(datos.Direccion[0]);
 
-    for (var i = 0; i < citySelect.options.length; i++) {
-      if (citySelect.options[i].value === datos.Direccion[0]) {
-        citySelect.selectedIndex = i;
-        break;
+    const options = {
+      componentRestrictions: { 
+        country: 'CO', // Código de país para Colombia
       }
-    }
+    };
 
-    for (var i = 0; i < adressTypeSelect.options.length; i++) {
-      if (adressTypeSelect.options[i].value === datos.Direccion[1]) {
-        adressTypeSelect.selectedIndex = i;
-        break;
+    const autocomplete = new google.maps.places.Autocomplete(input, options);
+
+    autocomplete.addListener('place_changed', () => {
+      const place = autocomplete.getPlace();
+        
+      if (!place.geometry) {
+        console.log("No se encontró ningún lugar para la selección.");
+        return;
       }
-    }
+
+      const latitude = place.geometry.location.lat();
+      const longitude = place.geometry.location.lng();
+
+      const selectedPlace = {
+        name: place.name,
+        address: place.formatted_address,
+        latitude: latitude,
+        longitude: longitude
+      };
+
+      latitudeField.value = latitude
+      longitudeField.value = longitude
+
+      const selectedPlaceJSON = JSON.stringify(selectedPlace);
+
+      console.log("Lugar seleccionado:", place);
+    });
 
     $("#EditarUsuario").on("hidden.bs.modal", function () {
       $("#InputEditarDocumento").val(datos.Documento);
@@ -45,26 +66,7 @@ fetch(`http://localhost:8080/users/${userId}`)
       $("#InputEditarApellidos").val(datos.Apellidos);
       $("#InputEditarCelular").val(datos.Celular);
       $("#InputEditarCorreo").val(datos.Correo);
-      var citySelect = document.getElementById("city");
-      var adressTypeSelect = document.getElementById("addressTypeSelect");
-      $("#adressRoad").val(datos.Direccion[2]);
-      $("#addressNumber1").val(datos.Direccion[3]);
-      $("#addressNumber2").val(datos.Direccion[4]);
-      $("#detalles").val(datos.Direccion[5]);
-
-      for (var i = 0; i < citySelect.options.length; i++) {
-        if (citySelect.options[i].value === datos.Direccion[0]) {
-          citySelect.selectedIndex = i;
-          break;
-        }
-      }
-
-      for (var i = 0; i < adressTypeSelect.options.length; i++) {
-        if (adressTypeSelect.options[i].value === datos.Direccion[1]) {
-          adressTypeSelect.selectedIndex = i;
-          break;
-        }
-      }
+      $('#autocompleteDirection').val(datos.Direccion[0]);
 
       $(".invalid-feedback").text("");
       $(".is-invalid").removeClass("is-invalid");
@@ -81,26 +83,18 @@ $("#BtnConfirmarEdit").on("click", async function () {
     const userDataFromDB = await response.json();
     const user = userDataFromDB.data[0];
 
+    let direccion = []
+
     const documento = $("#InputEditarDocumento").val();
     const nombre = $("#InputEditarNombre").val();
     const apellidos = $("#InputEditarApellidos").val();
     const celular = $("#InputEditarCelular").val();
     const correo = $("#InputEditarCorreo").val();
-    const ciudad = $("#city").val();
-    const tipoVia = $("#addressTypeSelect").val();
-    const direccionNumero = $("#adressRoad").val();
-    const direccionNumero1 = $("#addressNumber1").val();
-    const direccionNumero2 = $("#addressNumber2").val();
-    const detallesDireccion = $("#detalles").val();
+    const direccionCompleta = $('#autocompleteDirection').val();
+    const latitud = latitudeField.value;
+    const longitud = longitudeField.value;
 
-    const direccion = [
-      ciudad,
-      tipoVia,
-      direccionNumero,
-      direccionNumero1,
-      direccionNumero2,
-      detallesDireccion,
-    ];
+    direccion.push(direccionCompleta, latitud, longitud)
 
     let isValid = true;
 
@@ -147,6 +141,20 @@ $("#BtnConfirmarEdit").on("click", async function () {
       JSON.stringify(direccion) !== JSON.stringify(user.Direccion);
 
     if (!camposModificados) {
+      const Toast = Swal.mixin({
+        toast: true,
+        position: "top-end",
+        showConfirmButton: false,
+        timer: 1500,
+        didOpen: (toast) => {
+          toast.addEventListener("mouseleave", Swal.resumeTimer);
+        },
+      });
+  
+      Toast.fire({
+        icon: "warning",
+        title: "No se han realizado cambios en los campos.",
+      });
       console.log("No se han realizado cambios en los campos");
       return;
     }

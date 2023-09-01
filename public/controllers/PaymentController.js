@@ -50,11 +50,11 @@ const createOrder = async (req, res) => {
     const result = await mercadopago.preferences.create({
         items: items,
         back_urls: {
-            success: 'http://localhost:8080/payment/success',
-            failure: 'http://localhost:8080/payment/failure',
-            pending: 'http://localhost:8080/payment/pending',
+            success: 'https://7c90-2800-e2-9600-1b5-1531-4980-7de1-5127.ngrok.io/payment/success',
+            failure: 'https://7c90-2800-e2-9600-1b5-1531-4980-7de1-5127.ngrok.io/payment/failure',
+            pending: 'https://7c90-2800-e2-9600-1b5-1531-4980-7de1-5127.ngrok.io/payment/pending',
         },
-        notification_url: 'https://fda3-2800-e2-9600-1b5-1c0f-f934-84b2-59c6.ngrok.io/payment/webhook',
+        notification_url: 'https://7c90-2800-e2-9600-1b5-1531-4980-7de1-5127.ngrok.io/payment/webhook',
     });
 
     console.log(result);

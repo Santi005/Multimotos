@@ -200,38 +200,10 @@
             </div>
           </div>
           <div class="form-row">
-            <div class="form-group col-md-6">
-              <select class="form-control" id="city" required>
-                <option value="Medellin">Medellín</option>
-                <option value="Bello">Bello</option>
-              </select>
-            </div>
-            <div class="form-group col-md-6">
-              <select class="form-control" id="addressTypeSelect" required>
-                <option value="Call.">Calle</option>
-                <option value="Cra.">Carrera</option>
-                <option value="Av.">Avenida</option>
-                <option value="Diag.">Diagonal</option>
-                <option value="Tr.">Transversal</option>
-              </select>
-            </div>
-          </div>
-          <div class="form-row">
-            <div class="form-group col-md-5">
-              <input type="text" class="form-control direccion-number" id="adressRoad" placeholder="00" maxlength="4" required>
-            </div>
-            <span style="margin-left: 10px;">#</span>
-            <div class="form-group col-md-3">
-              <input type="text" class="form-control direccion-number" id="addressNumber1" min="1" required maxlength="2" inputmode="numeric" placeholder="00">
-            </div>
-            <span>-</span>
-            <div class="form-group col-md-3">
-              <input type="text" class="form-control direccion-number" id="addressNumber2" min="1" required maxlength="2" inputmode="numeric" placeholder="00">
-            </div>
-          </div>
-          <div class="form-row">
             <div class="form-group col-md-12">
-              <input type="text" class="form-control input-pedido" id="detalles" placeholder="Barrio, apartamento, etc." maxlength="40">
+              <input type="text" class="form-control input-pedido" id="autocompleteDirection" placeholder="Dirección">
+              <input type="hidden" id="latitude">
+              <input type="hidden" id="longitude">
             </div>
           </div>
           <div class="form-row">
@@ -438,6 +410,7 @@
     <script src="js/pages/Index.js"></script>
     <script src="js/vallidarToken.js"></script>
     <script src="js/pages/miPerfil.js"></script>
+    <script src="https://maps.googleapis.com/maps/api/js?key=AIzaSyBqaKSNGXi0v6IGv7MRnMOmjRjJFN1PfTg&libraries=places"></script>
 
 </body>
 </html>

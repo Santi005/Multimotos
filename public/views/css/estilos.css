@@ -136,7 +136,6 @@
   color: #fff;
 }
 
-
 .cart-increase-decrease:hover {
   background-color: #e35d5d;
   transition: all 0.3s ease;
@@ -268,4 +267,12 @@ a.profile-pic {
 .disabled-link {
   pointer-events: none;
   opacity: 0.6;
+}
+
+.pac-container {
+  z-index: 10000; /* Ajusta este valor según sea necesario */
+}
+
+.dataTables_paginate .paginate_button.current {
+  color: #dc3545;
 }
