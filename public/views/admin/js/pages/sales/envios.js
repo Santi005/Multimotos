@@ -196,7 +196,7 @@ $("#BtnConfirmarSend").on("click", () => {
 const updateStateSend = async (saleId, newState, employeeSelect) => {
     
     try {
-        
+        await Swal.fire('Pedido enviado');
         const response = await fetch(`http://localhost:8080/sales/updateToSend/${saleId}`, {
             method: 'PUT',
             headers: {
@@ -239,7 +239,7 @@ openModalDelivered = (saleId, newState) => {
 const updateStateDelivered = async (saleId, newState) => {
     
     try {
-        
+        await Swal.fire('Pedido entregado');
         const response = await fetch(`http://localhost:8080/sales/updateToDelivered/${saleId}`, {
             method: 'PUT',
             headers: {
@@ -293,6 +293,7 @@ const updateStateReturn = async (saleId, newState, razon) => {
     
     try {
         
+        await Swal.fire('Pedido en devolución');
         const response = await fetch(`http://localhost:8080/sales/updateToReturn/${saleId}`, {
             method: 'PUT',
             headers: {
@@ -322,7 +323,7 @@ const showEmployees = async () => {
     const employeesSelect = document.getElementById('employeesSelectModal');
 
     try {
-
+        
         await fetch('http://localhost:8080/users/')
         .then(response => response.json())
         .then(data => {

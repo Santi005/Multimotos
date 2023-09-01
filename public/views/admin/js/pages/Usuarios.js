@@ -279,7 +279,7 @@ $(document).ready(function() {
   }
 
   // Función para agregar un usuario
-  function agregarUsuario() {
+  async function agregarUsuario() {
     // Obtener los valores de los campos
     const documento = $('#InputAgregarDocumento').val().trim();
     const nombre = $('#InputAgregarNombre').val().trim();
@@ -301,6 +301,8 @@ $(document).ready(function() {
       Estado: estado,
       Contrasena: "123"
     };
+
+    await Swal.fire('Usuario agregado');
 
     // Realizar la solicitud POST para agregar el usuario
     fetch('http://localhost:8080/users/', {
@@ -647,7 +649,7 @@ function validarCamposEditar() {
 }
 
 // Función para editar un usuario
-function editarUsuario() {
+async function editarUsuario() {
   const id = $('#IdEditarUsuario').val();
   const userData = {
     Documento: $('#InputEditarDocumento').val(),
@@ -659,6 +661,8 @@ function editarUsuario() {
     Rol: $('#InputEditarRol').val(),
     Estado: $('#InputEditarEstado').val()
   };
+
+  await Swal.fire('Usuario editado');
 
   fetch(`http://localhost:8080/users/${id}`, {
     method: 'PUT',
@@ -683,9 +687,9 @@ function editarUsuario() {
 
 // ELIMINAR --------
 
-$('#BtnConfirmarDelete').on('click', () => {
+$('#BtnConfirmarDelete').on('click', async () => {
   const id = $('#IdEliminarUsuario').val();
-
+  await Swal.fire('Usuario eliminado');
   fetch(`http://localhost:8080/users/${id}`, {
       method: 'DELETE'
   })
