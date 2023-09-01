@@ -230,76 +230,31 @@
                             </div>
                             </div>
                         </div>
-
                     </div>
 
                     <div class="form-row">
-
-                        <div class="form-group col-md-6">
-                        <label for="city">Ciudad:</label>
-                        <div class="input-group">
-                            <div class="input-group-prepend">
-                                <span class="input-group-text"><i class="fas fa-city"></i></span>
-                            </div>
-                            <select class="form-control" id="city" onchange="updateShippingCost();">
-                                <option value="Medellin">Medellín</option>
-                                <option value="Bello">Bello</option>
-                            </select>
-                        </div>
-                        </div>
-
-                        <div class="form-group col-md-6">
-                            <label for="adressType">Tipo de vía:</label>
-                            <div class="input-group">
-                                <div class="input-group-prepend">
-                                <span class="input-group-text"><i class="fas fa-road"></i></span>
-                                </div>
-                                <select id="addressTypeSelect" class="form-control" style="width: 70px;">
-                                    <option value="Call.">Calle</option>
-                                    <option value="Cra.">Carrera</option>
-                                    <option value="Av.">Avenida</option>
-                                    <option value="Diag.">Diagonal</option>
-                                    <option value="Tr.">Transversal</option>
-                                </select>
-                                <div class="invalid-feedback">
-                                    Ingrese una dirección válida.
-                                </div>
-                            </div>
-                        </div>
-
                         <div class="form-group col-md-12">
                             <div class="input-group">
+                                <label for="email">Dirección:</label>
+                                <div class="input-group">
                                 <div class="input-group-prepend">
                                     <span class="input-group-text"><i class="fas fa-home"></i></span>
                                 </div>
-                                <input type="text" id="adressRoad" class="form-control direccion-number" placeholder="00" required>
-                                <span style="margin-left: 10px; margin-right: 5px;">#</span>
-                                <input type="text" class="form-control direccion-number" id="addressNumber1" min="1" required inputmode="numeric" placeholder="00">
-                                <span style="margin-right: 5px; margin-left: 5px;">-</span>
-                                <input type="text" class="form-control direccion-number" id="addressNumber2" min="1" required inputmode="numeric" placeholder="00">
+                                <input type="text" class="form-control input-pedido" id="autocompleteDirection" placeholder="Ingrese su dirección" required>
+
+                                <input type="hidden" id="latitude">
+                                <input type="hidden" id="longitude">
+
+                                <div class="invalid-feedback">
+                                    Ingrese una dirección válida.
+                                </div>
+                                </div>
                             </div>
                         </div>
-
                     </div>
 
                     <div class="form-row">
-
-                        <div class="form-group col-md-6">
-                            <div class="input-group">
-                                <label for="detalles">Dirección:</label>
-                                <div class="input-group">
-                                <div class="input-group-prepend">
-                                    <span class="input-group-text"><i class="fas fa-building"></i></span>
-                                </div>
-                                <input type="text" class="form-control input-pedido" id="detalles" placeholder="Detalles: (Barrio, apartamento)">
-                                <div class="invalid-feedback">
-                                    Ingrese un email válido.
-                                </div>
-                                </div>
-                            </div>
-                        </div>
-
-                        <div class="form-group col-md-6">
+                        <div class="form-group col-md-12">
                             <div class="input-group">
                                 <label for="email">Correo electrónico:</label>
                                 <div class="input-group">
@@ -330,6 +285,7 @@
                     <p class="precioDebajo text-center" id="subtotalInfoCart">Subtotal: $0.00</p>
                     <p class="precioDebajo text-center" id="shippingCost">Costo de envío: $5.000</p>
                     <p class="precioDebajo text-center" id="totalInfoCart">Total: $0.00</p>
+                    <p class="precioDebajo text-center"> Incluye Iva</p>
 
                     <!-- <a href="#" id="Btn" class="primary-btn cart-buttons">Pagar ahora</a> -->
                     <a href="#" id="checkout" class="primary-btn cart-buttons">Pagar ahora</a>
@@ -400,6 +356,7 @@
         </div>
     </footer>
 
+    <script src="https://maps.googleapis.com/maps/api/js?key=AIzaSyBqaKSNGXi0v6IGv7MRnMOmjRjJFN1PfTg&libraries=places"></script>
     <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
     <script src="js/pages/carrito/infoPedido.js"></script>
     <script src="js/pages/carrito/carrito.js"></script>
