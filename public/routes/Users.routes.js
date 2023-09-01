@@ -15,7 +15,9 @@ const {
   checkExistingCorreo, 
   checkExistingDocumento,
   getTotalUsuarios,
-  getTotalClientes
+  getTotalClientes,
+  validatePassword,
+  changePassword
 } = require("../controllers/UserController");
 
 
@@ -92,6 +94,11 @@ route.get("/check-documento/:documento", async (req, res) => {
     res.status(500).json({ error: "Error al verificar el número de documento." });
   }
 });
+
+
+// Agrega los siguientes endpoints para validar y cambiar contraseñas
+route.post("/validate-password/:userId", validatePassword); // Endpoint para validar la contraseña actual
+route.post("/change-password/:userId", changePassword);   // Endpoint para cambiar la contraseña
 
 
 

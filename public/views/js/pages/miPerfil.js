@@ -286,57 +286,98 @@ function getTokenFromURL() {
   }
 
 // Agregar evento al botón "Guardar" del modal
-$("#BtnGuardarContrasena").on("click", async function () {
-    // Reiniciar los mensajes de error
-    $(".invalid-feedback").text("");
-    $(".is-invalid").removeClass("is-invalid");
-  
+$(document).ready(function () {
+
+  $("#BtnGuardarContrasena").on("click", async function () {
     const contrasenaActual = $("#InputContrasenaActual").val();
     const nuevaContrasena = $("#InputNuevaContrasena").val();
     const confirmarNuevaContrasena = $("#InputConfirmarNuevaContrasena").val();
-  
+
     // Validaciones
     if (nuevaContrasena !== confirmarNuevaContrasena) {
       $("#errorContrasena").text("Las contraseñas no coinciden.");
       $("#InputNuevaContrasena, #InputConfirmarNuevaContrasena").addClass("is-invalid");
       return;
     }
-  
-    // Aquí puedes realizar la validación de la contraseña actual, por ejemplo, usando la función de resetPasswordForm
-  
+
+    // Validar la contraseña actual aquí (puede requerir una petición al servidor)
+    const isCurrentPasswordValid = await validateCurrentPassword(userId, contrasenaActual);
+
+    if (!isCurrentPasswordValid) {
+      $("#errorContrasena").text("La contraseña actual es incorrecta.");
+      $("#InputContrasenaActual").addClass("is-invalid");
+      return;
+    }
+
     // Llamar a la función de cambio de contraseña con la nueva contraseña
-    const success = await changePassword(nuevaContrasena);
-  
+    const success = await changePassword(userId, nuevaContrasena);
+
     if (success) {
-      // Aquí puedes mostrar un mensaje de éxito o hacer lo que consideres necesario
       console.log("Contraseña cambiada exitosamente.");
       $("#CambiarContrasenaModal").modal("hide"); // Cerrar el modal
+      $("#InputContrasenaActual").val("");
+      $("#InputNuevaContrasena").val("");
+      $("#InputConfirmarNuevaContrasena").val("");
     } else {
-      // Aquí puedes mostrar un mensaje de error o hacer lo que consideres necesario
       console.error("No se pudo cambiar la contraseña.");
     }
   });
-  
-  // Función para cambiar la contraseña
-  async function changePassword(newPassword) {
-    try {
-      // Hacer la solicitud al servidor para cambiar la contraseña
-      const token = getTokenFromURL(); // Asegúrate de obtener el token correcto
-      const response = await fetch(`/reset-password/${token}`, {
-        method: 'POST',
-        headers: {
-          'Content-Type': 'application/json'
-        },
-        body: JSON.stringify({ password: newPassword })
-      });
-  
-      const data = await response.json();
-      return data.success; // Devuelve true si el cambio de contraseña fue exitoso, false si no lo fue
-    } catch (error) {
-      console.error("Error al cambiar la contraseña:", error);
+});
+
+async function validateCurrentPassword(userId, currentPassword) {
+  try {
+    console.log('Validating current password for user ID:', userId);
+    console.log('Contrasena actual:', currentPassword);
+    
+    const response = await fetch(`http://localhost:8080/users/validate-password/${userId}`, {
+      method: "POST",
+      headers: {
+        "Content-Type": "application/json",
+      },
+      body: JSON.stringify({ currentPassword }),
+    });
+
+    console.log('Response status:', response.status);
+
+    if (!response.ok) {
+      console.error('Error response:', response.statusText);
       return false;
     }
+
+    const data = await response.json();
+    console.log('Response data:', data);
+
+    return data.valid;
+  } catch (error) {
+    console.error('Error al validar la contraseña actual:', error);
+    return false;
   }
+}
+
+async function changePassword(userId, newPassword) {
+  try {
+    console.log('Changing password for user ID:', userId);
+
+    // No es necesario encriptar la contraseña nuevamente aquí
+    const response = await fetch(`http://localhost:8080/users/change-password/${userId}`, {
+      method: "POST",
+      headers: {
+        "Content-Type": "application/json",
+      },
+      body: JSON.stringify({ newPassword }), // Envía la contraseña encriptada
+    });
+
+    const data = await response.json();
+    return data.success;
+  } catch (error) {
+    console.error('Error al cambiar la contraseña:', error);
+    return false;
+  }
+}
+
+
+
+
 
 var prevScrollPos = window.pageYOffset;
 window.addEventListener("scroll", function () {
