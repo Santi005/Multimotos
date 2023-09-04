@@ -254,7 +254,7 @@
                             </div>
                             <div class="modal-footer">
                                 <button type="button" class="btn btn-secondary" data-bs-dismiss="modal" style="color: #ffff;">Cancelar</button>
-                                <button type="button" class="btn btn-danger" id="BtnConfirmarAddModal" style="color: #ffff">Confirmar</button>
+                                <button type="button" class="btn btn-danger" id="BtnConfirmarAddModal" style="color: #ffff">Guardar</button>
                             </div>
                 </div>
             </div>
@@ -300,7 +300,7 @@
                             </div>
                             <div class="modal-footer">
                                 <button type="button" class="btn btn-secondary" data-bs-dismiss="modal" style="color: #ffff;">Cancelar</button>
-                                <button type="button" class="btn btn-danger " id="BtnConfirmarEdit" style="color: #ffff">Confirmar</button> 
+                                <button type="button" class="btn btn-danger " id="BtnConfirmarEdit" style="color: #ffff">Guardar</button> 
                             </div>
                 </div>
             </div>
@@ -387,8 +387,9 @@
                         <form class="row g-3 needs-validation" novalidate>
                             <input type="hidden" id="IdAumentarStock">
                             <label for="" style="text-align: left;">Cantidad</label>
-                            <input type="text" class="form-control" id="InputAumentarStock" style=" border-radius: 5px; width: 200px; border-color: rgb(187, 187, 187)" required>
-                    </div>
+                            <input type="number" class="form-control " id="InputAumentarStock" style=" border-radius: 5px; width: 300px; " required>
+                            <small class="form-text text-danger d-none" id="errorAddStock"></small>
+                        </div>
                     <div class="modal-footer">
                         <button type="button" class="btn btn-secondary" data-bs-dismiss="modal" style="color: #ffff;">Cancelar</button>
                         <button type="button" class="btn" id="BtnConfirmaEditStock" style="background-color: #f62d51;  color: #ffff;">Guardar</button>

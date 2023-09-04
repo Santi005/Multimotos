@@ -214,7 +214,10 @@ fileInput.addEventListener('change', () => {
 
 
 // EDITAR
-const EditProduct = (id, name, description, category, mark, price, images) => {
+let originalName = '';
+let newName = '';
+
+function EditProduct(id, name, description, category, mark, price, images) {
     $('#EditarProducto').modal('show');
     $('#IdEditarProducto').val(id);
     $('#EditNombreProducto').val(name);
@@ -222,96 +225,66 @@ const EditProduct = (id, name, description, category, mark, price, images) => {
     $('#EditPrecioProducto').val(price);
     $('#EditformFile').val();
 
-    showMarksEdit(mark)
+    showMarksEdit(mark);
     showCategoriesEdit(category);
 
+    // Almacena el valor original del nombre al mostrar el modal de edición
+    originalName = name;
+    newName = '';
 }
 
-function resetValidation() {
-    $('#EditNombreProducto').removeClass('is-invalid');
-    $('#errorEditNombre').addClass('d-none');
-    
-    $('#EditDescripcionProducto').removeClass('is-invalid');
-    $('#errorEditDescripcion').addClass('d-none');
-    
-    $('#EditPrecioProducto').removeClass('is-invalid');
-    $('#errorEditPrecio').addClass('d-none');
-}
-    
-$('#EditarProducto').on('hidden.bs.modal', () => {
-    resetValidation();
+$('#EditarProducto').on('hide.bs.modal', function () {
+    $('#EditNombreProducto').removeClass('is-invalid is-valid');
+    $('#errorEditNombre').addClass('d-none').text('');
 });
 
-$('#EditNombreProducto').on('blur', function () {
-    if ($(this).data('interactive') === 'true') {
-        validarNombreUnico($(this).val());
+// Valida el nombre mientras se ingresa
+$('#EditNombreProducto').on('input', function () {
+    newName = $(this).val().trim();
+    const $errorEditNombre = $('#errorEditNombre');
+
+    if (newName === originalName) {
+        $(this).removeClass('is-invalid is-valid');
+        $errorEditNombre.addClass('d-none').text('');
+    } else if (newName === '') {
+        $(this).addClass('is-invalid').removeClass('is-valid');
+        $errorEditNombre.text('Ingrese un nombre para el producto').removeClass('d-none');
+    } else if (!isNameUnique(newName)) {
+        $(this).addClass('is-invalid').removeClass('is-valid');
+        $errorEditNombre.text('El nombre del producto ya está en uso').removeClass('d-none');
+    } else {
+        $(this).removeClass('is-invalid').addClass('is-valid');
+        $errorEditNombre.addClass('d-none').text('');
     }
 });
 
-$('#EditNombreProducto').on('focus', function () {
-    $(this).data('interactive', 'true');
-});
-
-
-function resetFieldValidation(fieldId, errorId) {
-    $(fieldId).removeClass('is-invalid');
-    $(errorId).addClass('d-none');
-}
-
-$('#EditarProducto').on('hidden.bs.modal', () => {
-    resetValidation();
-});
-
-$('#EditNombreProducto').on('input', () => {
-    resetFieldValidation('#EditNombreProducto', '#errorEditNombre');
-});
-
-$('#EditDescripcionProducto').on('input', () => {
-    resetFieldValidation('#EditDescripcionProducto', '#errorEditDescripcion');
-});
-
-$('#EditPrecioProducto').on('input', () => {
-    resetFieldValidation('#EditPrecioProducto', '#errorEditPrecio');
-});
-
-function isNameUnique(nameProduct) {
-    const $rows = $('#ProductsTable tbody tr');
-    for (let i = 0; i < $rows.length; i++) {
-        const nombreProductoEnTabla = $rows.eq(i).find('td:eq(1)').text().trim();
-        if (nombreProductoEnTabla === nameProduct) {
-            return false;
-        }
-    }
-    return true;
-}
-
-$('#BtnConfirmarEdit').on('click', async (event) => {
-    event.preventDefault();
-
-    let isValid = true;
-
-    const idEdit = $('#IdEditarProducto').val();
+// Botón de confirmación de edición
+$('#BtnConfirmarEdit').on('click', async function () {
+    const id = $('#IdEditarProducto').val();
     const nameProductEdit = $('#EditNombreProducto').val();
     const descriptionEdit = $('#EditDescripcionProducto').val();
     const priceEdit = $('#EditPrecioProducto').val();
     const marcaEdit = $('#EditMarcaProducto').val();
     const categoriaEdit = $('#EditCategoriaProducto').val();
+    const archivosImagen = $('#EditformFile')[0].files;
 
-    if ($('#EditNombreProducto').data('interactive') === 'true') {
-        if (!nameProductEdit.trim()) {
-            $('#errorEditNombre').text('Ingrese un nombre para el producto.').removeClass('d-none');
-            $('#EditNombreProducto').addClass('is-invalid');
-            isValid = false;
-        } else if (!isNameUnique(nameProductEdit)) {
-            $('#errorEditNombre').text('El nombre del producto ya está en uso.').removeClass('d-none');
-            $('#EditNombreProducto').addClass('is-invalid');
-            isValid = false;
-        } else {
-            $('#errorEditNombre').addClass('d-none');
-            $('#EditNombreProducto').removeClass('is-invalid');
-        }
-    }
+    const $errorEditNombre = $('#errorEditNombre');
     
+    // Inicializa la variable isValid
+    let isValid = true;
+
+    if (nameProductEdit.trim() === '') {
+        $('#EditNombreProducto').addClass('is-invalid');
+        $errorEditNombre.text('Ingrese un nombre para el producto').removeClass('d-none');
+        isValid = false;
+    }
+
+    if (!isNameUnique(newName)) {
+        $('#EditNombreProducto').addClass('is-invalid').removeClass('is-valid');
+        $errorEditNombre.text('El nombre del producto ya está en uso').removeClass('d-none');
+        isValid = false;
+    }
+
     if (!descriptionEdit.trim()) {
         $('#errorEditDescripcion').text('Ingrese una descripción para el producto.').removeClass('d-none');
         $('#EditDescripcionProducto').addClass('is-invalid');
@@ -350,13 +323,14 @@ $('#BtnConfirmarEdit').on('click', async (event) => {
     formData.append('Marca', marcaEdit);
     formData.append('Categoria', categoriaEdit);
 
-    editarProducto(formData, idEdit);
+    // Pasa la variable id como parámetro
+    editarProducto(formData, id);
     await Swal.fire('Producto editado')
     location.reload();
 });
 
-async function editarProducto(formData, idEdit) {
-    const response = await fetch(`http://localhost:8080/products/${idEdit}`, {
+async function editarProducto(formData, id) {
+    const response = await fetch(`http://localhost:8080/products/${id}`, {
         method: 'PUT',
         body: formData
     });
@@ -386,6 +360,16 @@ fileInputEdit.addEventListener('change', () => {
         fileInputEdit.value = '';
     }
 });
+function isNameUnique(nameProduct) {
+    const $rows = $('#ProductsTable tbody tr');
+    for (let i = 0; i < $rows.length; i++) {
+        const nombreProductoEnTabla = $rows.eq(i).find('td:eq(1)').text().trim();
+        if (nombreProductoEnTabla.toLowerCase() === nameProduct.toLowerCase()) {
+            return false;
+        }
+    }
+    return true;
+}
 
 // VER DETALLES
 const productDetails = (idProducto) => {
@@ -434,28 +418,71 @@ const incrementarStock = (id, amount) => {
     $('#InputAumentarStock').val(amount);
     $('#AumentarStock').modal('show');
 }
+// Agrega un evento para limpiar la validación al cerrar el modal
+$('#AumentarStock').on('hidden.bs.modal', function () {
+    const inputAumentarStock = document.getElementById('InputAumentarStock');
+    const errorAddStock = document.getElementById('errorAddStock');
+
+    // Restablece la validación
+    inputAumentarStock.setCustomValidity('');
+    inputAumentarStock.classList.remove('is-invalid');
+    errorAddStock.textContent = '';
+    errorAddStock.classList.add('d-none');
+});
+
+// Agrega un evento para limpiar la validación al interactuar con el campo de entrada
+$('#InputAumentarStock').on('input', function () {
+    const inputAumentarStock = document.getElementById('InputAumentarStock');
+    const errorAddStock = document.getElementById('errorAddStock');
+
+    // Restablece la validación
+    inputAumentarStock.setCustomValidity('');
+    inputAumentarStock.classList.remove('is-invalid');
+    errorAddStock.textContent = '';
+    errorAddStock.classList.add('d-none');
+});
 
 $('#BtnConfirmaEditStock').on('click', async () => {
+    const inputAumentarStock = document.getElementById('InputAumentarStock');
+    const errorAddStock = document.getElementById('errorAddStock');
+    
     const id = $('#IdAumentarStock').val();
-    amount = $('#InputAumentarStock').val();
+    const amount = inputAumentarStock.value;
 
-    const data = { amount: amount };
+    if (!amount || isNaN(amount) || amount <= 0) {
+        inputAumentarStock.setCustomValidity('Por favor, ingrese una cantidad válida.');
+        inputAumentarStock.classList.add('is-invalid');
+        errorAddStock.textContent = 'Por favor, ingrese una cantidad válida.';
+        errorAddStock.classList.remove('d-none');
+    } else {
+        inputAumentarStock.setCustomValidity('');
+        inputAumentarStock.classList.remove('is-invalid');
+        errorAddStock.textContent = '';
+        errorAddStock.classList.add('d-none');
+        
+        const data = { amount: amount };
 
-    console.log(id);
-    console.log(amount);
+        console.log(id);
+        console.log(amount);
 
-    const responseStock = await fetch(`http://localhost:8080/products/${id}/incrementar-stock`, {
-        method: 'PUT',
-        headers: {
-            'Content-Type': 'application/json'
-        },
-        body: JSON.stringify(data)
-    });
+        const responseStock = await fetch(`http://localhost:8080/products/${id}/incrementar-stock`, {
+            method: 'PUT',
+            headers: {
+                'Content-Type': 'application/json'
+            },
+            body: JSON.stringify(data)
+        });
 
-    const dataStock = await responseStock.json();
-    await Swal.fire('Stock aumentado')
-    location.reload();
+        const dataStock = await responseStock.json();
+        await Swal.fire('Stock aumentado')
+        location.reload();
+    }
 });
+
+
+
+
+
 
 // ELIMINAR
 const DeleteProduct = (id) => {
