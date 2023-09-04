@@ -18,7 +18,7 @@ const options = {
     componentRestrictions: { 
       country: 'CO', // Código de país para Colombia
     }
-  };
+};
 
 // Inicializar el autocompletado
 const autocomplete = new google.maps.places.Autocomplete(input, options);
@@ -74,6 +74,7 @@ document.getElementById('firstName').value = firstName;
 document.getElementById('lastName').value = lastName;
 document.getElementById('email').value = email;
 document.getElementById('phone').value = celular;
+document.getElementById('autocompleteDirection').value = direccion[0];
 
 // Obtener referencia a la lista de productos en el resumen de compra
 var productList = document.getElementById('productList');

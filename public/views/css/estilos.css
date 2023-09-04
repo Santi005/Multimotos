@@ -263,11 +263,16 @@ a.profile-pic {
 .input-pedido::placeholder {
   color: #aaa;
 }
-<<<<<<< HEAD
-=======
 
 .disabled-link {
   pointer-events: none;
   opacity: 0.6;
 }
->>>>>>> fd8cf7bd7cbf77acedaf4dd3aaac956859bc11a5
+
+.pac-container {
+  z-index: 10000; /* Ajusta este valor según sea necesario */
+}
+
+.dataTables_paginate .paginate_button.current {
+  color: #dc3545;
+}

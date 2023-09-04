@@ -1,5 +1,77 @@
 let usersData = []; 
 
+const inputAdd = document.getElementById('autocompleteDirectionAdd');
+const latitudeFieldAdd = document.getElementById('latitudeAdd');
+const longitudeFieldAdd = document.getElementById('longitudeAdd');
+
+const options = {
+  componentRestrictions: { 
+    country: 'CO', // Código de país para Colombia
+  }
+};
+
+const autocompleteAdd = new google.maps.places.Autocomplete(inputAdd, options);
+
+autocompleteAdd.addListener('place_changed', () => {
+  const place = autocompleteAdd.getPlace();
+    
+  if (!place.geometry) {
+    console.log("No se encontró ningún lugar para la selección.");
+    return;
+  }
+
+  const latitude = place.geometry.location.lat();
+  const longitude = place.geometry.location.lng();
+
+  const selectedPlace = {
+    name: place.name,
+    address: place.formatted_address,
+    latitude: latitude,
+    longitude: longitude
+  };
+
+  latitudeFieldAdd.value = latitude
+  longitudeFieldAdd.value = longitude
+
+  console.log("Lugar seleccionado:", place);
+});
+
+const inputEdit = document.getElementById('autocompleteDirectionEdit');
+const latitudeFieldEdit = document.getElementById('latitudeEdit');
+const longitudeFieldEdit = document.getElementById('longitudeEdit');
+
+const optionsEdit = {
+  componentRestrictions: { 
+    country: 'CO', // Código de país para Colombia
+  }
+};
+
+const autocompleteEdit = new google.maps.places.Autocomplete(inputEdit, optionsEdit);
+
+autocompleteEdit.addListener('place_changed', () => {
+  const place = autocompleteEdit.getPlace();
+    
+  if (!place.geometry) {
+    console.log("No se encontró ningún lugar para la selección.");
+    return;
+  }
+
+  const latitude = place.geometry.location.lat();
+  const longitude = place.geometry.location.lng();
+
+  const selectedPlace = {
+    name: place.name,
+    address: place.formatted_address,
+    latitude: latitude,
+    longitude: longitude
+  };
+
+  latitudeFieldAdd.value = latitude
+  longitudeFieldAdd.value = longitude
+
+  console.log("Lugar seleccionado:", place);
+});
+
 const listUsers = () => {
   // Obtener los datos de roles
   fetch('http://localhost:8080/roles/')
@@ -30,7 +102,7 @@ const listUsers = () => {
                   <td>${user.Apellidos}</td>
                   <td>${user.Celular}</td>
                   <td>${user.Correo}</td>
-                  <td>${user.Direccion[0]}, ${user.Direccion[1]} ${user.Direccion[2]} #${user.Direccion[3]} - ${user.Direccion[4]}, ${user.Direccion[5]}</td>
+                  <td>${user.Direccion[0]}</td>
                   <td>${rolNombre}</td>
                   <td>${user.Estado}</td>
                   <td>
@@ -207,7 +279,7 @@ $(document).ready(function() {
   }
 
   // Función para agregar un usuario
-  function agregarUsuario() {
+  async function agregarUsuario() {
     // Obtener los valores de los campos
     const documento = $('#InputAgregarDocumento').val().trim();
     const nombre = $('#InputAgregarNombre').val().trim();
@@ -229,6 +301,8 @@ $(document).ready(function() {
       Estado: estado,
       Contrasena: "123"
     };
+
+    await Swal.fire('Usuario agregado');
 
     // Realizar la solicitud POST para agregar el usuario
     fetch('http://localhost:8080/users/', {
@@ -575,7 +649,7 @@ function validarCamposEditar() {
 }
 
 // Función para editar un usuario
-function editarUsuario() {
+async function editarUsuario() {
   const id = $('#IdEditarUsuario').val();
   const userData = {
     Documento: $('#InputEditarDocumento').val(),
@@ -587,6 +661,8 @@ function editarUsuario() {
     Rol: $('#InputEditarRol').val(),
     Estado: $('#InputEditarEstado').val()
   };
+
+  await Swal.fire('Usuario editado');
 
   fetch(`http://localhost:8080/users/${id}`, {
     method: 'PUT',
@@ -611,9 +687,9 @@ function editarUsuario() {
 
 // ELIMINAR --------
 
-$('#BtnConfirmarDelete').on('click', () => {
+$('#BtnConfirmarDelete').on('click', async () => {
   const id = $('#IdEliminarUsuario').val();
-
+  await Swal.fire('Usuario eliminado');
   fetch(`http://localhost:8080/users/${id}`, {
       method: 'DELETE'
   })
@@ -679,14 +755,11 @@ function ValidateForm() {
 function getFullAddress() {
   let direccionCompleta = [];
 
-  const city = $('#city').val();
-  const addressType = $('#addressTypeSelect').val();
-  const adressTypeNumber = $('#adressRoad').val();
-  const addressNumber1 = $('#addressNumber1').val();
-  const addressNumber2 = $('#addressNumber2').val();
-  var detalles = $('#detalles').val();
+  const direccionAdd = $('#autocompleteDirectionAdd').val();
+  const latitudAdd = $('#latitudeAdd').val();
+  const longitudAdd = $('#longitudeAdd').val();
 
-  direccionCompleta.push(city, addressType, adressTypeNumber, addressNumber1, addressNumber2, detalles);
+  direccionCompleta.push(direccionAdd, latitudAdd, longitudAdd);
 
   return direccionCompleta;
 }
@@ -694,14 +767,11 @@ function getFullAddress() {
 function getFullAddressEditar() {
   let direccionCompleta = [];
 
-  const city = $('#cityEditar').val();
-  const addressType = $('#addressTypeSelectEditar').val();
-  const adressTypeNumber = $('#adressRoadEditar').val();
-  const addressNumber1 = $('#addressNumber1Editar').val();
-  const addressNumber2 = $('#addressNumber2Editar').val();
-  var detalles = $('#detallesEditar').val();
+  const direccionEdit = $('#autocompleteDirectionEdit').val();
+  const latitudEdit = $('#latitudeEdit').val();
+  const longitudEdit = $('#longitudeEdit').val();
 
-  direccionCompleta.push(city, addressType, adressTypeNumber, addressNumber1, addressNumber2, detalles);
+  direccionCompleta.push(direccionEdit, latitudEdit, longitudEdit);
 
   return direccionCompleta;
 }

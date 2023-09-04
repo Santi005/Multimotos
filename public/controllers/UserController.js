@@ -165,6 +165,64 @@ const getTotalClientes = async (req, res) => {
 };
 
 
+const validatePassword = async (req, res) => {
+  const userId = req.params.userId;
+  const { currentPassword } = req.body;
+  console.log('Usuario ID:', userId);
+  console.log('Contraseña actual recibida:', currentPassword);
+  try {
+    console.log('Usuario ID:', userId);
+    console.log('Contraseña actual recibida:', currentPassword);
+
+    const user = await User.findById(userId);
+
+    if (!user) {
+      console.log('Usuario no encontrado en la base de datos');
+      return res.status(404).json({ error: 'Usuario no encontrado' });
+    }
+
+    console.log('Contraseña almacenada en la base de datos:', user.Contrasena);
+
+    const isPasswordValid = await bcrypt.compare(currentPassword, user.Contrasena);
+
+    if (isPasswordValid) {
+      console.log('La contraseña es válida');
+      return res.json({ valid: true });
+    } else {
+      console.log('La contraseña no es válida');
+      return res.json({ valid: false });
+    }
+  } catch (error) {
+    console.error('Error al validar la contraseña actual:', error);
+    return res.status(500).json({ error: 'Error interno del servidor' });
+  }
+};
+
+
+const changePassword = async (req, res) => {
+  const userId = req.params.userId;
+  const { newPassword } = req.body;
+
+  try {
+    const user = await User.findById(userId);
+
+    if (!user) {
+      return res.status(404).json({ error: 'Usuario no encontrado' });
+    }
+
+    // No es necesario encriptar la contraseña nuevamente aquí
+    user.Contrasena = newPassword;
+    await user.save();
+
+    res.json({ success: true });
+  } catch (error) {
+    console.error('Error al cambiar la contraseña:', error);
+    res.status(500).json({ error: 'Error interno del servidor' });
+  }
+};
+
+
+
 module.exports = {
   getUsers,
   postUser,
@@ -175,6 +233,8 @@ module.exports = {
   checkExistingCorreo, 
   checkExistingDocumento, 
   getTotalUsuarios,
-  getTotalClientes
+  getTotalClientes,
+  validatePassword,
+  changePassword
 };
 

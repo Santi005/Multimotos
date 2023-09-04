@@ -175,16 +175,18 @@ $('#BtnConfirmarAddModal').on('click', async () => {
 
     registrarProducto(formData);
     
-    
 });
 
 async function registrarProducto (formData) {
     await Swal.fire('Producto agregado')
-    location.reload();
+    
     const responseProducts = await fetch('http://localhost:8080/products/', {
         method: 'POST',
         body: formData,
     });
+
+    location.reload();
+
 
     const data = await responseProducts.json();
 }

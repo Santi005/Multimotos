@@ -72,29 +72,31 @@
                     <div class="row">
                         <div class="col-md-12">
                             <div class="input-field">
+                                <i class="fas fa-home"></i>
+                                <input type="text" id="autocomplete" class="form-control direccion" placeholder="Dirección completa">
+                            </div>
+                        </div>
+                        <div class="col-md-12">
+                            <div class="input-field">
                                 <i class="fas fa-envelope"></i>
                                 <input type="text" class="form-control direccion" placeholder="Correo" id="InputCorreo" required>
+                                <input type="hidden" id="latitude">
+                                <input type="hidden" id="longitude">
                             </div>
                             <div id="correoError" class="error-message"></div>
                         </div>
                     </div>
 
-                    <div class="row">
-                        <div class="col-md-12">
-                            <div class="input-field">
-                                <i class="fas fa-home"></i>
-                                <input type="text" id="autocomplete" class="form-control direccion" placeholder="Dirección completa">
-                            </div>
-                            <div id="correoError" class="error-message"></div>
-                        </div>
-                    </div>
+                    <!-- <div class="row">
+                        
+                    </div> -->
     
                     <div class="row">
                         <div class="col-md-6">
                             <div class="input-field">
                                 <i class="fas fa-lock"></i>
                                 <input type="password" placeholder="Contraseña" class="form-control" id="InputContrasena" required>
-                                <i class="toggle-password fas fa-eye" onclick="togglePasswordVisibility('InputContrasena')" style="position: absolute; margin-left: 225px;"></i>
+                                <i class="toggle-password fas fa-eye" onclick="togglePasswordVisibility('InputContrasena')" style="position: absolute; margin-left: 215px;"></i>
                             </div>
                             <div id="contrasenaError" class="error-message" style="position: absolute;"></div>
                         </div>
@@ -102,7 +104,7 @@
                             <div class="input-field">
                                 <i class="fas fa-lock"></i>
                                 <input type="password" class="form-control" placeholder="Confirmar contraseña" id="InputConfirmarContrasena" required>
-                                <i class="toggle-password fas fa-eye" onclick="togglePasswordVisibility('InputConfirmarContrasena')" style="position: absolute; margin-left: 225px;"></i>
+                                <i class="toggle-password fas fa-eye" onclick="togglePasswordVisibility('InputConfirmarContrasena')" style="position: absolute; margin-left: 215px;"></i>
                             </div>
                             <div id="confirmarContrasenaError" class="error-message"></div>
                         </div>
@@ -148,15 +150,41 @@
     $(document).ready(() => {
 
         const input = document.getElementById('autocomplete');
-        const autocomplete = new google.maps.places.Autocomplete(input);
+        const latitudeField = document.getElementById('latitude');
+        const longitudeField = document.getElementById('longitude');
+
+        const options = {
+            componentRestrictions: { 
+                country: 'CO', // Código de país para Colombia
+            }
+        };
+
+        const autocomplete = new google.maps.places.Autocomplete(input, options);
+
         autocomplete.addListener('place_changed', () => {
-        const place = autocomplete.getPlace();
+            const place = autocomplete.getPlace();
         
-        if (!place.geometry) {
-            console.log("No se encontró ningún lugar para la selección.");
-            return;
-        }
-        console.log("Lugar seleccionado:", place);
+            if (!place.geometry) {
+                console.log("No se encontró ningún lugar para la selección.");
+                return;
+            }
+
+            const latitude = place.geometry.location.lat();
+            const longitude = place.geometry.location.lng();
+
+            const selectedPlace = {
+                name: place.name,
+                address: place.formatted_address,
+                latitude: latitude,
+                longitude: longitude
+            };
+
+            latitudeField.value = latitude
+            longitudeField.value = longitude
+
+            const selectedPlaceJSON = JSON.stringify(selectedPlace);
+
+            console.log("Lugar seleccionado:", place);
         });
 
         $('#BtnRegistrarCliente').on('click', () => {
@@ -203,7 +231,7 @@
                                 })
                                 .then(response => response.json())
                                 .then(json => {
-                                    alert('Registrado exitosamente');
+                                    
                                     window.location.href = 'loginvista.html';
                                     // Realizar las acciones necesarias después de registrar el usuario
                                 })
@@ -232,7 +260,7 @@
             isValid = isValid && validateApellidos();
             isValid = isValid && validateCelular();
             isValid = isValid && validateCorreo();
-            isValid = isValid && validateAddressNumbers();
+            // isValid = isValid && validateAddressNumbers();
             isValid = isValid && validateContrasena();
             isValid = isValid && validateConfirmarContrasena();
             // Agregue aquí más validadores si hay más campos
@@ -308,22 +336,22 @@
         }
 
         // Validar Direccion
-        function validateAddressNumbers() {
-            const addressNumber1 = $('#addressNumber1').val();
-            const addressNumber2 = $('#addressNumber2').val();
-            const maxDigits = 3; // Máximo de 3 dígitos
+        // function validateAddressNumbers() {
+        //     const addressNumber1 = $('#addressNumber1').val();
+        //     const addressNumber2 = $('#addressNumber2').val();
+        //     const maxDigits = 3; // Máximo de 3 dígitos
 
-            if (!addressNumber1 || !addressNumber2) {
-                $('#direccionNumberError').text('Ambos números de dirección son obligatorios.');
-                return false;
-            } else if (addressNumber1.length > maxDigits || addressNumber2.length > maxDigits) {
-                $('#direccionNumberError').text('Cada número de dirección no puede tener más de 3 dígitos.');
-                return false;
-            } else {
-                $('#direccionNumberError').text('');
-                return true;
-            }
-        }
+        //     if (!addressNumber1 || !addressNumber2) {
+        //         $('#direccionNumberError').text('Ambos números de dirección son obligatorios.');
+        //         return false;
+        //     } else if (addressNumber1.length > maxDigits || addressNumber2.length > maxDigits) {
+        //         $('#direccionNumberError').text('Cada número de dirección no puede tener más de 3 dígitos.');
+        //         return false;
+        //     } else {
+        //         $('#direccionNumberError').text('');
+        //         return true;
+        //     }
+        // }
 
 
 
@@ -384,14 +412,11 @@
         function getFullAddress() {
             let direccionCompleta = [];
 
-            const city = $('#citySelect').val();
-            const addressType = $('#addressTypeSelect').val();
-            const adressTypeNumber = $('#adressRoad').val();
-            const addressNumber1 = $('#addressNumber1').val();
-            const addressNumber2 = $('#addressNumber2').val();
-            const detalles = $('#InputDetalles').val();
+            const direccion = input.value;
+            const latitud = latitudeField.value;
+            const longitud = longitudeField.value;
 
-            direccionCompleta.push(city, addressType, adressTypeNumber, addressNumber1, addressNumber2, detalles);
+            direccionCompleta.push(direccion, latitud, longitud);
 
             return direccionCompleta;
         }

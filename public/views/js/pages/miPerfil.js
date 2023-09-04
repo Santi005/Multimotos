@@ -1,3 +1,7 @@
+const input = document.getElementById('autocompleteDirection');
+const latitudeField = document.getElementById('latitude');
+const longitudeField = document.getElementById('longitude');
+
 fetch(`http://localhost:8080/users/${userId}`)
   .then((response) => response.json())
   .then((data) => {
@@ -10,34 +14,51 @@ fetch(`http://localhost:8080/users/${userId}`)
     $("#celular").text(datos.Celular);
     $("#correo").text(datos.Correo);
     $("#direccion").text(
-      `${datos.Direccion[0]}, ${datos.Direccion[1]} ${datos.Direccion[2]} #${datos.Direccion[3]} - ${datos.Direccion[4]}, ${datos.Direccion[5]}`
+      `${datos.Direccion[0]}`
     );
 
+    $('#latitude').val(datos.Direccion[1]);
+    $('#longitude').val(datos.Direccion[2]);
     $("#InputEditarDocumento").val(datos.Documento);
     $("#InputEditarNombre").val(datos.Nombre);
     $("#InputEditarApellidos").val(datos.Apellidos);
     $("#InputEditarCelular").val(datos.Celular);
     $("#InputEditarCorreo").val(datos.Correo);
-    var citySelect = document.getElementById("city");
-    var adressTypeSelect = document.getElementById("addressTypeSelect");
-    $("#adressRoad").val(datos.Direccion[2]);
-    $("#addressNumber1").val(datos.Direccion[3]);
-    $("#addressNumber2").val(datos.Direccion[4]);
-    $("#detalles").val(datos.Direccion[5]);
+    $('#autocompleteDirection').val(datos.Direccion[0]);
 
-    for (var i = 0; i < citySelect.options.length; i++) {
-      if (citySelect.options[i].value === datos.Direccion[0]) {
-        citySelect.selectedIndex = i;
-        break;
+    const options = {
+      componentRestrictions: { 
+        country: 'CO', // Código de país para Colombia
       }
-    }
+    };
 
-    for (var i = 0; i < adressTypeSelect.options.length; i++) {
-      if (adressTypeSelect.options[i].value === datos.Direccion[1]) {
-        adressTypeSelect.selectedIndex = i;
-        break;
+    const autocomplete = new google.maps.places.Autocomplete(input, options);
+
+    autocomplete.addListener('place_changed', () => {
+      const place = autocomplete.getPlace();
+        
+      if (!place.geometry) {
+        console.log("No se encontró ningún lugar para la selección.");
+        return;
       }
-    }
+
+      const latitude = place.geometry.location.lat();
+      const longitude = place.geometry.location.lng();
+
+      const selectedPlace = {
+        name: place.name,
+        address: place.formatted_address,
+        latitude: latitude,
+        longitude: longitude
+      };
+
+      latitudeField.value = latitude
+      longitudeField.value = longitude
+
+      const selectedPlaceJSON = JSON.stringify(selectedPlace);
+
+      console.log("Lugar seleccionado:", place);
+    });
 
     $("#EditarUsuario").on("hidden.bs.modal", function () {
       $("#InputEditarDocumento").val(datos.Documento);
@@ -45,26 +66,7 @@ fetch(`http://localhost:8080/users/${userId}`)
       $("#InputEditarApellidos").val(datos.Apellidos);
       $("#InputEditarCelular").val(datos.Celular);
       $("#InputEditarCorreo").val(datos.Correo);
-      var citySelect = document.getElementById("city");
-      var adressTypeSelect = document.getElementById("addressTypeSelect");
-      $("#adressRoad").val(datos.Direccion[2]);
-      $("#addressNumber1").val(datos.Direccion[3]);
-      $("#addressNumber2").val(datos.Direccion[4]);
-      $("#detalles").val(datos.Direccion[5]);
-
-      for (var i = 0; i < citySelect.options.length; i++) {
-        if (citySelect.options[i].value === datos.Direccion[0]) {
-          citySelect.selectedIndex = i;
-          break;
-        }
-      }
-
-      for (var i = 0; i < adressTypeSelect.options.length; i++) {
-        if (adressTypeSelect.options[i].value === datos.Direccion[1]) {
-          adressTypeSelect.selectedIndex = i;
-          break;
-        }
-      }
+      $('#autocompleteDirection').val(datos.Direccion[0]);
 
       $(".invalid-feedback").text("");
       $(".is-invalid").removeClass("is-invalid");
@@ -81,26 +83,18 @@ $("#BtnConfirmarEdit").on("click", async function () {
     const userDataFromDB = await response.json();
     const user = userDataFromDB.data[0];
 
+    let direccion = []
+
     const documento = $("#InputEditarDocumento").val();
     const nombre = $("#InputEditarNombre").val();
     const apellidos = $("#InputEditarApellidos").val();
     const celular = $("#InputEditarCelular").val();
     const correo = $("#InputEditarCorreo").val();
-    const ciudad = $("#city").val();
-    const tipoVia = $("#addressTypeSelect").val();
-    const direccionNumero = $("#adressRoad").val();
-    const direccionNumero1 = $("#addressNumber1").val();
-    const direccionNumero2 = $("#addressNumber2").val();
-    const detallesDireccion = $("#detalles").val();
+    const direccionCompleta = $('#autocompleteDirection').val();
+    const latitud = latitudeField.value;
+    const longitud = longitudeField.value;
 
-    const direccion = [
-      ciudad,
-      tipoVia,
-      direccionNumero,
-      direccionNumero1,
-      direccionNumero2,
-      detallesDireccion,
-    ];
+    direccion.push(direccionCompleta, latitud, longitud)
 
     let isValid = true;
 
@@ -147,6 +141,20 @@ $("#BtnConfirmarEdit").on("click", async function () {
       JSON.stringify(direccion) !== JSON.stringify(user.Direccion);
 
     if (!camposModificados) {
+      const Toast = Swal.mixin({
+        toast: true,
+        position: "top-end",
+        showConfirmButton: false,
+        timer: 1500,
+        didOpen: (toast) => {
+          toast.addEventListener("mouseleave", Swal.resumeTimer);
+        },
+      });
+  
+      Toast.fire({
+        icon: "warning",
+        title: "No se han realizado cambios en los campos.",
+      });
       console.log("No se han realizado cambios en los campos");
       return;
     }
@@ -278,57 +286,98 @@ function getTokenFromURL() {
   }
 
 // Agregar evento al botón "Guardar" del modal
-$("#BtnGuardarContrasena").on("click", async function () {
-    // Reiniciar los mensajes de error
-    $(".invalid-feedback").text("");
-    $(".is-invalid").removeClass("is-invalid");
-  
+$(document).ready(function () {
+
+  $("#BtnGuardarContrasena").on("click", async function () {
     const contrasenaActual = $("#InputContrasenaActual").val();
     const nuevaContrasena = $("#InputNuevaContrasena").val();
     const confirmarNuevaContrasena = $("#InputConfirmarNuevaContrasena").val();
-  
+
     // Validaciones
     if (nuevaContrasena !== confirmarNuevaContrasena) {
       $("#errorContrasena").text("Las contraseñas no coinciden.");
       $("#InputNuevaContrasena, #InputConfirmarNuevaContrasena").addClass("is-invalid");
       return;
     }
-  
-    // Aquí puedes realizar la validación de la contraseña actual, por ejemplo, usando la función de resetPasswordForm
-  
+
+    // Validar la contraseña actual aquí (puede requerir una petición al servidor)
+    const isCurrentPasswordValid = await validateCurrentPassword(userId, contrasenaActual);
+
+    if (!isCurrentPasswordValid) {
+      $("#errorContrasena").text("La contraseña actual es incorrecta.");
+      $("#InputContrasenaActual").addClass("is-invalid");
+      return;
+    }
+
     // Llamar a la función de cambio de contraseña con la nueva contraseña
-    const success = await changePassword(nuevaContrasena);
-  
+    const success = await changePassword(userId, nuevaContrasena);
+
     if (success) {
-      // Aquí puedes mostrar un mensaje de éxito o hacer lo que consideres necesario
       console.log("Contraseña cambiada exitosamente.");
       $("#CambiarContrasenaModal").modal("hide"); // Cerrar el modal
+      $("#InputContrasenaActual").val("");
+      $("#InputNuevaContrasena").val("");
+      $("#InputConfirmarNuevaContrasena").val("");
     } else {
-      // Aquí puedes mostrar un mensaje de error o hacer lo que consideres necesario
       console.error("No se pudo cambiar la contraseña.");
     }
   });
-  
-  // Función para cambiar la contraseña
-  async function changePassword(newPassword) {
-    try {
-      // Hacer la solicitud al servidor para cambiar la contraseña
-      const token = getTokenFromURL(); // Asegúrate de obtener el token correcto
-      const response = await fetch(`/reset-password/${token}`, {
-        method: 'POST',
-        headers: {
-          'Content-Type': 'application/json'
-        },
-        body: JSON.stringify({ password: newPassword })
-      });
-  
-      const data = await response.json();
-      return data.success; // Devuelve true si el cambio de contraseña fue exitoso, false si no lo fue
-    } catch (error) {
-      console.error("Error al cambiar la contraseña:", error);
+});
+
+async function validateCurrentPassword(userId, currentPassword) {
+  try {
+    console.log('Validating current password for user ID:', userId);
+    console.log('Contrasena actual:', currentPassword);
+    
+    const response = await fetch(`http://localhost:8080/users/validate-password/${userId}`, {
+      method: "POST",
+      headers: {
+        "Content-Type": "application/json",
+      },
+      body: JSON.stringify({ currentPassword }),
+    });
+
+    console.log('Response status:', response.status);
+
+    if (!response.ok) {
+      console.error('Error response:', response.statusText);
       return false;
     }
+
+    const data = await response.json();
+    console.log('Response data:', data);
+
+    return data.valid;
+  } catch (error) {
+    console.error('Error al validar la contraseña actual:', error);
+    return false;
   }
+}
+
+async function changePassword(userId, newPassword) {
+  try {
+    console.log('Changing password for user ID:', userId);
+
+    // No es necesario encriptar la contraseña nuevamente aquí
+    const response = await fetch(`http://localhost:8080/users/change-password/${userId}`, {
+      method: "POST",
+      headers: {
+        "Content-Type": "application/json",
+      },
+      body: JSON.stringify({ newPassword }), // Envía la contraseña encriptada
+    });
+
+    const data = await response.json();
+    return data.success;
+  } catch (error) {
+    console.error('Error al cambiar la contraseña:', error);
+    return false;
+  }
+}
+
+
+
+
 
 var prevScrollPos = window.pageYOffset;
 window.addEventListener("scroll", function () {

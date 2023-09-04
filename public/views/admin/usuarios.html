@@ -20,6 +20,7 @@
     <link rel="stylesheet" href="./assets/compiled/css/app.css" />
     <link rel="stylesheet" href="./assets/compiled/css/app-dark.css" />
     <link rel="stylesheet" href="./assets/compiled/css/iconly.css" />
+    <link rel="stylesheet" href="./assets/compiled/css/googleapi.css" />
   </head>
 
   <body>
@@ -250,41 +251,11 @@
                   </div>
                 </div>
                 <div class="row mb-3">
-                  <div class="col-md-6">
-                    <label for="city" class="form-label">Ciudad</label>
-                    <select class="form-control" id="city" required>
-                      <option value="Medellin">Medellín</option>
-                      <option value="Bello">Bello</option>
-                    </select>
-                  </div>
-                  <div class="col-md-6">
-                    <label for="addressTypeSelect" class="form-label">Tipo de dirección</label>
-                    <select class="form-control" id="addressTypeSelect" required>
-                      <option value="Call.">Calle</option>
-                      <option value="Cra.">Carrera</option>
-                      <option value="Av.">Avenida</option>
-                      <option value="Diag.">Diagonal</option>
-                      <option value="Tr.">Transversal</option>
-                    </select>
-                  </div>
-                </div>
-                <div class="row mb-3">
-                  <div class="col-md-6">
-                    <input type="text" class="form-control direccion-number" id="adressRoad" placeholder="00" maxlength="4" required>
-                  </div>
-                  <div class="col-md-6">
-                    <div class="input-group">
-                      <span style="margin-right: 10px;">#</span>
-                      <input type="text" class="form-control direccion-number" id="addressNumber1" min="1" required maxlength="2" inputmode="numeric" placeholder="00">
-                      <span style="margin-right: 10px; margin-left: 10px;">-</span>
-                      <input type="text" class="form-control direccion-number" id="addressNumber2" min="1" required maxlength="2" inputmode="numeric" placeholder="00">
-                    </div>
-                  </div>
-                </div>
-                <div class="row mb-3">
                   <div class="col-md-12">
-                    <label for="detalles" class="form-label">Detalles de dirección</label>
-                    <input type="text" class="form-control" id="detalles" placeholder="Barrio, apartamento, etc." maxlength="40">
+                    <label for="detalles" class="form-label">Dirección</label>
+                    <input type="text" class="form-control" id="autocompleteDirectionAdd" placeholder="Dirección">
+                    <input type="hidden" id="latitudeAdd">
+                    <input type="hidden" id="longitudeAdd">
                   </div>
                 </div>
                 <div class="row mb-3">
@@ -356,41 +327,11 @@
                 </div>
               </div>
               <div class="row mb-3">
-                <div class="col-md-6">
-                  <label for="city" class="form-label">Ciudad</label>
-                  <select class="form-control" id="cityEditar" required>
-                    <option value="Medellin">Medellín</option>
-                    <option value="Bello">Bello</option>
-                  </select>
-                </div>
-                <div class="col-md-6">
-                  <label for="addressTypeSelect" class="form-label">Tipo de dirección</label>
-                  <select class="form-control" id="addressTypeSelectEditar" required>
-                    <option value="Call.">Calle</option>
-                    <option value="Cra.">Carrera</option>
-                    <option value="Av.">Avenida</option>
-                    <option value="Diag.">Diagonal</option>
-                    <option value="Tr.">Transversal</option>
-                  </select>
-                </div>
-              </div>
-              <div class="row mb-3">
-                <div class="col-md-6">
-                  <input type="text" class="form-control direccion-number" id="adressRoadEditar" placeholder="00" maxlength="4" required>
-                </div>
-                <div class="col-md-6">
-                  <div class="input-group">
-                    <span style="margin-right: 10px;">#</span>
-                    <input type="text" class="form-control direccion-number" id="addressNumber1Editar" min="1" required maxlength="2" inputmode="numeric" placeholder="00">
-                    <span style="margin-right: 10px; margin-left: 10px;">-</span>
-                    <input type="text" class="form-control direccion-number" id="addressNumber2Editar" min="1" required maxlength="2" inputmode="numeric" placeholder="00">
-                  </div>
-                </div>
-              </div>
-              <div class="row mb-3">
                 <div class="col-md-12">
                   <label for="detalles" class="form-label">Detalles de dirección</label>
-                  <input type="text" class="form-control" id="detallesEditar" placeholder="Barrio, apartamento, etc." maxlength="40">
+                  <input type="text" class="form-control" id="autocompleteDirectionEdit" placeholder="Dirección">
+                  <input type="hidden" id="latitudeEdit">
+                  <input type="hidden" id="longitudeEdit">
                 </div>
               </div>
               <div class="row mb-3">
@@ -503,6 +444,9 @@
       </div>
     </div>
 
+    <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
+
+    <script src="https://maps.googleapis.com/maps/api/js?key=AIzaSyBqaKSNGXi0v6IGv7MRnMOmjRjJFN1PfTg&libraries=places"></script>
     <script src="assets/static/js/components/dark.js"></script>
     <script src="assets/extensions/perfect-scrollbar/perfect-scrollbar.min.js"></script>
 

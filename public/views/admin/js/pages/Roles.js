@@ -103,7 +103,7 @@ $(document).ready(function() {
   }
 
   // Función para agregar un rol
-  function agregarRol() {
+  async function agregarRol() {
     const roleName = $inputAgregarNombreRol.val().trim();
     const estado = $('#SelectAgregarEstadoRol').val();
     const dashboard = $("#CheckDashboard").is(":checked");
@@ -129,6 +129,8 @@ $(document).ready(function() {
         pedidos: pedidos,
       },
     };
+
+    await Swal.fire('Rol agregado');
 
     fetch('http://localhost:8080/roles', {
       method: 'POST',
@@ -225,7 +227,7 @@ function editRole(id, name, estado, dashboard, roles, usuarios, productos, categ
 }
 
 // Evento de clic en el botón de confirmar (Guardar)
-$('#BtnConfirmarEdit').on('click', () => {
+$('#BtnConfirmarEdit').on('click', async () => {
   const id = $('#IdEditarRol').val();
   const roleName = $('#InputNombreRol').val().trim();
   const estado = $('#InputEstadoRol').val();
@@ -261,6 +263,8 @@ $('#BtnConfirmarEdit').on('click', () => {
       pedidos: pedidos,
     },
   };
+
+  await Swal.fire('Rol editado');
 
   fetch(`http://localhost:8080/roles/${id}`, {
     method: 'PUT',
@@ -316,8 +320,10 @@ function deleteRole(id) {
   $("#IdEliminarRol").val(id);
 }
 
-$("#BtnConfirmarDelete").on("click", () => {
+$("#BtnConfirmarDelete").on("click", async () => {
   const id = $("#IdEliminarRol").val();
+  await Swal.fire('Producto eliminado');
+
   fetch(`http://localhost:8080/roles/${id}`, {
     method: "DELETE",
   })
