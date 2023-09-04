@@ -215,7 +215,7 @@ function editRole(id, name, estado, dashboard, roles, usuarios, productos, categ
   $('#IdEditarRol').val(id);
   $('#InputNombreRol').val(name).data('original-name', name);
   $('#InputEstadoRol').val(estado).data('original-estado', estado);
-  $('#CheckDashboardEditar').prop('checked', dashboard === 'true');
+  $('#CheckDashboardEditar').prop('checked', dashboard);
   $('#CheckRolesEditar').prop('checked', roles === 'true');
   $('#CheckUsuariosEditar').prop('checked', usuarios === 'true');
   $('#CheckProductosEditar').prop('checked', productos === 'true');
@@ -322,7 +322,6 @@ function deleteRole(id) {
 
 $("#BtnConfirmarDelete").on("click", async () => {
   const id = $("#IdEliminarRol").val();
-  await Swal.fire('Producto eliminado');
 
   fetch(`http://localhost:8080/roles/${id}`, {
     method: "DELETE",
@@ -330,11 +329,30 @@ $("#BtnConfirmarDelete").on("click", async () => {
     .then((response) => response.json())
     .then((json) => {
       $("#EliminarRol").modal("hide");
-      location.reload();
+      if (json.ok) {
+        // Rol eliminado exitosamente
+        Swal.fire('Rol eliminado exitosamente!')
+        .then((result) => {
+          if (result.isConfirmed) {
+            // clic en el botón "OK", recarga la página
+            location.reload();
+          }
+        });
+        
+      } else {
+        // No se pudo eliminar el rol debido a usuarios asociados
+        Swal.fire({
+          icon: 'error',
+          title: 'No se puede eliminar el rol!',
+          text: 'El rol tiene usuarios asociados',
+        })
+      }
+    })
+    .catch((error) => {
+      console.error('Error al eliminar el rol:', error);
+      Swal.fire('Ha ocurrido un error al eliminar el rol');
     });
 });
-
-
 
 
 

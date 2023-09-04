@@ -15,6 +15,12 @@ router.post('/login', async (req, res) => {
 
     const user = await User.findOne({ Correo: correo }).populate('Rol').exec();
 
+    // Verificar el estado del usuario
+    if (user.Estado === 'Inactivo') {
+        console.log('El usuario está inactivo.');
+        return res.status(403).json({ message: 'El usuario está inactivo.' });
+      }
+
     if (!user) {
       console.log('Correo o contraseña incorrectos.');
       return res.status(404).json({ message: 'Correo o contraseña incorrectos.' });

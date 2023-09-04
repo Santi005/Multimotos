@@ -86,10 +86,6 @@
                             <div id="correoError" class="error-message"></div>
                         </div>
                     </div>
-
-                    <!-- <div class="row">
-                        
-                    </div> -->
     
                     <div class="row">
                         <div class="col-md-6">
@@ -146,299 +142,286 @@
     <script src="https://maps.googleapis.com/maps/api/js?key=AIzaSyBqaKSNGXi0v6IGv7MRnMOmjRjJFN1PfTg&libraries=places"></script>
     <!-- <script src="js/main.js"></script> -->
 
-<script>
-    $(document).ready(() => {
-
-        const input = document.getElementById('autocomplete');
-        const latitudeField = document.getElementById('latitude');
-        const longitudeField = document.getElementById('longitude');
-
-        const options = {
-            componentRestrictions: { 
-                country: 'CO', // Código de país para Colombia
-            }
-        };
-
-        const autocomplete = new google.maps.places.Autocomplete(input, options);
-
-        autocomplete.addListener('place_changed', () => {
-            const place = autocomplete.getPlace();
-        
-            if (!place.geometry) {
-                console.log("No se encontró ningún lugar para la selección.");
-                return;
-            }
-
-            const latitude = place.geometry.location.lat();
-            const longitude = place.geometry.location.lng();
-
-            const selectedPlace = {
-                name: place.name,
-                address: place.formatted_address,
-                latitude: latitude,
-                longitude: longitude
+    <script>
+        $(document).ready(() => {
+    
+            const input = document.getElementById('autocomplete');
+            const latitudeField = document.getElementById('latitude');
+            const longitudeField = document.getElementById('longitude');
+    
+            const options = {
+                componentRestrictions: { 
+                    country: 'CO', // Código de país para Colombia
+                }
             };
-
-            latitudeField.value = latitude
-            longitudeField.value = longitude
-
-            const selectedPlaceJSON = JSON.stringify(selectedPlace);
-
-            console.log("Lugar seleccionado:", place);
-        });
-
-        $('#BtnRegistrarCliente').on('click', () => {
-            if (validateForm()) {
-                const correo = $('#InputCorreo').val();
-                const documento = $('#InputDocumento').val();
-
-                // Validar si el correo ya está registrado
-                checkEmailExists(correo)
-                    .then((emailExists) => {
-                        if (emailExists) {
-                            $('#correoError').text('El correo ya está registrado.');
-                            return;
-                        }
-
-                        // Validar si el documento ya está registrado
-                        checkDocumentoExists(documento)
-                            .then((documentoExists) => {
-                                if (documentoExists) {
-                                    $('#documentoError').text('El número de documento ya está registrado.');
-                                    return;
+    
+            const autocomplete = new google.maps.places.Autocomplete(input, options);
+    
+            autocomplete.addListener('place_changed', () => {
+                const place = autocomplete.getPlace();
+            
+                if (!place.geometry) {
+                    console.log("No se encontró ningún lugar para la selección.");
+                    return;
+                }
+    
+                const latitude = place.geometry.location.lat();
+                const longitude = place.geometry.location.lng();
+    
+                const selectedPlace = {
+                    name: place.name,
+                    address: place.formatted_address,
+                    latitude: latitude,
+                    longitude: longitude
+                };
+    
+                latitudeField.value = latitude
+                longitudeField.value = longitude
+    
+                const selectedPlaceJSON = JSON.stringify(selectedPlace);
+    
+                console.log("Lugar seleccionado:", place);
+            });
+    
+            $('#BtnRegistrarCliente').on('click', () => {
+                if (validateForm()) {
+                    const correo = $('#InputCorreo').val();
+                    const documento = $('#InputDocumento').val();
+    
+                    // Validar si el correo ya está registrado
+                    checkEmailExists(correo)
+                        .then((emailExists) => {
+                            if (emailExists) {
+                                $('#correoError').text('El correo ya está registrado.');
+                                return;
+                            } else {
+                                $('#correoError').text('');
+                            }
+                        })
+                        .catch(error => {
+                            alert('Ha ocurrido un error al verificar el correo electrónico.');
+                            console.error(error);
+                        });
+    
+                    // Validar si el documento ya está registrado
+                    checkDocumentoExists(documento)
+                        .then((documentoExists) => {
+                            if (documentoExists) {
+                                $('#documentoError').text('El número de documento ya está registrado.');
+                                return;
+                            } else {
+                                $('#documentoError').text('');
+                            }
+    
+                            // Si todo está validado, realizar el registro
+                            let userData = {
+                                Documento: documento,
+                                Nombre: $('#InputNombre').val(),
+                                Apellidos: $('#InputApellidos').val(),
+                                Celular: $('#InputCelular').val(),
+                                Correo: correo,
+                                Direccion: getFullAddress(),
+                                //Id del rol 'Cliente'
+                                Rol: '64defa9c74fb54f6dfe372e9',
+                                Contrasena: $('#InputContrasena').val(),
+                                Estado: 'Activo',
+                            };
+    
+                            fetch('http://localhost:8080/users/', {
+                                method: 'POST',
+                                body: JSON.stringify(userData),
+                                headers: {
+                                    'Content-type': 'application/json; charset=UTF-8'
                                 }
-
-                                // Si todo está validado, realizar el registro
-                                let userData = {
-                                    Documento: documento,
-                                    Nombre: $('#InputNombre').val(),
-                                    Apellidos: $('#InputApellidos').val(),
-                                    Celular: $('#InputCelular').val(),
-                                    Correo: correo,
-                                    Direccion: getFullAddress(),
-                                    //Id del rol 'Cliente'
-                                    Rol: '64defa9c74fb54f6dfe372e9',
-                                    Contrasena: $('#InputContrasena').val(),
-                                    Estado: 'Activo',
-                                };
-
-                                fetch('http://localhost:8080/users/', {
-                                    method: 'POST',
-                                    body: JSON.stringify(userData),
-                                    headers: {
-                                        'Content-type': 'application/json; charset=UTF-8'
-                                    }
-                                })
-                                .then(response => response.json())
-                                .then(json => {
-                                    
-                                    window.location.href = 'loginvista.html';
-                                    // Realizar las acciones necesarias después de registrar el usuario
-                                })
-                                .catch(error => {
-                                    alert('Ha ocurrido un error al registrar el usuario.');
-                                    console.error(error);
-                                });
+                            })
+                            .then(response => response.json())
+                            .then(json => {
+                                window.location.href = 'loginvista.html';
+                                // Realizar las acciones necesarias después de registrar el usuario
                             })
                             .catch(error => {
-                                alert('Ha ocurrido un error al verificar el número de documento.');
+                                alert('Ha ocurrido un error al registrar el usuario.');
                                 console.error(error);
                             });
-                    })
-                    .catch(error => {
-                        alert('Ha ocurrido un error al verificar el correo electrónico.');
-                        console.error(error);
-                    });
-            }
-        });
-
-        function validateForm() {
-            let isValid = true;
-            // Llamamos a los validadores individuales de cada campo
-            isValid = isValid && validateDocumento();
-            isValid = isValid && validateNombre();
-            isValid = isValid && validateApellidos();
-            isValid = isValid && validateCelular();
-            isValid = isValid && validateCorreo();
-            // isValid = isValid && validateAddressNumbers();
-            isValid = isValid && validateContrasena();
-            isValid = isValid && validateConfirmarContrasena();
-            // Agregue aquí más validadores si hay más campos
-
-            return isValid;
-        }
-
-        // Validar Documento
-        function validateDocumento() {
-            const documento = $('#InputDocumento').val();
-            if (!documento.match(/^\d+$/)) {
-                $('#documentoError').text('Documento inválido.');
-                documento.style.color = 'red'
-                return false;
-            } else {
-                $('#documentoError').text('');
-                return true;
-            }
-        }
-
-        // Validar Nombre
-        function validateNombre() {
-            const nombre = $('#InputNombre').val();
-            if (nombre === "" || !nombre.match(/^[a-zA-Z\s]+$/)) {
-                $('#nombreError').text('Nombre inválido. Solo se permiten letras y espacios.');
-                return false;
-            } else if (nombre.length > 25) {
-                $('#nombreError').text("El nombre no puede tener más de 25 caracteres.").removeClass("d-none");
-                return false;
-            } else {
-                $('#nombreError').text('');
-                return true;
-            }
-        }
-
-        // Validar Apellidos
-        function validateApellidos() {
-            const apellidos = $('#InputApellidos').val();
-            if (apellidos === "" || !apellidos.match(/^[a-zA-Z\s]+$/)) {
-                $('#apellidosError').text('Los apellidos solo pueden contener letras.');
-                return false;
-            } else if (apellidos.length > 25) {
-                $('#apellidosError').text("Los apellidos no pueden tener más de 25 caracteres.").removeClass("d-none");
-                return false;
-            }else {
-                $('#apellidosError').text('');
-                return true;
-            }
-        }
-
-        // Validar Celular
-        function validateCelular() {
-            const celular = $('#InputCelular').val();
-            if (celular === "" || !celular.match(/^\d{10}$/)) {
-                $('#celularError').text('El número de celular debe tener 10 dígitos.');
-                return false;
-            } else {
-                $('#celularError').text('');
-                return true;
-            }
-        }
-
-        // Validar Correo
-        function validateCorreo() {
-            const correo = $('#InputCorreo').val();
-            if (correo > 255 || correo === "" || !correo.match(/^\w+([\.-]?\w+)*@\w+([\.-]?\w+)*(\.\w{2,3})+$/)) {
-                $('#correoError').text('Ingrese un correo electrónico válido.');
-                return false;
-            } else {
-                $('#correoError').text('');
-                return true;
-            }
-        }
-
-        // Validar Direccion
-        // function validateAddressNumbers() {
-        //     const addressNumber1 = $('#addressNumber1').val();
-        //     const addressNumber2 = $('#addressNumber2').val();
-        //     const maxDigits = 3; // Máximo de 3 dígitos
-
-        //     if (!addressNumber1 || !addressNumber2) {
-        //         $('#direccionNumberError').text('Ambos números de dirección son obligatorios.');
-        //         return false;
-        //     } else if (addressNumber1.length > maxDigits || addressNumber2.length > maxDigits) {
-        //         $('#direccionNumberError').text('Cada número de dirección no puede tener más de 3 dígitos.');
-        //         return false;
-        //     } else {
-        //         $('#direccionNumberError').text('');
-        //         return true;
-        //     }
-        // }
-
-
-
-        // Validar Contraseña
-        function validateContrasena() { 
-            const contrasena = $('#InputContrasena').val();
-            if (contrasena.trim().length === 0) {
-                $('#contrasenaError').text('La contraseña no puede estar vacía.');
-                return false;
-            } else {
-                $('#contrasenaError').text('');
-                return true;
-            }
-        }
-
-        // Validar Confirmar Contraseña
-        function validateConfirmarContrasena() {
-            const contrasena = $('#InputContrasena').val();
-            const confirmarContrasena = $('#InputConfirmarContrasena').val();
-            if (contrasena !== confirmarContrasena) {
-                $('#confirmarContrasenaError').text('Las contraseñas no coinciden.');
-                return false;
-            } else {
-                $('#confirmarContrasenaError').text('');
-                return true;
-            }   
-        }
-
-        // Función para verificar si el correo ya está registrado
-        function checkEmailExists(correo) {
-            return new Promise((resolve, reject) => {
-                fetch(`http://localhost:8080/users/check-email/${correo}`)
-                    .then(response => response.json())
-                    .then(json => {
-                        resolve(json.exists);
-                    })
-                    .catch(error => {
-                        reject(error);
-                    });
+                        })
+                        .catch(error => {
+                            alert('Ha ocurrido un error al verificar el número de documento.');
+                            console.error(error);
+                        });
+                }
             });
-        }
+    
+            function validateForm() {
+                let isValid = true;
+                // Llamamos a los validadores individuales de cada campo
+                isValid = isValid && validateDocumento();
+                isValid = isValid && validateNombre();
+                isValid = isValid && validateApellidos();
+                isValid = isValid && validateCelular();
+                isValid = isValid && validateCorreo();
+                // isValid = isValid && validateAddressNumbers();
+                isValid = isValid && validateContrasena();
+                isValid = isValid && validateConfirmarContrasena();
+                // Agregue aquí más validadores si hay más campos
+    
+                return isValid;
+            }
+    
+            // Validar Documento
+            function validateDocumento() {
+                const documento = $('#InputDocumento').val();
+                if (!documento.match(/^\d{8,11}$/)) {
+                    $('#documentoError').text('Documento inválido.');
+                    return false;
+                } else {
+                    $('#documentoError').text('');
+                    return true;
+                }
+            }
+    
+            // Validar Nombre
+            function validateNombre() {
+                const nombre = $('#InputNombre').val();
+                if (nombre.length < 2 || nombre.length > 30 || !nombre.match(/^[a-zA-Z\s]+$/)) {
+                    $('#nombreError').text('Nombre inválido.');
+                    return false;
+                } else {
+                    $('#nombreError').text('');
+                    return true;
+                }
+            }
 
-        // Función para verificar si el documento ya está registrado
-        function checkDocumentoExists(documento) {
-            return new Promise((resolve, reject) => {
-                fetch(`http://localhost:8080/users/check-documento/${documento}`)
-                    .then(response => response.json())
-                    .then(json => {
-                        resolve(json.exists);
-                    })
-                    .catch(error => {
-                        reject(error);
-                    });
-            });
-        }
-
-        // Función para obtener la dirección completa
-        function getFullAddress() {
-            let direccionCompleta = [];
-
-            const direccion = input.value;
-            const latitud = latitudeField.value;
-            const longitud = longitudeField.value;
-
-            direccionCompleta.push(direccion, latitud, longitud);
-
-            return direccionCompleta;
-        }
-
-        // Validación de formulario con Bootstrap
-        (function() {
-            'use strict';
-            window.addEventListener('load', function() {
-                var forms = document.getElementsByClassName('needs-validation');
-                var validation = Array.prototype.filter.call(forms, function(form) {
-                form.addEventListener('submit', function(event) {
-                    if (form.checkValidity() === false) {
-                    event.preventDefault();
-                    event.stopPropagation();
-                    }
-                    form.classList.add('was-validated');
-                }, false);
+    
+            // Validar Apellidos
+            function validateApellidos() {
+                const apellidos = $('#InputApellidos').val();
+                if (apellidos.length < 2 || apellidos.length > 30 || !apellidos.match(/^[a-zA-Z\s]+$/)) {
+                    $('#apellidosError').text('Apellidos inválidos');
+                    return false;
+                }else {
+                    $('#apellidosError').text('');
+                    return true;
+                }
+            }
+    
+            // Validar Celular
+            function validateCelular() {
+                const celular = $('#InputCelular').val();
+                if (celular === "" || !celular.match(/^\d{10}$/)) {
+                    $('#celularError').text('El número de celular debe tener 10 dígitos.');
+                    return false;
+                } else {
+                    $('#celularError').text('');
+                    return true;
+                }
+            }
+    
+            // Validar Correo
+            function validateCorreo() {
+                const correo = $('#InputCorreo').val();
+                if (correo > 255 || correo === "" || !correo.match(/^\w+([\.-]?\w+)*@\w+([\.-]?\w+)*(\.\w{2,3})+$/)) {
+                    $('#correoError').text('Ingrese un correo electrónico válido.');
+                    return false;
+                } else {
+                    $('#correoError').text('');
+                    return true;
+                }
+            }
+    
+            // Validar Contraseña
+            function validateContrasena() { 
+                const contrasena = $('#InputContrasena').val();
+                if (contrasena.trim().length === 0) {
+                    $('#contrasenaError').text('La contraseña no puede estar vacía.');
+                    return false;
+                } else {
+                    $('#contrasenaError').text('');
+                    return true;
+                }
+            }
+    
+            // Validar Confirmar Contraseña
+            function validateConfirmarContrasena() {
+                const contrasena = $('#InputContrasena').val();
+                const confirmarContrasena = $('#InputConfirmarContrasena').val();
+                if (contrasena !== confirmarContrasena) {
+                    $('#confirmarContrasenaError').text('Las contraseñas no coinciden.');
+                    return false;
+                } else {
+                    $('#confirmarContrasenaError').text('');
+                    return true;
+                }   
+            }
+    
+            // Función para verificar si el correo ya está registrado
+            function checkEmailExists(correo) {
+                return new Promise((resolve, reject) => {
+                    fetch(`http://localhost:8080/users/check-email/${correo}`)
+                        .then(response => response.json())
+                        .then(json => {
+                            resolve(json.exists);
+                        })
+                        .catch(error => {
+                            reject(error);
+                        });
                 });
-            }, false);
-        })();
-    });
-</script>
+            }
+    
+            // Función para verificar si el documento ya está registrado
+            function checkDocumentoExists(documento) {
+                return new Promise((resolve, reject) => {
+                    fetch(`http://localhost:8080/users/check-documento/${documento}`)
+                        .then(response => response.json())
+                        .then(json => {
+                            resolve(json.exists);
+                        })
+                        .catch(error => {
+                            reject(error);
+                        });
+                });
+            }
+    
+            // Función para obtener la dirección completa
+            function getFullAddress() {
+                let direccionCompleta = [];
+    
+                const direccion = input.value;
+                const latitud = latitudeField.value;
+                const longitud = longitudeField.value;
+    
+                direccionCompleta.push(direccion, latitud, longitud);
+    
+                return direccionCompleta;
+            }
+    
+            // Validación de formulario con Bootstrap
+            (function() {
+                'use strict';
+                window.addEventListener('load', function() {
+                    var forms = document.getElementsByClassName('needs-validation');
+                    var validation = Array.prototype.filter.call(forms, function(form) {
+                    form.addEventListener('submit', function(event) {
+                        if (form.checkValidity() === false) {
+                        event.preventDefault();
+                        event.stopPropagation();
+                        }
+                        form.classList.add('was-validated');
+                    }, false);
+                    });
+                }, false);
+            })();
+    
+            // Validación de campos a medida que se escriben
+            $('#InputDocumento').on('input', validateDocumento);
+            $('#InputNombre').on('input', validateNombre);
+            $('#InputApellidos').on('input', validateApellidos);
+            $('#InputCelular').on('input', validateCelular);
+            $('#InputCorreo').on('input', validateCorreo);
+            $('#InputContrasena').on('input', validateContrasena);
+            $('#InputConfirmarContrasena').on('input', validateConfirmarContrasena);
+        });
+    </script>
+    
 
     
     

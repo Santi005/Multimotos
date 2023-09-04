@@ -242,23 +242,6 @@ $(document).ready(function() {
     }
   }
 
-  // // Función de validación para el campo de Dirección
-  // function validarDireccionCompletaEditar() {
-  //   const city = $('#citySelect').val();
-  //   const addressType = $('#addressTypeSelect').val();
-  //   const adressTypeNumber = $('#adressRoad').val();
-  //   const addressNumber1 = $('#addressNumber1').val();
-  //   const addressNumber2 = $('#addressNumber2').val();
-  //   const detalles = $('#InputDetalles').val();
-  
-  //   if (city === "" || addressType === "" || adressTypeNumber === "" || addressNumber1 === "" || addressNumber2 === "") {
-  //     $('#errorEditarDireccion').text("Por favor completa todos los campos de la dirección.").removeClass("d-none");
-  //     return false;
-  //   } else {
-  //     $('#errorEditarDireccion').text("").addClass("d-none");
-  //     return true;
-  //   }
-  // }
 
     $InputAgregarDocumento.on('input', validarDocumento);
     $InputAgregarNombre.on('input', validarNombre);
