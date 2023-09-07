@@ -255,18 +255,18 @@ function DeleteMark(id) {
 $('#BtnConfirmarDelete').on('click', async () => {
     const id = $('#IdEliminarMarca').val();
 
-    await Swal.fire('Marca eliminada')
-    location.reload();
+    
     fetch(`http://localhost:8080/marks/${id}`, {
         method: 'DELETE',
     })
     .then((res) => res.json())
-    .then((res) => {
+    .then(async(res) => {
         if (!res.ok) {
             $('#errorDelete').text('La marca no se puede eliminar ya que está asociada a un producto').removeClass('d-none');
         } 
         else {
             $('#EliminarMarca').modal('hide');
+            await Swal.fire('Marca eliminada')
             location.reload();
         }
     });

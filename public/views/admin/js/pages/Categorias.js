@@ -205,21 +205,21 @@ function DeleteCategory(id) {
   $('#errorDelete').addClass('d-none'); 
   }
   
-  $('#BtnConfirmarDelete').on('click', async () => {
+  $('#BtnConfirmarDelete').on('click',  () => {
   const id = $('#IdEliminarCategoria').val();
   
-  await Swal.fire('Categoría eliminada')
-    location.reload();
+  
   fetch(`http://localhost:8080/categories/${id}`, {
     method: 'DELETE',
   })
   .then((res) => res.json())
-  .then((res) => {
+  .then(async (res) => {
     if (!res.ok) {
       $('#errorDelete').text('La categoría no se puede eliminar ya que está asociada a un producto').removeClass('d-none');
     } 
-    else {
+    else  {
       $('#EliminarCategoria').modal('hide');
+      await Swal.fire('Categoría eliminada')
       location.reload();
     }
   });
